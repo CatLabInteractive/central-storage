@@ -6,6 +6,7 @@ use App\Models\Consumer;
 use CentralStorage;
 use Closure;
 use Epyc\CentralStorage\Client\CentralStorageClient;
+use Illuminate\Http\Request;
 
 /**
  * Class ApiAuthentication
@@ -31,10 +32,10 @@ class ApiAuthentication
     }
 
     /**
-     * @param $request
+     * @param Request $request
      * @return bool
      */
-    protected function isValidRequest($request)
+    protected function isValidRequest(Request $request)
     {
         // Look for key
         $key = $request->header(CentralStorageClient::HEADER_KEY);
@@ -43,6 +44,12 @@ class ApiAuthentication
             return false;
         }
 
-        return CentralStorage::isValid($request, $consumer->key, $consumer->secret);
+        if (!CentralStorage::isValid($request, $consumer->key, $consumer->secret)) {
+            return false;
+        }
+
+        $request->merge([ 'consumer' => $consumer ]);
+
+        return true;
     }
 }
