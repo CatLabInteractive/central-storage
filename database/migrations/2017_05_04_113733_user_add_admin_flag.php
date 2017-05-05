@@ -15,7 +15,7 @@ class UserAddAdminFlag extends Migration
     {
         Schema::table('users', function(Blueprint $table) {
 
-            $table->boolean('is_admin')->after('remember_token');
+            $table->boolean('is_admin')->default(0)->after('remember_token');
 
         });
     }

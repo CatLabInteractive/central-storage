@@ -57,7 +57,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "/home/daedeloth/Epyc/assets/"
+            "url": "/home/daedeloth/Epyc/laravel-assets/"
         }
     ]
 }
