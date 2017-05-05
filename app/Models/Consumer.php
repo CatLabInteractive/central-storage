@@ -30,6 +30,15 @@ class Consumer extends Model
     }
 
     /**
+     * @param $key
+     * @return Consumer|null
+     */
+    public static function findFromKey($key)
+    {
+        return self::where('key', $key)->first();
+    }
+
+    /**
      * @return string
      */
     public static function createUniqueKey()

@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Consumer;
 use CentralStorage;
 use Closure;
+use Epyc\CentralStorage\Client\CentralStorageClient;
 
 /**
  * Class ApiAuthentication
@@ -21,10 +23,26 @@ class ApiAuthentication
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (!CentralStorage::isValid($request)) {
+        if (!$this->isValidRequest($request)) {
             return response()->json([ 'error' => [ 'message' => 'Authentication failed' ]], 403);
         }
 
         return $next($request);
+    }
+
+    /**
+     * @param $request
+     * @return bool
+     */
+    protected function isValidRequest($request)
+    {
+        // Look for key
+        $key = $request->header(CentralStorageClient::HEADER_KEY);
+        $consumer = Consumer::findFromKey($key);
+        if (!$consumer) {
+            return false;
+        }
+
+        return CentralStorage::isValid($request, $consumer->key, $consumer->secret);
     }
 }
