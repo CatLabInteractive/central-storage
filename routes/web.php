@@ -14,3 +14,25 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', function() {
+    return redirect()->action('ConsumerController@index');
+});
+
+Route::group(
+    [
+        'middleware' => [ 'auth' ]
+    ],
+    function() {
+
+        Route::get('/consumers', 'ConsumerController@index');
+
+        Route::get('/consumers/create', 'ConsumerController@create');
+        Route::post('/consumers/create', 'ConsumerController@processCreate');
+
+        Route::get('/consumers/{consumer}', 'ConsumerController@view');
+
+    }
+);

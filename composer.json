@@ -6,8 +6,11 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
+        "barryvdh/laravel-ide-helper": "^2.3",
+        "catlabinteractive/laravel-assets": "dev-master",
         "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "watson/bootstrap-form": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -40,6 +43,8 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:meta",
             "php artisan optimize"
         ]
     },
@@ -47,5 +52,12 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/home/daedeloth/Epyc/assets/"
+        }
+    ]
 }
