@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7a5529cc220e6a973b5b6f3e8c3dd2a0",
-    "content-hash": "7cc827cb07826c0361555b39b1018f99",
+    "hash": "0af7c9d5b25dd25a0894e53dad14605e",
+    "content-hash": "c1fec60bb8eb972e1d67eb15d244a1e2",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -291,6 +291,36 @@
                 "string"
             ],
             "time": "2015-11-06 14:35:42"
+        },
+        {
+            "name": "epycbe/central-storage-client",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "/home/daedeloth/Epyc/central-storage-client",
+                "reference": "d140b09940de73139891012c774a8de4ecfbdb95",
+                "shasum": null
+            },
+            "require-dev": {
+                "laravel/framework": "5.4.*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Epyc\\CentralStorage\\Client\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thijs Van der Schaeghe",
+                    "email": "thijs@catlab.be"
+                }
+            ],
+            "description": "Client for epyc central storage."
         },
         {
             "name": "erusev/parsedown",
@@ -3686,7 +3716,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "catlabinteractive/laravel-assets": 20
+        "catlabinteractive/laravel-assets": 20,
+        "epycbe/central-storage-client": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

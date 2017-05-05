@@ -10,7 +10,8 @@
         "catlabinteractive/laravel-assets": "dev-master",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
-        "watson/bootstrap-form": "^1.1"
+        "watson/bootstrap-form": "^1.1",
+        "epycbe/central-storage-client": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -58,6 +59,10 @@
         {
             "type": "path",
             "url": "/home/daedeloth/Epyc/laravel-assets/"
+        },
+        {
+            "type": "path",
+            "url": "/home/daedeloth/Epyc/central-storage-client/"
         }
     ]
 }
