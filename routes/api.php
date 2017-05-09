@@ -20,7 +20,7 @@ Route::group(
     ],
     function()
     {
-        Route::get('/v1/upload', 'UploadController@upload');
+        Route::post('/v1/upload', 'UploadController@upload');
     }
 );
 
