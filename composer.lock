@@ -164,7 +164,7 @@
             "dist": {
                 "type": "path",
                 "url": "/home/daedeloth/Epyc/laravel-assets",
-                "reference": "f6eb06ec379c172b8d51d230090bc6865db801c9",
+                "reference": "249953d94f6b8e0a5903d4bf2ddb54abb4922185",
                 "shasum": null
             },
             "require": {
@@ -298,7 +298,7 @@
             "dist": {
                 "type": "path",
                 "url": "/home/daedeloth/Epyc/central-storage-client",
-                "reference": "2df95073dcd41604709d22707b4a9b5bd770b620",
+                "reference": "de26b829dd80e147cf4f4df4d1c2308d23e62a98",
                 "shasum": null
             },
             "require": {
