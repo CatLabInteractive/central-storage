@@ -22,7 +22,7 @@ class CreateConsumersTable extends Migration
 
             $table->string('name');
 
-            $table->string('key');
+            $table->string('key')->length(64);
             $table->unique('key');
 
             $table->string('secret');

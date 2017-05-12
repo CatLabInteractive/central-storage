@@ -22,7 +22,7 @@ class CreateConsumerAssetsTable extends Migration
             $table->integer('consumer_id')->unsigned();
             $table->foreign('consumer_id')->references('id')->on('consumers');
 
-            $table->string('key');
+            $table->string('key')->length(64);
             $table->unique('key');
 
             $table->string('name')->nullable();
