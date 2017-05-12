@@ -57,12 +57,8 @@
 
     "repositories": [
         {
-            "type": "path",
-            "url": "/home/daedeloth/Epyc/laravel-assets/"
-        },
-        {
-            "type": "path",
-            "url": "/home/daedeloth/Epyc/central-storage-client/"
+            "type": "vcs",
+            "url": "git@bitbucket.org:epyc/central-storage-client.git"
         }
     ]
 }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0af7c9d5b25dd25a0894e53dad14605e",
-    "content-hash": "c1fec60bb8eb972e1d67eb15d244a1e2",
+    "hash": "943fcd3ca543a6af98f3a3156a3c7410",
+    "content-hash": "3c4a6beceff9e189d58cd2173f71f8da",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -161,11 +161,16 @@
         {
             "name": "catlabinteractive/laravel-assets",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CatLabInteractive/laravel-assets.git",
+                "reference": "98a4229a8e09bfbf97c97da2d38f9151c37116b9"
+            },
             "dist": {
-                "type": "path",
-                "url": "/home/daedeloth/Epyc/laravel-assets",
-                "reference": "249953d94f6b8e0a5903d4bf2ddb54abb4922185",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/98a4229a8e09bfbf97c97da2d38f9151c37116b9",
+                "reference": "98a4229a8e09bfbf97c97da2d38f9151c37116b9",
+                "shasum": ""
             },
             "require": {
                 "catlabinteractive/base": "~1.0",
@@ -181,6 +186,7 @@
                     "CatLab\\Assets\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -190,7 +196,8 @@
                     "email": "info@catlab.be"
                 }
             ],
-            "description": "Handle asset upload"
+            "description": "Handle asset upload",
+            "time": "2017-05-11 08:53:28"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -295,11 +302,10 @@
         {
             "name": "epycbe/central-storage-client",
             "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "/home/daedeloth/Epyc/central-storage-client",
-                "reference": "de26b829dd80e147cf4f4df4d1c2308d23e62a98",
-                "shasum": null
+            "source": {
+                "type": "git",
+                "url": "git@bitbucket.org:epyc/central-storage-client.git",
+                "reference": "23d9bb930e25b59603a6eeca24d2743433acf220"
             },
             "require": {
                 "guzzlehttp/guzzle": ">=6.0",
@@ -331,7 +337,8 @@
                     "email": "thijs@catlab.be"
                 }
             ],
-            "description": "Client for epyc central storage."
+            "description": "Client for epyc central storage.",
+            "time": "2017-05-11 08:58:02"
         },
         {
             "name": "erusev/parsedown",
@@ -642,16 +649,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.22",
+            "version": "v5.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "fc5c7a18644f231bcb8d02f4ec2f3a2517f5015d"
+                "reference": "ad82327705658dbf5f0ce72805caa950dfbe150d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/fc5c7a18644f231bcb8d02f4ec2f3a2517f5015d",
-                "reference": "fc5c7a18644f231bcb8d02f4ec2f3a2517f5015d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ad82327705658dbf5f0ce72805caa950dfbe150d",
+                "reference": "ad82327705658dbf5f0ce72805caa950dfbe150d",
                 "shasum": ""
             },
             "require": {
@@ -767,7 +774,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-05-08 21:45:45"
+            "time": "2017-05-11 20:10:35"
         },
         {
             "name": "laravel/tinker",
