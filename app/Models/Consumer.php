@@ -60,11 +60,34 @@ class Consumer extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consumerAssets()
+    {
+        return $this->hasMany(ConsumerAsset::class);
+    }
+
+    /**
      * @param $query
      * @return mixed
      */
     public function scopeKey($query)
     {
         return $query->where('key', '=', $query);
+    }
+
+    /**
+     * @return array
+     */
+    public function getStatistics()
+    {
+        $uploaded = $this->consumerAssets()->count();
+        $uploadedUnique = $this->consumerAssets()->distinct('asset_id')->count('asset_id');
+
+        return [
+            'uploaded' => $uploaded,
+            'uploadedUnique' => $uploadedUnique,
+            'uniquePercentage' => round(($uploadedUnique / $uploaded) * 100) . '%'
+        ];
     }
 }

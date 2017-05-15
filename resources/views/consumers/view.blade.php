@@ -24,6 +24,18 @@
         </tr>
     </table>
 
+    <h2>Statistics</h2>
+    <table class="table">
+    @foreach($consumer->getStatistics() as $k => $v)
+
+        <tr>
+            <td>{{ trans('application.statistics.' . $k) }}</td>
+            <td>{{ $v }}</td>
+        </tr>
+
+    @endforeach
+    </table>
+
     <a href="{{ action('ConsumerController@index') }}">Back</a>
 
 @endsection
