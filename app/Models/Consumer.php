@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -84,10 +85,49 @@ class Consumer extends Model
         $uploaded = $this->consumerAssets()->count();
         $uploadedUnique = $this->consumerAssets()->distinct('asset_id')->count('asset_id');
 
+        $size = $this
+            ->consumerAssets()
+            ->join('assets', 'consumer_assets.asset_id', '=', 'assets.id')
+            ->sum('assets.size');
+
+        $uniqueSize = Asset::whereIn('id', function($builder) {
+                return $builder->from('consumer_assets')
+                    ->distinct('asset_id')
+                    ->where('consumer_id', '=', $this->id)
+                    ->select('asset_id');
+            })
+            ->sum('size');
+
         return [
             'uploaded' => $uploaded,
             'uploadedUnique' => $uploadedUnique,
-            'uniquePercentage' => round(($uploadedUnique / $uploaded) * 100) . '%'
+            'uniquePercentage' => $this->formatPercentage($uploadedUnique / $uploaded),
+            'uploadedSize' => $this->formatBytes($size),
+            'uploadedUniqueSize' => $this->formatBytes($uniqueSize),
+            'uniqueSizePercentage' => $this->formatPercentage($uniqueSize / $size),
+            'savings' => $this->formatPercentage(1 - ($uniqueSize / $size))
         ];
+    }
+
+    /**
+     * @param $size
+     * @param int $precision
+     * @return string
+     */
+    private function formatBytes($size, $precision = 2)
+    {
+        $base = log($size, 1024);
+        $suffixes = array('', 'K', 'M', 'G', 'T');
+
+        return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
+    }
+
+    /**
+     * @param $float
+     * @return string
+     */
+    private function formatPercentage($float)
+    {
+        return round(($float) * 100) . '%';
     }
 }
