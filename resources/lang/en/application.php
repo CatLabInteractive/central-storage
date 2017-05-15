@@ -10,7 +10,8 @@ return [
         'uploadedSize' => 'Total upload size',
         'uploadedUniqueSize' => 'Unique upload size',
         'uniqueSizePercentage' => 'Unique file size (percentage)',
-        'savings' => 'Space saved'
+        'savings' => 'Space saved',
+        'spaceSaved' => 'Total savings'
 
     ]
 
