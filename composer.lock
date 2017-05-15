@@ -164,12 +164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "98a4229a8e09bfbf97c97da2d38f9151c37116b9"
+                "reference": "52c7269c0f3c28582e6748f3fb02329fdfdb2e49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/98a4229a8e09bfbf97c97da2d38f9151c37116b9",
-                "reference": "98a4229a8e09bfbf97c97da2d38f9151c37116b9",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/52c7269c0f3c28582e6748f3fb02329fdfdb2e49",
+                "reference": "52c7269c0f3c28582e6748f3fb02329fdfdb2e49",
                 "shasum": ""
             },
             "require": {
@@ -197,7 +197,7 @@
                 }
             ],
             "description": "Handle asset upload",
-            "time": "2017-05-11 08:53:28"
+            "time": "2017-05-15 14:06:34"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -305,7 +305,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:epyc/central-storage-client.git",
-                "reference": "23d9bb930e25b59603a6eeca24d2743433acf220"
+                "reference": "a3b9460d25fbe1bafa96e5da409e51e3782d8d71"
             },
             "require": {
                 "guzzlehttp/guzzle": ">=6.0",
@@ -338,7 +338,7 @@
                 }
             ],
             "description": "Client for epyc central storage.",
-            "time": "2017-05-11 08:58:02"
+            "time": "2017-05-15 13:50:17"
         },
         {
             "name": "erusev/parsedown",
@@ -836,16 +836,16 @@
         },
         {
             "name": "laravelcollective/html",
-            "version": "v5.4.1",
+            "version": "v5.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "7570f25d58a00fd6909c0563808590f9cdb14d47"
+                "reference": "023efce5fd8057cb3b5ce503f3391cc4effa7caa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/7570f25d58a00fd6909c0563808590f9cdb14d47",
-                "reference": "7570f25d58a00fd6909c0563808590f9cdb14d47",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/023efce5fd8057cb3b5ce503f3391cc4effa7caa",
+                "reference": "023efce5fd8057cb3b5ce503f3391cc4effa7caa",
                 "shasum": ""
             },
             "require": {
@@ -886,7 +886,7 @@
             ],
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "http://laravelcollective.com",
-            "time": "2017-01-26 19:27:05"
+            "time": "2017-05-15 09:38:20"
         },
         {
             "name": "league/flysystem",
@@ -1344,16 +1344,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.3",
+            "version": "v0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e"
+                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
-                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/17cf432bb80d9198df239b80d00a29155bd74d82",
+                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82",
                 "shasum": ""
             },
             "require": {
@@ -1413,7 +1413,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-03-19 21:40:44"
+            "time": "2017-05-12 15:41:55"
         },
         {
             "name": "ramsey/uuid",
