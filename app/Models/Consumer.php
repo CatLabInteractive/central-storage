@@ -101,11 +101,11 @@ class Consumer extends Model
         return [
             'uploaded' => $uploaded,
             'uploadedUnique' => $uploadedUnique,
-            'uniquePercentage' => $this->formatPercentage($uploadedUnique / $uploaded),
+            'uniquePercentage' => $this->formatPercentage($uploadedUnique / max(1, $uploaded)),
             'uploadedSize' => $this->formatBytes($size),
             'uploadedUniqueSize' => $this->formatBytes($uniqueSize),
-            'uniqueSizePercentage' => $this->formatPercentage($uniqueSize / $size),
-            'savings' => $this->formatPercentage(1 - ($uniqueSize / $size)),
+            'uniqueSizePercentage' => $this->formatPercentage($uniqueSize / max(1, $size)),
+            'savings' => $this->formatPercentage(1 - ($uniqueSize / max(1, $size))),
             'spaceSaved' => $this->formatBytes($size - $uniqueSize)
         ];
     }
