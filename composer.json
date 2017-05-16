@@ -8,12 +8,13 @@
         "php": ">=5.6.4",
         "barryvdh/laravel-ide-helper": "^2.3",
         "catlabinteractive/laravel-assets": "dev-master",
-        "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0",
-        "watson/bootstrap-form": "^1.1",
+        "doctrine/dbal": "^2.5",
         "epycbe/central-storage-client": "dev-master",
         "intervention/image": "^2.3",
-        "intervention/imagecache": "^2.3"
+        "intervention/imagecache": "^2.3",
+        "laravel/framework": "5.4.*",
+        "laravel/tinker": "~1.0",
+        "watson/bootstrap-form": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

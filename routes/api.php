@@ -21,6 +21,7 @@ Route::group(
     function()
     {
         Route::post('/v1/upload', 'UploadController@upload');
+        Route::delete('/v1/assets/{assetId}', 'UploadController@remove');
     }
 );
 

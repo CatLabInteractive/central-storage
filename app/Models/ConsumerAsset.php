@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class ConsumerAsset
@@ -11,6 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ConsumerAsset extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = [ 'created_at', 'updated_at', 'deleted_at' ];
+
     const KEY_LENGTH = 24;
 
     /**
@@ -21,7 +26,7 @@ class ConsumerAsset extends Model
     public static function createFromAsset(Asset $asset, Consumer $consumer)
     {
         $consumerAsset = new self();
-        $consumerAsset->key = self::createUniqueKey();
+        $consumerAsset->ca_key = self::createUniqueKey();
         $consumerAsset->consumer()->associate($consumer);
         $consumerAsset->asset()->associate($asset);
 
@@ -63,7 +68,7 @@ class ConsumerAsset extends Model
      */
     public function scopeAssetKey($query, $key)
     {
-        return $query->where('key', '=', $key);
+        return $query->whereRaw("BINARY ca_key = ?", [ $key ]);
     }
 
     /**
@@ -73,7 +78,7 @@ class ConsumerAsset extends Model
     public function getData()
     {
         return array_merge([
-            'key' => $this->key,
+            'key' => $this->ca_key,
             'name' => $this->name
         ], $this->asset->getMetaData());
     }
