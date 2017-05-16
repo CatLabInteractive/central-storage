@@ -11,7 +11,9 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "watson/bootstrap-form": "^1.1",
-        "epycbe/central-storage-client": "dev-master"
+        "epycbe/central-storage-client": "dev-master",
+        "intervention/image": "^2.3",
+        "intervention/imagecache": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

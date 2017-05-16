@@ -21,6 +21,8 @@ Route::get('/home', function() {
     return redirect()->action('ConsumerController@index');
 });
 
+Route::get('/assets/{id}', 'AssetController@viewConsumerAsset');
+
 Route::group(
     [
         'middleware' => [ 'auth' ]

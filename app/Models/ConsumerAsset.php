@@ -52,7 +52,7 @@ class ConsumerAsset extends Model
         do {
             $key = str_random(self::KEY_LENGTH);
         } while (
-            self::whereKey($key)->count() > 0
+            self::assetKey($key)->count() > 0
         );
         return $key;
     }
@@ -61,9 +61,9 @@ class ConsumerAsset extends Model
      * @param $query
      * @return mixed
      */
-    public function scopeKey($query)
+    public function scopeAssetKey($query, $key)
     {
-        return $query->where('key', '=', $query);
+        return $query->where('key', '=', $key);
     }
 
     /**
