@@ -12,7 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::guest()) {
+        return view('welcome');
+    } else {
+        return redirect(action('StatisticsController@index'));
+    }
 });
 
 //Auth::routes();
@@ -39,6 +43,8 @@ Route::group(
         'middleware' => [ 'auth' ]
     ],
     function() {
+
+        Route::get('/statistics', 'StatisticsController@index');
 
         Route::get('/consumers', 'ConsumerController@index');
 

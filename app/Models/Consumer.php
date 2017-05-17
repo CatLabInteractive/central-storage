@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\StatisticsHelper;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
 
@@ -101,34 +102,12 @@ class Consumer extends Model
         return [
             'uploaded' => $uploaded,
             'uploadedUnique' => $uploadedUnique,
-            'uniquePercentage' => $this->formatPercentage($uploadedUnique / max(1, $uploaded)),
-            'uploadedSize' => $this->formatBytes($size),
-            'uploadedUniqueSize' => $this->formatBytes($uniqueSize),
-            'uniqueSizePercentage' => $this->formatPercentage($uniqueSize / max(1, $size)),
-            'savings' => $this->formatPercentage(1 - ($uniqueSize / max(1, $size))),
-            'spaceSaved' => $this->formatBytes($size - $uniqueSize)
+            'uniquePercentage' => StatisticsHelper::formatPercentage($uploadedUnique / max(1, $uploaded)),
+            'uploadedSize' => StatisticsHelper::formatBytes($size),
+            'uploadedUniqueSize' => StatisticsHelper::formatBytes($uniqueSize),
+            'uniqueSizePercentage' => StatisticsHelper::formatPercentage($uniqueSize / max(1, $size)),
+            'savings' => StatisticsHelper::formatPercentage(1 - ($uniqueSize / max(1, $size))),
+            'spaceSaved' => StatisticsHelper::formatBytes($size - $uniqueSize)
         ];
-    }
-
-    /**
-     * @param $size
-     * @param int $precision
-     * @return string
-     */
-    private function formatBytes($size, $precision = 2)
-    {
-        $base = log($size, 1024);
-        $suffixes = array('', 'K', 'M', 'G', 'T');
-
-        return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
-    }
-
-    /**
-     * @param $float
-     * @return string
-     */
-    private function formatPercentage($float)
-    {
-        return round(($float) * 100) . '%';
     }
 }
