@@ -183,7 +183,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Watson\BootstrapForm\BootstrapFormServiceProvider::class,
 
-        Epyc\CentralStorage\Client\CentralStorageServiceProvider::class,
+        CatLab\CentralStorage\Client\CentralStorageServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
     ],
@@ -239,7 +239,7 @@ return [
         'HTML'     => Collective\Html\HtmlFacade::class,
         'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
 
-        'CentralStorage' => \Epyc\CentralStorage\Client\CentralStorageClientFacade::class,
+        'CentralStorage' => \CatLab\CentralStorage\Client\CentralStorageClientFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
 
     ],

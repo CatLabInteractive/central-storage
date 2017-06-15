@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\StatisticsHelper;
 use App\Models\ConsumerAsset;
-use Epyc\CentralStorage\Client\Models\Asset;
+use CatLab\CentralStorage\Client\Models\Asset;
 
 /**
  * Class StatisticsController

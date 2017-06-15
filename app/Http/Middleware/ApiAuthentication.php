@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Consumer;
 use CentralStorage;
 use Closure;
-use Epyc\CentralStorage\Client\CentralStorageClient;
+use CatLab\CentralStorage\Client\CentralStorageClient;
 use Illuminate\Http\Request;
 
 /**
