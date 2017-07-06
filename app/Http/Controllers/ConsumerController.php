@@ -22,7 +22,7 @@ class ConsumerController extends Controller
         $user = Auth::getUser();
 
         if ($user->isAdmin()) {
-            $consumers = Consumer::all()->get();
+            $consumers = Consumer::all();
         } else {
             $consumers = $user->consumers;
         }
