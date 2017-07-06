@@ -1,0 +1,1 @@
+artisan migrate --force
