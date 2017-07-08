@@ -7,13 +7,14 @@
     "require": {
         "php": ">=7.0",
         "barryvdh/laravel-ide-helper": "^2.3",
+        "catlabinteractive/central-storage-client": "dev-master",
         "catlabinteractive/laravel-assets": "dev-master",
         "doctrine/dbal": "^2.5",
-        "catlabinteractive/central-storage-client": "dev-master",
-        "intervention/image": "^2.3",
+        "intervention/image": "^2.4",
         "intervention/imagecache": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "watson/bootstrap-form": "^1.1"
     },
     "require-dev": {
