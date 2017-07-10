@@ -7,7 +7,7 @@
     "require": {
         "php": ">=7.0",
         "airbrake/phpbrake": "^0.3.1",
-        "aws/aws-sdk-php": "^3.31",
+        "aws/aws-sdk-php": "3.30.4",
         "barryvdh/laravel-ide-helper": "^2.3",
         "catlabinteractive/central-storage-client": "dev-master",
         "catlabinteractive/laravel-assets": "dev-master",
