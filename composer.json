@@ -6,10 +6,11 @@
     "type": "project",
     "require": {
         "php": ">=7.0",
+        "airbrake/phpbrake": "^0.3.1",
         "barryvdh/laravel-ide-helper": "^2.3",
+        "catlabinteractive/central-storage-client": "dev-master",
         "catlabinteractive/laravel-assets": "dev-master",
         "doctrine/dbal": "^2.5",
-        "catlabinteractive/central-storage-client": "dev-master",
         "intervention/image": "^2.3",
         "intervention/imagecache": "^2.3",
         "laravel/framework": "5.4.*",
