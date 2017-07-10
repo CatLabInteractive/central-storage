@@ -4,9 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0f4a5b8c7fd34da1c732bcbbe9a3a59e",
-    "content-hash": "6344dfe333ef61fbd363671d7b487df0",
+    "hash": "fff8215aeddfb457bce01c832e3d1e93",
+    "content-hash": "cde5cc7872b46921b1fada21bd7db7f9",
     "packages": [
+        {
+            "name": "airbrake/phpbrake",
+            "version": "v0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/airbrake/phpbrake.git",
+                "reference": "cce92a972a72c0c1ea8eef9c21120a8473b32e99"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/airbrake/phpbrake/zipball/cce92a972a72c0c1ea8eef9c21120a8473b32e99",
+                "reference": "cce92a972a72c0c1ea8eef9c21120a8473b32e99",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.2",
+                "monolog/monolog": "^1.22",
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^2.9"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Airbrake\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Airbrake exception and error notifier for PHP",
+            "homepage": "https://airbrake.io",
+            "keywords": [
+                "airbrake",
+                "error",
+                "exception",
+                "logging",
+                "notifier"
+            ],
+            "time": "2017-06-13 12:40:33"
+        },
         {
             "name": "aws/aws-sdk-php",
             "version": "3.31.2",
