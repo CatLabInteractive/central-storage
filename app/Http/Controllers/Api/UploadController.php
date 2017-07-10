@@ -31,6 +31,9 @@ class UploadController
         foreach ($request->files as $file) {
 
             /** @var UploadedFile $file */
+            if (!$file->isValid()) {
+                abort(400, 'Uploaded file is not valid: ' . $file->getErrorMessage());
+            }
 
             $asset = $this->uploadFile($file);
 

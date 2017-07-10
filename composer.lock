@@ -303,7 +303,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:catlabinteractive/central-storage-client.git",
-                "reference": "4530e966839702dc1124dec35d538b8280943b97"
+                "reference": "bb5d3b7e28b350ff5a911b0ea4333c01281b1cdf"
             },
             "require": {
                 "guzzlehttp/guzzle": ">=6.0",
@@ -336,7 +336,7 @@
                 }
             ],
             "description": "Client for CatLab central storage.",
-            "time": "2017-06-15 12:22:40"
+            "time": "2017-07-10 08:45:55"
         },
         {
             "name": "catlabinteractive/laravel-assets",
