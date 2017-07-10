@@ -15,20 +15,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (Config::get('airbrake.projectId')) {
+            $this->app->bind(\Airbrake\Notifier::class, function () {
+                // Create new Notifier instance.
+                $notifier = new \Airbrake\Notifier([
+                    'projectId' => Config::get('airbrake.projectId'),
+                    'projectKey' => Config::get('airbrake.projectKey'),
+                    'host' => Config::get('airbrake.host'),
+                ]);
 
-            // Create new Notifier instance.
-            $notifier = new \Airbrake\Notifier([
-                'projectId' => Config::get('airbrake.projectId'),
-                'projectKey' => Config::get('airbrake.projectKey'),
-                'host' => Config::get('airbrake.host'),
-            ]);
-
-            // Set global notifier instance.
-            \Airbrake\Instance::set($notifier);
-
-            // Register error and exception handlers.
-            $handler = new \Airbrake\ErrorHandler($notifier);
-            $handler->register();
+                return $notifier;
+            });
 
         }
     }

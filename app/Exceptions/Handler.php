@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Config;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -32,6 +33,15 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ($this->shouldReport($exception)) {
+            if (Config::get('airbrake.projectId')) {
+                $airbrakeNotifier = app(\Airbrake\Notifier::class);
+                if ($airbrakeNotifier) {
+                    $airbrakeNotifier->notify($exception);
+                }
+            }
+        }
+
         parent::report($exception);
     }
 
