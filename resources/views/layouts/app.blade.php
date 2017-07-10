@@ -13,6 +13,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
