@@ -186,6 +186,9 @@ return [
         CatLab\CentralStorage\Client\CentralStorageServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
+        Barryvdh\Cors\ServiceProvider::class,
+
+
     ],
 
     /*
