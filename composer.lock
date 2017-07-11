@@ -402,12 +402,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "559b6447c94960ce352ef30426dc779797e7bceb"
+                "reference": "894df2ab82a12f5505f2544e95f8467c9e3b3fb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/559b6447c94960ce352ef30426dc779797e7bceb",
-                "reference": "559b6447c94960ce352ef30426dc779797e7bceb",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/894df2ab82a12f5505f2544e95f8467c9e3b3fb2",
+                "reference": "894df2ab82a12f5505f2544e95f8467c9e3b3fb2",
                 "shasum": ""
             },
             "require": {
@@ -435,7 +435,7 @@
                 }
             ],
             "description": "Handle asset upload",
-            "time": "2017-07-10 12:00:02"
+            "time": "2017-07-11 17:42:19"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
