@@ -321,16 +321,16 @@
         },
         {
             "name": "catlabinteractive/base",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/base.git",
-                "reference": "5dd2fae76566c0dee0a046ad96af6f172dde39f5"
+                "reference": "d3a324aff13c4316bb6bbe744eb8088d77ede086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/base/zipball/5dd2fae76566c0dee0a046ad96af6f172dde39f5",
-                "reference": "5dd2fae76566c0dee0a046ad96af6f172dde39f5",
+                "url": "https://api.github.com/repos/CatLabInteractive/base/zipball/d3a324aff13c4316bb6bbe744eb8088d77ede086",
+                "reference": "d3a324aff13c4316bb6bbe744eb8088d77ede086",
                 "shasum": ""
             },
             "require-dev": {
@@ -353,7 +353,7 @@
                 }
             ],
             "description": "A few classes that you always need.",
-            "time": "2017-06-14 12:25:59"
+            "time": "2017-07-11 12:33:53"
         },
         {
             "name": "catlabinteractive/central-storage-client",
@@ -361,7 +361,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:catlabinteractive/central-storage-client.git",
-                "reference": "bb5d3b7e28b350ff5a911b0ea4333c01281b1cdf"
+                "reference": "2bd255e8e5186ea7a2fa9368aaa47019a2c65f14"
             },
             "require": {
                 "guzzlehttp/guzzle": ">=6.0",
@@ -394,7 +394,7 @@
                 }
             ],
             "description": "Client for CatLab central storage.",
-            "time": "2017-07-10 08:45:55"
+            "time": "2017-07-11 09:22:15"
         },
         {
             "name": "catlabinteractive/laravel-assets",
