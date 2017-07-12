@@ -36,7 +36,7 @@ Route::get('/home', function() {
     return redirect()->action('ConsumerController@index');
 });
 
-Route::get('/assets/{id}', 'AssetController@viewConsumerAsset');
+Route::get('/assets/{id}.{format?}', 'AssetController@viewConsumerAsset');
 
 Route::group(
     [
