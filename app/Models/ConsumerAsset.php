@@ -68,7 +68,7 @@ class ConsumerAsset extends Model
      */
     public function scopeAssetKey($query, $key)
     {
-        return $query->whereRaw("BINARY ca_key = ?", [ $key ]);
+        return $query->where('ca_key', '=', $key);
     }
 
     /**
