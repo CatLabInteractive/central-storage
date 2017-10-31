@@ -39,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapPublicRoutes();
+
         //
     }
 
@@ -54,6 +56,19 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Define the "public" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapPublicRoutes()
+    {
+        Route::namespace($this->namespace)
+            ->group(base_path('routes/public.php'));
     }
 
     /**

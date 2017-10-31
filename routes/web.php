@@ -11,13 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    if (Auth::guest()) {
-        return view('welcome');
-    } else {
-        return redirect(action('StatisticsController@index'));
-    }
-});
+Route::get('/', 'HomeController@welcome');
 
 //Auth::routes();
 
@@ -32,11 +26,7 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::get('/home', function() {
-    return redirect()->action('ConsumerController@index');
-});
-
-Route::get('/assets/{id}.{format?}', 'AssetController@viewConsumerAsset');
+Route::get('/home', 'HomeController@home');
 
 Route::group(
     [
@@ -52,6 +42,8 @@ Route::group(
         Route::post('/consumers/create', 'ConsumerController@processCreate');
 
         Route::get('/consumers/{consumer}', 'ConsumerController@view');
+        Route::get('/consumers/{consumer}/test', 'ConsumerController@test');
+        Route::post('/consumers/{consumer}/test', 'ConsumerController@uploadTest');
 
     }
 );

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateConsumerRequest;
 use App\Models\Consumer;
-use Auth;
+use CatLab\CentralStorage\Client\CentralStorageClient;
+use CatLab\CentralStorage\Client\Exceptions\StorageServerException;
 
 /**
  * Class ConsumerController
@@ -33,6 +37,44 @@ class ConsumerController extends Controller
         }
 
         return view('consumers/index', [ 'consumers' => $consumers ]);
+    }
+
+    /**
+     * @param Consumer $consumer
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function test(Consumer $consumer)
+    {
+        $this->authorize('view', $consumer);
+        return view('consumers/test', [ 'consumer' => $consumer ]);
+    }
+
+    /**
+     * @param Consumer $consumer
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function uploadTest(Consumer $consumer, Request $request)
+    {
+        $this->authorize('view', $consumer);
+
+        $client = new CentralStorageClient(
+            url('/'),
+            $consumer->key,
+            $consumer->secret
+        );
+
+        $file = $request->file('file');
+
+        try {
+            $asset = $client->store($file);
+            return view('consumers/uploadTest', [ 'asset' => $asset ]);
+
+        } catch (StorageServerException $e) {
+            echo '<h1>ERROR</h1>';
+            echo '<h2>' . $e->getMessage() . '</h2>';
+            echo $e->getResponse();
+        }
     }
 
     /**

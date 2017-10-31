@@ -3,6 +3,7 @@
 return [
 
     'userClassName' => \App\Models\User::class,
+    'pathGenerator' => \CatLab\Assets\Laravel\PathGenerators\GroupedIdPathGenerator::class,
 
     'route' => false,
 
