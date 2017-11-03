@@ -108,12 +108,17 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         }
 
         // Checksum = just the query string
-        $hash = md5($_SERVER['REQUEST_URI']);
+        $queryPath = $_SERVER['REQUEST_URI'];
+        $hash = mb_strlen($queryPath) . ':' .md5($queryPath);
 
         // Check for existing combination
-        $combination = Combination::where('hash', '=', $hash)->get()->first();
-        if ($combination !== null) {
-            return $this->getAssetResponse($combination->asset);
+        $combinations = Combination::where('hash', '=', $hash)->get();
+        foreach ($combinations as $combination) {
+            // YOU NEVER KNOW FOR SURE OKAY?!
+            // MD5 collision COULD happen.
+            if ($combination->path === $queryPath) {
+                return $this->getAssetResponse($combination->asset);
+            }
         }
 
         // Generate a new combination.
@@ -153,7 +158,8 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         // create combination
         $combination = new Combination([
-            'hash' => $hash
+            'hash' => $hash,
+            'path' => $queryPath
         ]);
         $combination->asset()->associate($asset);
         $combination->save();
@@ -295,13 +301,13 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getAssetResponse(Asset $asset, $forceHeaders = [])
     {
-        $useRedirect = \Request::get('redirect');
+        $useRedirect = \Request::get('redirect', true);
         if ($asset->disk === 's3' && $useRedirect) {
             $region = \Config::get('filesystems.disks.s3.region');
             $bucket = \Config::get('filesystems.disks.s3.bucket');
 
             $url = 'https://s3.' . $region . '.amazonaws.com/' . $bucket . '/' . $asset->path;
-            return Response::redirectTo($url, 302);
+            return Response::redirectTo($url, 301);
         } else {
             return parent::getAssetResponse($asset, $forceHeaders);
         }
