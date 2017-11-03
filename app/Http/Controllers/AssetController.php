@@ -109,7 +109,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         // Checksum = just the query string
         $queryPath = $_SERVER['REQUEST_URI'];
-        $hash = mb_strlen($queryPath) . ':' .md5($queryPath);
+        $hash = mb_strlen($queryPath) . 's:' .md5($queryPath);
 
         // Check for existing combination
         $combinations = Combination::where('hash', '=', $hash)->get();
@@ -154,7 +154,11 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $file = new UploadedFile($tmpFile, 'combination_' . $hash . '.' . $firstAsset->getExtension());
         $uploader = new AssetUploader();
 
-        $asset = $uploader->uploadFile($file);
+        // Look for duplicate file
+        $asset = $uploader->getDuplicate($file);
+        if (!$asset) {
+            $asset = $uploader->uploadFile($file);
+        }
 
         // create combination
         $combination = new Combination([
@@ -301,7 +305,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getAssetResponse(Asset $asset, $forceHeaders = [])
     {
-        $useRedirect = \Request::get('redirect', true);
+        $useRedirect = \Request::get('redirect');
         if ($asset->disk === 's3' && $useRedirect) {
             $region = \Config::get('filesystems.disks.s3.region');
             $bucket = \Config::get('filesystems.disks.s3.bucket');
