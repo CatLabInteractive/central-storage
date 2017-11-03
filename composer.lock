@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc5f2a5da7078ddaceab78d1cd2f3519",
+    "content-hash": "42349fc16017fc2bd3c08eede5ce901e",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -402,16 +402,16 @@
         },
         {
             "name": "catlabinteractive/laravel-assets",
-            "version": "v2.0.0",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "b04fdf41611695e1dc8c85d1b57cdef8d06edeae"
+                "reference": "6eec8d8f8d203c58abada5add8a412e40c252237"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/b04fdf41611695e1dc8c85d1b57cdef8d06edeae",
-                "reference": "b04fdf41611695e1dc8c85d1b57cdef8d06edeae",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/6eec8d8f8d203c58abada5add8a412e40c252237",
+                "reference": "6eec8d8f8d203c58abada5add8a412e40c252237",
                 "shasum": ""
             },
             "require": {
@@ -439,7 +439,7 @@
                 }
             ],
             "description": "Handle asset upload",
-            "time": "2017-10-31T14:02:09+00:00"
+            "time": "2017-11-03T15:03:56+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1891,7 +1891,7 @@
         },
         {
             "name": "mtdowling/cron-expression",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mtdowling/cron-expression.git",
@@ -3517,16 +3517,16 @@
         },
         {
             "name": "watson/bootstrap-form",
-            "version": "1.1.11",
+            "version": "1.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dwightwatson/bootstrap-form.git",
-                "reference": "ff4cfec819f0aa5ce9a6acee3abd4f90e039c431"
+                "reference": "ce879f69fb6331b87c088bfd839e4a9aeb76cdce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dwightwatson/bootstrap-form/zipball/ff4cfec819f0aa5ce9a6acee3abd4f90e039c431",
-                "reference": "ff4cfec819f0aa5ce9a6acee3abd4f90e039c431",
+                "url": "https://api.github.com/repos/dwightwatson/bootstrap-form/zipball/ce879f69fb6331b87c088bfd839e4a9aeb76cdce",
+                "reference": "ce879f69fb6331b87c088bfd839e4a9aeb76cdce",
                 "shasum": ""
             },
             "require": {
@@ -3562,7 +3562,7 @@
                 "form",
                 "laravel"
             ],
-            "time": "2017-09-07T03:47:23+00:00"
+            "time": "2017-11-01T22:02:12+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",

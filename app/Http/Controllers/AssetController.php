@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Combination;
 use App\Models\ConsumerAsset;
+use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\Models\Asset;
-use CatLab\Assets\Laravel\Helpers\Cache;
-use CatLab\Assets\Laravel\Helpers\ResponseCache;
+use Illuminate\Http\UploadedFile;
 use DateInterval;
 use DateTime;
 use Image;
@@ -23,41 +24,6 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     const SIZE_LOWRES = 'lowres';
     const SIZE_RECTANGLE = 'rectangle';
     const SIZE_DIN = 'din';
-
-    /**
-     * @param Asset $asset
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function viewAsset(Asset $asset)
-    {
-        $request = Request::instance();
-
-        // look for the invalid ?
-        $v = $request->input('_v');
-        $parts = explode('?', $v);
-        if (count($parts) > 1) {
-            $parameterString = $parts[1];
-
-            parse_str($parameterString, $parameters);
-            if (is_array($parameters)) {
-                $request->query->replace($parameters);
-            }
-        }
-
-        $response = parent::viewAsset($asset);
-
-        // Cache the request itself too.
-        if (
-            $asset->isImage() &&
-            $response instanceof \Illuminate\Http\Response
-        ) {
-            $responseCache = new ResponseCache(storage_path());
-            $responseCache->cache($response);
-        }
-
-        // Return the response
-        return $response;
-    }
 
     /**
      * View an asset
@@ -141,72 +107,58 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             abort(404, 'No assets provided.');
         }
 
-        $noCache = Request::input('nocache', false);
-
-        // Use manual caching...
-        $cache = Cache::instance();
-
         // Checksum = just the query string
-        $checksum = md5($_SERVER['REQUEST_URI']);
-        $cacheKey = 'image:' . $checksum;
+        $hash = md5($_SERVER['REQUEST_URI']);
 
-        // Check the cache
-        if ($noCache || !$cache->has($cacheKey)) {
-
-            /** @var string[] $assets */
-            $assetsKeys = explode(',', $assetsKeys);
-
-            // Look for all these assets
-            $consumerAssets = [];
-            foreach ($assetsKeys as $assetKey) {
-                $consumerAsset = ConsumerAsset::assetKey($assetKey)->first();
-                if (!$consumerAsset) {
-                    abort(404, 'Asset ' . $assetKey . ' not found.');
-                }
-
-                $consumerAssets[] = $consumerAsset;
-            }
-            $firstAsset = $consumerAssets[0]->asset;
-
-            $cols = Request::input('cols', 2);
-            $combination = $this->generateCombination($consumerAssets, $cols);
-
-            // encode image data only if image is not encoded yet
-            $combination = $combination->encoded ? $combination->encoded : (string) $combination->encode();
-
-            // cache it!
-            $lifetime = config('assets.cacheLifetime');
-            $cache->put($cacheKey, $combination, $lifetime);
-
-            $wasCached = false;
-
-        } else {
-            $combination = $cache->get($cacheKey);
-
-            $assetsKeys = explode(',', $assetsKeys);
-            $consumerAsset = ConsumerAsset::assetKey($assetsKeys[0])->first();
-            $firstAsset = $consumerAsset->asset;
-
-            $wasCached = true;
+        // Check for existing combination
+        $combination = Combination::where('hash', '=', $hash)->get()->first();
+        if ($combination !== null) {
+            return $this->getAssetResponse($combination->asset);
         }
 
-        $response = Response::make(
-            $combination,
-            200,
-            array_merge(
-                [
-                    'Content-type' => $firstAsset->mimetype,
-                    'X-Image-From-Cache' => $wasCached ? 'true' : 'false'
-                ],
-                $this->getCacheHeaders($firstAsset)
-            )
-        );
+        // Generate a new combination.
 
-        // Cache the request itself too.
-        $responseCache = new ResponseCache(storage_path());
-        $responseCache->cache($response);
+        /** @var string[] $assets */
+        $assetsKeys = explode(',', $assetsKeys);
 
-        return $response;
+        // Look for all these assets
+        $consumerAssets = [];
+        foreach ($assetsKeys as $assetKey) {
+            $consumerAsset = ConsumerAsset::assetKey($assetKey)->first();
+            if (!$consumerAsset) {
+                abort(404, 'Asset ' . $assetKey . ' not found.');
+            }
+
+            $consumerAssets[] = $consumerAsset;
+        }
+
+        /** @var Asset $firstAsset */
+        $firstAsset = $consumerAssets[0]->asset;
+
+        $cols = Request::input('cols', 2);
+        $combination = $this->generateCombination($consumerAssets, $cols);
+
+        // encode image data only if image is not encoded yet
+        $combination = $combination->encoded ? $combination->encoded : (string) $combination->encode();
+
+        // put in temporary file
+        $tmpFile = tempnam(sys_get_temp_dir(), 'asset');
+        file_put_contents($tmpFile, $combination);
+
+        // create a new asset with this combination.
+        $file = new UploadedFile($tmpFile, 'combination_' . $hash . '.' . $firstAsset->getExtension());
+        $uploader = new AssetUploader();
+
+        $asset = $uploader->uploadFile($file);
+
+        // create combination
+        $combination = new Combination([
+            'hash' => $hash
+        ]);
+        $combination->asset()->associate($asset);
+        $combination->save();
+
+        return $this->getAssetResponse($combination->asset);
     }
 
     /**
@@ -245,10 +197,12 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             }
 
             $targetSize = $this->getImageSize($asset);
-            $image = $asset->getResizedImage($targetSize[0], $targetSize[1], true);
+
+            $image = $asset->getResizedImage($targetSize[0], $targetSize[1]);
+            $data = $image->getData();
 
             // measure the image.
-            $size = getimagesizefromstring($image);
+            $size = getimagesizefromstring($data);
 
             // is new row?
             if ($colCount % $columns === 0) {
@@ -266,7 +220,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             $images[] = [
                 'size' => $size,
-                'image' => Image::make(imagecreatefromstring($image))
+                'image' => Image::make(imagecreatefromstring($data))
             ];
         }
 
@@ -335,25 +289,21 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     }
 
     /**
-     * @param ConsumerAsset $consumerAsset
-     * @return Response
+     * @param Asset $asset
+     * @param string[] $forceHeaders
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    protected function download(ConsumerAsset $consumerAsset)
+    protected function getAssetResponse(Asset $asset, $forceHeaders = [])
     {
-        /** @var Asset $asset */
-        $asset = $consumerAsset->asset;
+        $useRedirect = \Request::get('redirect');
+        if ($asset->disk === 's3' && $useRedirect) {
+            $region = \Config::get('filesystems.disks.s3.region');
+            $bucket = \Config::get('filesystems.disks.s3.bucket');
 
-        $response = $this->getStreamResponse($asset);
-
-        $h = $response->headers;
-
-        $h->set('Content-Description', 'File Transfer');
-        $h->set('Content-Disposition', 'attachment; filename="' . urlencode($consumerAsset->name) . '"');
-        $h->set('Content-Transfer-Encoding', 'binary');
-
-        $h->remove('Content-Type');
-        $h->set('Content-Type', 'application/octet-stream');
-
-        return $response;
+            $url = 'https://s3.' . $region . '.amazonaws.com/' . $bucket . '/' . $asset->path;
+            return Response::redirectTo($url, 302);
+        } else {
+            return parent::getAssetResponse($asset, $forceHeaders);
+        }
     }
 }
