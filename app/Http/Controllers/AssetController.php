@@ -300,20 +300,34 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
     /**
      * @param Asset $asset
-     * @param string[] $forceHeaders
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @param array $forceHeaders
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\StreamedResponse
      */
     protected function getAssetResponse(Asset $asset, $forceHeaders = [])
     {
         $useRedirect = \Request::get('redirect');
         if ($asset->disk === 's3' && $useRedirect) {
-            $region = \Config::get('filesystems.disks.s3.region');
-            $bucket = \Config::get('filesystems.disks.s3.bucket');
-
-            $url = 'https://s3.' . $region . '.amazonaws.com/' . $bucket . '/' . $asset->path;
+            $url = $this->getS3RedirectUrl($asset);
             return Response::redirectTo($url, 301);
         } else {
             return parent::getAssetResponse($asset, $forceHeaders);
+        }
+    }
+
+    /**
+     * @param Asset $asset
+     * @return string
+     */
+    protected function getS3RedirectUrl(Asset $asset)
+    {
+        $cloudfront = \Config::get('filesystems.disks.s3.cloudfront');
+        if ($cloudfront) {
+            return $cloudfront . '/' . $asset->path;
+        } else {
+            $region = \Config::get('filesystems.disks.s3.region');
+            $bucket = \Config::get('filesystems.disks.s3.bucket');
+
+            return 'https://s3.' . $region . '.amazonaws.com/' . $bucket . '/' . $asset->path;
         }
     }
 }
