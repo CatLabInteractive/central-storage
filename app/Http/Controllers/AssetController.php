@@ -308,7 +308,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $useRedirect = \Request::get('redirect', \Config::get('filesystems.disks.s3.redirect'));
         if ($asset->disk === 's3' && $useRedirect) {
             $url = $this->getS3RedirectUrl($asset);
-            return Response::redirectTo($url, 301)->headers($this->getCacheHeaders($asset));
+            return redirect($url, 301, $this->getCacheHeaders($asset));
         } else {
             return parent::getAssetResponse($asset, $forceHeaders);
         }
