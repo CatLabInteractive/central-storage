@@ -40,6 +40,7 @@ class MigrateDisk extends Command
         // Find all assets on specified disk
         $assets = Asset::where('disk', '=', $from)
             ->orderBy('id')
+            ->get()
         ;
 
         $assets->each(function(Asset $asset) use ($to) {
