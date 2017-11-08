@@ -62,7 +62,7 @@ return [
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'cloudfront' => env('AWS_CLOUDFRONT'),
-            'redirect' => env('AWS_REDIRECT', false)
+            'redirect' => env('AWS_REDIRECT') == 'true' || env('AWS_REDIRECT') == 1
         ],
 
     ],
