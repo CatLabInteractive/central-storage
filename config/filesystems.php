@@ -61,7 +61,8 @@ return [
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'cloudfront' => env('AWS_CLOUDFRONT')
+            'cloudfront' => env('AWS_CLOUDFRONT'),
+            'redirect' => env('AWS_REDIRECT', false)
         ],
 
     ],
