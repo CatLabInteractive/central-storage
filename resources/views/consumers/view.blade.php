@@ -24,6 +24,9 @@
         </tr>
     </table>
 
+    <h2>Processors</h2>
+    <a href="{{ action('ConsumerController@index') }}">Back</a>
+
     <h2>Statistics</h2>
     <table class="table">
     @foreach($consumer->getStatistics() as $k => $v)

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "42349fc16017fc2bd3c08eede5ce901e",
+    "content-hash": "5bb3e5e4a57b24ef819ad0c7bddc8d69",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -402,16 +402,16 @@
         },
         {
             "name": "catlabinteractive/laravel-assets",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "6eec8d8f8d203c58abada5add8a412e40c252237"
+                "reference": "9bdcbec4a4edb08932bb7879565b40bdb4e549a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/6eec8d8f8d203c58abada5add8a412e40c252237",
-                "reference": "6eec8d8f8d203c58abada5add8a412e40c252237",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/9bdcbec4a4edb08932bb7879565b40bdb4e549a3",
+                "reference": "9bdcbec4a4edb08932bb7879565b40bdb4e549a3",
                 "shasum": ""
             },
             "require": {
@@ -439,7 +439,7 @@
                 }
             ],
             "description": "Handle asset upload",
-            "time": "2017-11-03T15:03:56+00:00"
+            "time": "2017-11-10T15:52:04+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2043,16 +2043,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "a1e8e1a30e1352f118feff1a8481066ddc2f234a"
+                "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/a1e8e1a30e1352f118feff1a8481066ddc2f234a",
-                "reference": "a1e8e1a30e1352f118feff1a8481066ddc2f234a",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/08131e7ff29de6bb9f12275c7d35df71f25f4d89",
+                "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89",
                 "shasum": ""
             },
             "require": {
@@ -2090,7 +2090,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-09-02T17:10:46+00:00"
+            "time": "2017-11-04T11:48:34+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -2239,16 +2239,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.13",
+            "version": "v0.8.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "cdb5593c3684bab74e10fcfffe4a0c8d1c39695d"
+                "reference": "91e53c16560bdb8b9592544bb38429ae00d6baee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/cdb5593c3684bab74e10fcfffe4a0c8d1c39695d",
-                "reference": "cdb5593c3684bab74e10fcfffe4a0c8d1c39695d",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/91e53c16560bdb8b9592544bb38429ae00d6baee",
+                "reference": "91e53c16560bdb8b9592544bb38429ae00d6baee",
                 "shasum": ""
             },
             "require": {
@@ -2308,7 +2308,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-10-19T06:13:20+00:00"
+            "time": "2017-11-04T16:06:49+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -3517,16 +3517,16 @@
         },
         {
             "name": "watson/bootstrap-form",
-            "version": "1.1.12",
+            "version": "1.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dwightwatson/bootstrap-form.git",
-                "reference": "ce879f69fb6331b87c088bfd839e4a9aeb76cdce"
+                "reference": "ff1940623ac9b367ff2f4526d5d8bdf0c0c5f6b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dwightwatson/bootstrap-form/zipball/ce879f69fb6331b87c088bfd839e4a9aeb76cdce",
-                "reference": "ce879f69fb6331b87c088bfd839e4a9aeb76cdce",
+                "url": "https://api.github.com/repos/dwightwatson/bootstrap-form/zipball/ff1940623ac9b367ff2f4526d5d8bdf0c0c5f6b8",
+                "reference": "ff1940623ac9b367ff2f4526d5d8bdf0c0c5f6b8",
                 "shasum": ""
             },
             "require": {
@@ -3541,6 +3541,16 @@
                 "phpunit/phpunit": "~4.6"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Watson\\BootstrapForm\\BootstrapFormServiceProvider"
+                    ],
+                    "aliases": {
+                        "BootForm": "Watson\\BootstrapForm\\Facades\\BootstrapForm"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Watson\\BootstrapForm\\": "src/"
@@ -3562,7 +3572,7 @@
                 "form",
                 "laravel"
             ],
-            "time": "2017-11-01T22:02:12+00:00"
+            "time": "2017-11-06T21:37:29+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
