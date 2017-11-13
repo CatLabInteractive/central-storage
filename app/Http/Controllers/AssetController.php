@@ -37,7 +37,10 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             abort(404, 'Asset not found.');
         }
 
+        /** @var \App\Models\Asset $asset */
         $asset = $consumerAsset->asset;
+        $asset->setConsumerAsset($consumerAsset);
+
         return $this->viewAsset($asset);
     }
 

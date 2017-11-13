@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CatLab\Assets\Laravel\Helpers\AssetFactory;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,7 +39,7 @@ class ConsumerAsset extends Model
      */
     public function asset()
     {
-        return $this->belongsTo(Asset::class);
+        return $this->belongsTo(AssetFactory::getAssetClassName());
     }
 
     /**

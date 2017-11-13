@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bb3e5e4a57b24ef819ad0c7bddc8d69",
+    "content-hash": "f153f1840d6ceb26b9c0deab45457fec",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -402,16 +402,16 @@
         },
         {
             "name": "catlabinteractive/laravel-assets",
-            "version": "v2.0.3",
+            "version": "v2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "9bdcbec4a4edb08932bb7879565b40bdb4e549a3"
+                "reference": "815d7ec2a8e5d3b4ca25ad3218c1e34878518e2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/9bdcbec4a4edb08932bb7879565b40bdb4e549a3",
-                "reference": "9bdcbec4a4edb08932bb7879565b40bdb4e549a3",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/815d7ec2a8e5d3b4ca25ad3218c1e34878518e2a",
+                "reference": "815d7ec2a8e5d3b4ca25ad3218c1e34878518e2a",
                 "shasum": ""
             },
             "require": {
@@ -439,7 +439,7 @@
                 }
             ],
             "description": "Handle asset upload",
-            "time": "2017-11-10T15:52:04+00:00"
+            "time": "2017-11-13T16:07:29+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

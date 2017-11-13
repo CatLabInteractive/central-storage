@@ -23,6 +23,8 @@ class CreateProcessorTable extends Migration
             $table->string('variation_name', 32);
             $table->unique([ 'consumer_id', 'variation_name' ]);
 
+            $table->string('processor', 32);
+
             $table->boolean('default_variation');
 
             $table->timestamps();

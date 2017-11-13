@@ -79,6 +79,17 @@ class Consumer extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function processors()
+    {
+        return $this->hasMany(Processor::class)
+            ->with('triggers')
+            ->with('config')
+        ;
+    }
+
+    /**
      * @return array
      */
     public function getStatistics()

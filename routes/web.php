@@ -45,5 +45,13 @@ Route::group(
         Route::get('/consumers/{consumer}/test', 'ConsumerController@test');
         Route::post('/consumers/{consumer}/test', 'ConsumerController@uploadTest');
 
+        Route::get('/consumers/{consumer}/processors', 'ProcessorController@index');
+        Route::get('/consumers/{consumer}/processors/create', 'ProcessorController@create');
+        Route::post('/consumers/{consumer}/processors/create', 'ProcessorController@processCreate');
+
+        Route::get('/consumers/{consumer}/processors/{processor}', 'ProcessorController@edit');
+        Route::post('/consumers/{consumer}/processors/{processor}', 'ProcessorController@processEdit');
+        Route::get('/consumers/{consumer}/processors/{processor}/run', 'ProcessorController@run');
+
     }
 );
