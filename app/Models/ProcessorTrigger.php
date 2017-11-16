@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 /**
  *
@@ -19,5 +20,35 @@ class ProcessorTrigger extends Model
     public function processor()
     {
         return $this->belongsTo(Processor::class);
+    }
+
+    /**
+     * @param \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builde $query
+     */
+    public function addToQuery($query)
+    {
+        $query->orWhere('assets.mimetype', 'LIKE', $this->getSqlMimetype());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSqlMimetype()
+    {
+        return str_replace('*', '%', $this->mimetype);
+    }
+
+    /**
+     * @param ConsumerAsset $asset
+     * @return bool
+     */
+    public function check(ConsumerAsset $asset)
+    {
+        $mimetype = $asset->getAsset()->mimetype;
+
+        $mimetypeReg = preg_quote($this->mimetype, '/');
+        $regex = '/^' . str_replace('\*', '(.*)', $mimetypeReg) . '$/i';
+
+        return preg_match($regex, $mimetype);
     }
 }

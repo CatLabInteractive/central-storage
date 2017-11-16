@@ -43,6 +43,16 @@ class ProcessorPolicy
 
     /**
      * @param User $user
+     * @param Processor $processor
+     * @return bool
+     */
+    public function run(User $user, Processor $processor)
+    {
+        return $user->isAdmin() || $processor->consumer->user->equals($user);
+    }
+
+    /**
+     * @param User $user
      * @param Consumer $consumer
      * @return bool
      */

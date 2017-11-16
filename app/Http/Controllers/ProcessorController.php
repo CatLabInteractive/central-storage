@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProcessorRequest;
 use App\Http\Requests\EditProcessorRequest;
 use App\Models\Consumer;
+use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use App\Models\ProcessorTrigger;
 
@@ -122,6 +123,8 @@ class ProcessorController extends Controller
      */
     public function run(Consumer $consumer, Processor $processor)
     {
+        $this->authorize('run', [ $processor ]);
+
 
     }
 }

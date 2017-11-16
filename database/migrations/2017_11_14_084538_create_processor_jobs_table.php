@@ -20,6 +20,9 @@ class CreateProcessorJobsTable extends Migration
             $table->integer('asset_id')->unsigned();
             $table->foreign('asset_id')->references('id')->on('assets');
 
+            $table->integer('consumer_asset_id')->unsigned();
+            $table->foreign('consumer_asset_id')->references('id')->on('consumer_assets');
+
             $table->integer('processor_id')->unsigned();
             $table->foreign('processor_id')->references('id')->on('processors');
 

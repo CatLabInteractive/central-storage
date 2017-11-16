@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Combination;
 use App\Models\ConsumerAsset;
+use App\Models\Processor;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Http\UploadedFile;
@@ -38,10 +39,33 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         }
 
         /** @var \App\Models\Asset $asset */
-        $asset = $consumerAsset->asset;
-        $asset->setConsumerAsset($consumerAsset);
+        $asset = $consumerAsset->getAsset();
 
-        return $this->viewAsset($asset);
+        // Check processors
+        $variationName = \Request::query('variation');
+        if (empty($variationName)) {
+            // do we have a "default variation"?
+            $processors = $consumerAsset->consumer->processors;
+            foreach ($processors as $processor) {
+                /** @var Processor $processor */
+                if ($processor->isDefaultVariation($consumerAsset)) {
+                    $variationName = $processor->variation_name;
+                    break;
+                }
+            }
+        }
+
+        // no variation requested? go to plain asset.
+        if (empty($variationName)) {
+            return $this->viewAsset($asset);
+        } else {
+            $variation = $asset->getVariation($variationName);
+            if ($variation) {
+                return $this->viewAsset($variation->asset);
+            } else {
+                abort(404, 'Asset variation "' . $variationName . '" not found. Still processing?');
+            }
+        }
     }
 
     /**

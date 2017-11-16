@@ -43,6 +43,17 @@ class ConsumerAsset extends Model
     }
 
     /**
+     * @return Asset
+     */
+    public function getAsset()
+    {
+        $asset = $this->asset;
+        $asset->setConsumerAsset($this);
+
+        return $asset;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function consumer()
