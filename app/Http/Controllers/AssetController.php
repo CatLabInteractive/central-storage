@@ -63,7 +63,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             if ($variation) {
                 return $this->viewAsset($variation->asset);
             } else {
-                abort(404, 'Asset variation "' . $variationName . '" not found. Still processing?');
+                abort(202, 'Asset variation "' . $variationName . '" not found. Still processing?');
             }
         }
     }
