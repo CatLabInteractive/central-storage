@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Consumer;
 use App\Models\ConsumerAsset;
+use App\Models\Processor;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Http\Request;
@@ -42,6 +43,15 @@ class UploadController
 
             $consumerAsset->save();
 
+            // Processors
+            foreach ($consumer->processors as $processor) {
+                /** @var Processor $processor */
+                if ($processor->isTriggered($consumerAsset)) {
+                    $processor->process($consumerAsset);
+                }
+            }
+
+            // Add to output list.
             $consumerAssets[] = $consumerAsset;
         }
 

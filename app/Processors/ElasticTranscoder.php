@@ -282,4 +282,20 @@ class ElasticTranscoder extends Processor
         $create_job_result = $transcoder_client->createJob($create_job_request)->toArray();
         return $job = $create_job_result['Job'];
     }
+
+    /**
+     * @param Processor $processor
+     * @return bool
+     */
+    protected function isConfigSimilar(Processor $processor)
+    {
+        if (!($processor instanceof ElasticTranscoder)) {
+            throw new \LogicException("isConfigSimilar should always receive an object of type " . get_class($this));
+        }
+
+        $myPresets = $this->getPresets();
+        $theirPresets = $processor->getPresets();
+
+        return $myPresets == $theirPresets;
+    }
 }

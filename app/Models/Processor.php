@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Processors\ElasticTranscoder;
+use CatLab\Assets\Laravel\Models\Variation;
 use CatLab\Assets\Laravel\PathGenerators\PathGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -118,6 +119,11 @@ class Processor extends Model
             return;
         }
 
+        // Look for an identical processor that might have processed this asset already
+        if ($this->linkExistingVariations($consumerAsset)) {
+            return;
+        }
+
         $outputPath = $this->getOutputPath($consumerAsset);
 
         $job = new ProcessorJob();
@@ -130,6 +136,95 @@ class Processor extends Model
         $this->handle($job, $outputPath);
 
         $job->save();
+    }
+
+    /**
+     * This method is very important. Since duplicate assets are avoided, one asset an have multiple CustomerAssets.
+     * All these CustomerAssets have their own variations (since variations are customer-specific), but that doesn't
+     * mean they should create duplicate assets.
+     *
+     * So this method looks for assets that were generated with "similar" processors (= a processor of the same type
+     * with the same configuration) and, if such processor exists, it creates customer specific variations from
+     * the existing assets.
+     *
+     * Returns TRUE if such link was found (and thus no further processing is required) or FALSE when the processor
+     * should do its job.
+     *
+     * @param ConsumerAsset $consumerAsset
+     * @return bool
+     */
+    protected function linkExistingVariations(ConsumerAsset $consumerAsset)
+    {
+        $asset = $consumerAsset->asset;
+
+        // Are we processing this asset now?
+        $existingJobs = $this->jobs()->where('asset_id', '=', $asset->id);
+
+        // Already processing this asset? Then don't continue.
+        // The resulting variations will be ours anyway, so we will be able to just use them.
+        if ($existingJobs->count() > 0) {
+            return true;
+        }
+
+        // Did we ever process this asset already?
+        $existingAssetVariations = Variation::select('variations.*')
+            ->where('original_asset_id', '=', $asset->id)
+            ->leftJoin('processor_jobs', 'processor_jobs.id', '=', 'variations.processor_job_id')
+            ->where('processor_jobs.processor_id', '=', $this->id)
+            ->count();
+
+        // If we have variations on this asset by earlier processes, don't try to create new ones.
+        if ($existingAssetVariations > 0) {
+            return true;
+        }
+
+        // Next up, check for similar processors that have already created variations like this.
+        // These are always owned by a different consumer.
+        $existingVariation = Variation::select('variations.*')
+            ->where('original_asset_id', '=', $asset->id)
+            ->with('processorJob')
+            ->get();
+
+        $processedProcessors = [];
+
+        $result = false;
+        foreach ($existingVariation as $variation) {
+            /** @var Variation $variation */
+            $job = $variation->processorJob;
+
+            // make sure to process every processor only once.
+            $processorId = $variation->processorJob->processor_id;
+            if (isset($processedProcessors[$processorId])) {
+                continue;
+            }
+
+            $processedProcessors[$processorId] = true;
+
+            if ($job->processor->consumer_id === $this->consumer_id) {
+                throw new \LogicException("A variation created by the same owner is found. This is impossible.");
+            }
+
+            // Is the processor similar to this processor?
+            if ($this->isSimilar($job->processor)) {
+                // This is basically the same job, so all variations that this job has created are applicable to this asset as well.
+                $result = true;
+
+                $variations = $job->variations;
+                foreach ($variations as $variation) {
+                    /** @var Variation $varation */
+
+                    // replace the name with the name of this processor
+                    $newVariationName = str_replace($job->processor->variation_name, $this->variation_name, $variation->variation_name);
+
+                    // link this new variation
+                    $newAsset = $variation->asset;
+
+                    $asset->linkVariation($newVariationName, $newAsset, $job);
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -311,6 +406,15 @@ class Processor extends Model
             return false;
         }
 
+        return $this->isTriggered($asset);
+    }
+
+    /**
+     * @param ConsumerAsset $asset
+     * @return bool
+     */
+    public function isTriggered(ConsumerAsset $asset)
+    {
         foreach ($this->triggers as $trigger) {
             /** @var ProcessorTrigger $trigger */
             if ($trigger->check($asset)) {
@@ -413,5 +517,31 @@ class Processor extends Model
         $newAsset->disk = $original->disk;
 
         return $newAsset;
+    }
+
+    /**
+     * @param Processor $processor
+     * @return bool
+     */
+    protected function isConfigSimilar(Processor $processor)
+    {
+        throw new \LogicException("This method should never be called.");
+    }
+
+    /**
+     * @param Processor $processor
+     * @return bool|null
+     */
+    private function isSimilar(Processor $processor)
+    {
+        if ($this->id === $processor->id) {
+            return true;
+        }
+
+        if ($this->processor !== $processor->processor) {
+            return false;
+        }
+
+        return $this->isConfigSimilar($processor);
     }
 }
