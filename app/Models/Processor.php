@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Validation\ValidationException;
+use Request;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Validator;
@@ -37,6 +38,31 @@ class Processor extends Model
     protected $table = 'processors';
 
     /**
+     * @return array
+     */
+    public static function getProcessors()
+    {
+        return [
+            ElasticTranscoder::class
+        ];
+    }
+
+    /**
+     * Get all jobs from external id
+     * @param $externalId
+     * @return Builder
+     */
+    public static function getJobsByExternalId($externalId)
+    {
+        return ProcessorJob::select('processor_jobs.*')
+            ->where('external_id', '=', $externalId)
+            ->leftJoin('processors', 'processors.id', '=', 'processor_jobs.processor_id')
+            ->where('processors.processor', '=', class_basename(get_called_class()))
+            ->with('processor')
+        ;
+    }
+
+    /**
      * Processor constructor.
      * @param array $attributes
      */
@@ -48,13 +74,34 @@ class Processor extends Model
     }
 
     /**
-     * @return array
+     * Get a processor from a (base) classname.
+     * @param $name
+     * @return Processor
      */
-    public static function getProcessors()
+    public static function getFromClassName($name)
     {
-        return [
-            ElasticTranscoder::class
-        ];
+        foreach (self::getProcessors() as $v) {
+            if (strtolower($name) === strtolower(class_basename($v))) {
+                $model = new $v();
+            }
+        }
+
+        if (!isset($model)) {
+            $model = new self();
+        }
+
+        return $model;
+    }
+
+    /**
+     * Called when an external processor tries to notify about job progress.
+     * Note that this is called on an EMPTY processor (no id set yet)
+     * So first job should be to find the right processor.
+     * @param \Illuminate\Http\Request $request
+     */
+    public static function notify(\Illuminate\Http\Request $request)
+    {
+        // Not implemented here.
     }
 
     /**
@@ -119,15 +166,7 @@ class Processor extends Model
      */
     public function newFromBuilder($attributes = [], $connection = null)
     {
-        foreach (self::getProcessors() as $v) {
-            if ($attributes->processor === class_basename($v)) {
-                $model = new $v();
-            }
-        }
-
-        if (!isset($model)) {
-            $model = new self();
-        }
+        $model = self::getFromClassName($attributes->processor);
 
         $model->exists = true;
         $model->setRawAttributes((array) $attributes, true);

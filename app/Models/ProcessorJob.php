@@ -50,4 +50,23 @@ class ProcessorJob extends Model
         $this->external_id = $identifier;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isFinished()
+    {
+        switch ($this->state) {
+            case ProcessorJob::STATE_FINISHED:
+            case ProcessorJob::STATE_FAILED:
+                return true;
+
+            case ProcessorJob::STATE_PENDING:
+            case ProcessorJob::STATE_PREPARED:
+                return false;
+
+            default:
+                throw new \InvalidArgumentException('Invalid job state: ' . $this->state);
+        }
+    }
 }

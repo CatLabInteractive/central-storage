@@ -8,6 +8,7 @@ use App\Models\Consumer;
 use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use App\Models\ProcessorTrigger;
+use Request;
 
 /**
  * Class ProcessorController
@@ -124,7 +125,19 @@ class ProcessorController extends Controller
     public function run(Consumer $consumer, Processor $processor)
     {
         $this->authorize('run', [ $processor ]);
+    }
 
+    /**
+     * Called by external processors.
+     * @param \Illuminate\Http\Request $request
+     * @param string $processorName
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notification($processorName, \Illuminate\Http\Request $request)
+    {
+        $processor = Processor::getFromClassName($processorName);
+        $processor->notify($request);
 
+        return \Response::json([ 'success' => true ]);
     }
 }

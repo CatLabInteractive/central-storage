@@ -7,6 +7,7 @@ use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use App\Models\ProcessorJob;
 use Aws\ElasticTranscoder\ElasticTranscoderClient;
+use Request;
 
 /**
  * Class ElasticTranscoder
@@ -15,6 +16,30 @@ use Aws\ElasticTranscoder\ElasticTranscoderClient;
 class ElasticTranscoder extends Processor
 {
     const AWS_VERSION_ELASTICTRANSCODER = '2012-09-25';
+
+    /**
+     * Called when an external processor tries to notify about job progress.
+     * Note that this is called on an EMPTY processor (no id set yet)
+     * So first job should be to find the right processor.
+     * @param $request
+     */
+    public static function notify(\Illuminate\Http\Request $request)
+    {
+        $jobId = $request->input('jobId');
+        if (!$jobId) {
+            abort(400, 'No job id found');
+        }
+
+        $jobs = self::getJobsByExternalId($jobId);
+
+        $jobs->each(
+            function(ProcessorJob $job) {
+                /** @var Processor $processor */
+                $processor = $job->processor;
+                $processor->updateJob($job);
+            }
+        );
+    }
 
     /**
      * @var ElasticTranscoderClient
@@ -71,6 +96,11 @@ class ElasticTranscoder extends Processor
      */
     public function handleUpdate(ProcessorJob $job)
     {
+        // job already finished? no need to update.
+        if ($job->isFinished()) {
+            return;
+        }
+
         $this->output->writeln('Updating job ' . $job->id);
 
         $jobId = $job->external_id;
