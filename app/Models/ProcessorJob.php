@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CatLab\Assets\Laravel\Models\Variation;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -68,5 +69,13 @@ class ProcessorJob extends Model
             default:
                 throw new \InvalidArgumentException('Invalid job state: ' . $this->state);
         }
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variations()
+    {
+        return $this->hasMany(Variation::class);
     }
 }

@@ -28,14 +28,16 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
     /**
      * View an asset
+     * @param \Illuminate\Http\Request $request
      * @param $key
+     * @param $extension
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewConsumerAsset($key)
+    public function viewConsumerAsset(\Illuminate\Http\Request $request, $key, $extension = null)
     {
         $consumerAsset = ConsumerAsset::assetKey($key)->first();
         if (!$consumerAsset) {
-            abort(404, 'Asset not found.');
+            abort(404, 'Asset not found: ' . $key);
         }
 
         /** @var \App\Models\Asset $asset */
@@ -49,9 +51,22 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             foreach ($processors as $processor) {
                 /** @var Processor $processor */
                 if ($processor->isDefaultVariation($consumerAsset)) {
-                    $variationName = $processor->variation_name;
+                    $variationName = $processor->getDesiredVariation($request);
                     break;
                 }
+            }
+        } else {
+            // Look for the processor with this specific variation name
+
+            /** @var Processor|null $processor */
+            $processor = $consumerAsset
+                ->consumer
+                ->processors
+                ->where('varation_name', '=', $variationName)
+                ->first();
+
+            if ($processor) {
+                $variationName = $processor->getDesiredVariation($request);
             }
         }
 

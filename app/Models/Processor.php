@@ -322,6 +322,16 @@ class Processor extends Model
     }
 
     /**
+     * Get the name of the desired variation (based on request parameters)
+     * @param \Illuminate\Http\Request $request
+     * @return string
+     */
+    public function getDesiredVariation(\Illuminate\Http\Request $request)
+    {
+        return $this->variation_name;
+    }
+
+    /**
      * @param $key
      * @return ProcessorConfig
      */

@@ -170,7 +170,7 @@ class ElasticTranscoder extends Processor
             }
 
             $variationName = $this->getVariationName($index);
-            $asset->linkVariation($variationName, $newAsset);
+            $asset->linkVariation($variationName, $newAsset, $job);
 
             $index ++;
         }
