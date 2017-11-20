@@ -162,6 +162,8 @@ class ElasticTranscoder extends Processor
             'Id' => $jobId
         ])->toArray();
 
+        \Log::info(print_r($jobData, true));
+
         $jobData = $jobData['Job'];
 
         // print_r($jobData);
@@ -191,8 +193,15 @@ class ElasticTranscoder extends Processor
         $outputKeyPrefix = $jobData['OutputKeyPrefix'];
         $outputs = $jobData['Outputs'];
 
+        $existingVariationNames = [];
+
         $index = 0;
         foreach ($outputs as $output) {
+
+            $variationName = $this->getVariationName($index);
+            if (isset($existingVariationNames[$variationName])) {
+                continue;
+            }
 
             $newPath = $outputKeyPrefix . $output['Key'];
             $newAsset = $this->createAsset($consumerAsset, $newPath);
@@ -215,8 +224,8 @@ class ElasticTranscoder extends Processor
                 $newAsset->duration = $output['Duration'];
             }
 
-            $variationName = $this->getVariationName($index);
-            $asset->linkVariation($variationName, $newAsset, $job);
+            $variation = $asset->linkVariation($variationName, $newAsset, $job);
+            $existingVariationNames[$variationName] = $variation;
 
             $index ++;
         }
