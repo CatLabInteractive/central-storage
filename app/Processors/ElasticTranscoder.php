@@ -40,7 +40,12 @@ class ElasticTranscoder extends Processor
             // Pretend we're not here if the message is invalid.
             http_response_code(404);
             \Log::error('SNS Message Validation Error: ' . $e->getMessage());
-            return;
+
+            return \Response::json([
+                'error' => [
+                    'message' => 'SNS Message Validation Error'
+                ]
+            ], 404);
         }
 
         // Check the type of the message and handle the subscription.
@@ -50,11 +55,24 @@ class ElasticTranscoder extends Processor
             return;
         }
 
-        \Log::info(print_r($message, true));
+        if (!isset($message['Message'])) {
+            \Log::error('SNS Message not understood.');
+            return \Response::json([
+                'error' => [
+                    'message' => 'Job not found.'
+                ]
+            ], 404);
+        }
 
-        $jobs = self::getJobsByExternalId($message['JobId']);
+        $messageData = $message['Message'];
+
+        $jobs = self::getJobsByExternalId($messageData['jobId']);
         if ($jobs->count() === 0) {
-            \Log::error('No JobId found');
+            return \Response::json([
+                'error' => [
+                    'message' => 'Job not found.'
+                ]
+            ], 404);
         }
 
         $jobs->each(
