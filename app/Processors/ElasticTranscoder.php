@@ -50,7 +50,7 @@ class ElasticTranscoder extends Processor
             return;
         }
 
-        \Log::info(print_r($message));
+        \Log::info(print_r($message, true));
 
         $jobs = self::getJobsByExternalId($message['JobId']);
         if ($jobs->count() === 0) {
