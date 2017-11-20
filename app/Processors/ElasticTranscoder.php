@@ -66,7 +66,7 @@ class ElasticTranscoder extends Processor
 
         $messageData = json_decode($message['Message'], true);
 
-        $jobs = self::getJobsByExternalId($messageData['jobId']);
+        $jobs = self::getJobsByExternalId($messageData['jobId'])->get();
         if ($jobs->count() === 0) {
             return \Response::json([
                 'error' => [
@@ -74,6 +74,8 @@ class ElasticTranscoder extends Processor
                 ]
             ], 404);
         }
+
+        \Log::info('Found ' . $jobs->count() . ' jobs');
 
         $jobs->each(
             function(ProcessorJob $job) {
