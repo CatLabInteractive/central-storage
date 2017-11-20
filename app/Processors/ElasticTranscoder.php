@@ -7,6 +7,9 @@ use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use App\Models\ProcessorJob;
 use Aws\ElasticTranscoder\ElasticTranscoderClient;
+use Aws\Sns\Exception\InvalidSnsMessageException;
+use Aws\Sns\Message;
+use Aws\Sns\MessageValidator;
 use Request;
 
 /**
@@ -26,17 +29,33 @@ class ElasticTranscoder extends Processor
      */
     public static function notify(\Illuminate\Http\Request $request)
     {
-        $jobId = $request->input('jobId');
-        if (!$jobId) {
-            \Log::warning('No job ID found');
-            return \Response::json([
-                'error' => [
-                    'message' => 'Nob job id found.'
-                ]
-            ], 400);
+        // Instantiate the Message and Validator
+        $message = Message::fromRawPostData();
+        $validator = new MessageValidator();
+
+        // Validate the message and log errors if invalid.
+        try {
+            $validator->validate($message);
+        } catch (InvalidSnsMessageException $e) {
+            // Pretend we're not here if the message is invalid.
+            http_response_code(404);
+            \Log::error('SNS Message Validation Error: ' . $e->getMessage());
+            return;
         }
 
-        $jobs = self::getJobsByExternalId($jobId);
+        // Check the type of the message and handle the subscription.
+        if ($message['Type'] === 'SubscriptionConfirmation') {
+            // Confirm the subscription by sending a GET request to the SubscribeURL
+            file_get_contents($message['SubscribeURL']);
+            return;
+        }
+
+        \Log::info(print_r($message));
+
+        $jobs = self::getJobsByExternalId($message['JobId']);
+        if ($jobs->count() === 0) {
+            \Log::error('No JobId found');
+        }
 
         $jobs->each(
             function(ProcessorJob $job) {
