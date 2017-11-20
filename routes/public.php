@@ -9,3 +9,5 @@ Route::get('/assets/{id}{extension}', 'AssetController@viewConsumerAsset')
     ]);
 
 Route::get('/assets/{id}', 'AssetController@viewConsumerAsset');
+
+Route::any('processors/notification/{processorName}', 'ProcessorController@notification');

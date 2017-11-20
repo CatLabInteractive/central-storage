@@ -26,8 +26,6 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
-$this->any('processors/notification/{processorName}', 'ProcessorController@notification');
-
 Route::get('/home', 'HomeController@home');
 
 Route::group(
