@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\AssetCacheClear;
 use App\Console\Commands\MigrateDisk;
 use App\Console\Commands\RunProcessor;
+use App\Console\Commands\UpdatePendingJobs;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -18,7 +19,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         MigrateDisk::class,
         AssetCacheClear::class,
-        RunProcessor::class
+        RunProcessor::class,
+        UpdatePendingJobs::class,
+
     ];
 
     /**

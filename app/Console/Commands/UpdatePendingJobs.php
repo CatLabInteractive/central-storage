@@ -13,14 +13,14 @@ use Illuminate\Console\Command;
  * Class MigrateDisk
  * @package App\Console\Commands
  */
-class RunProcessor extends Command
+class UpdatePendingJobs extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'processor:run {id}';
+    protected $signature = 'processor:update-jobs';
 
     /**
      * The console command description.
@@ -36,18 +36,14 @@ class RunProcessor extends Command
      */
     public function handle()
     {
-        $processorId = $this->argument('id');
-
-        /** @var Processor $processor */
-        $processor = Processor::findOrFail($processorId);
-        $processor->setOutput($this->output);
-
-        // Create new jobs
-        $assetsToProcess = $processor->getProcessBatch()->take(10);
-        $assetsToProcess->each(
-            function(ConsumerAsset $asset) use ($processor) {
-                $processor->process($asset);
-            }
-        );
+        // Check for pending jobs
+        Processor::all()->each(function(Processor $processor) {
+            $pendingJobs = $processor->getPendingJobs()->take(10);
+            $pendingJobs->each(
+                function(ProcessorJob $job) use ($processor) {
+                    $processor->updateJob($job);
+                }
+            );
+        });
     }
 }
