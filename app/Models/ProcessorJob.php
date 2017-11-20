@@ -78,4 +78,39 @@ class ProcessorJob extends Model
     {
         return $this->hasMany(Variation::class);
     }
+
+    public function locks()
+    {
+        return $this->hasMany(ProcessorLock::class);
+    }
+
+    /**
+     * @return bool
+     */
+    public function lockJob()
+    {
+        $result = false;
+        \DB::transaction(function() use (&$result) {
+
+            if ($this->locks()->count() > 0) {
+                $result = false;
+                return;
+            }
+
+            $lock = new ProcessorLock();
+            $this->locks()->save($lock);
+
+            $result = true;
+        });
+
+        return $result;
+    }
+
+    /**
+     * Unlock the job
+     */
+    public function unlockJob()
+    {
+        $this->locks()->delete();
+    }
 }

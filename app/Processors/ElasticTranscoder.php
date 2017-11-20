@@ -140,7 +140,7 @@ class ElasticTranscoder extends Processor
     /**
      * @param ProcessorJob $job
      */
-    public function handleUpdate(ProcessorJob $job)
+    protected function handleUpdate(ProcessorJob $job)
     {
         // job already finished? no need to update.
         if ($job->isFinished()) {

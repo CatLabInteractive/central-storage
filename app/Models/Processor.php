@@ -234,7 +234,6 @@ class Processor extends Model
     /**
      * @param ProcessorJob $job
      * @param $outputPath
-     * @internal param Asset $asset
      */
     protected function handle(ProcessorJob $job, $outputPath)
     {
@@ -246,8 +245,15 @@ class Processor extends Model
      */
     public final function updateJob(ProcessorJob $job)
     {
+        if (!$job->lockJob()) {
+            \Log::warning('Job ' . $job->id . ' is locked');
+            return;
+        }
+
         $this->handleUpdate($job);
         $job->save();
+
+        $job->unlockJob();
     }
 
     /**
