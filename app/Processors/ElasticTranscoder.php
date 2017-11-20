@@ -65,6 +65,7 @@ class ElasticTranscoder extends Processor
         }
 
         $messageData = json_decode($message['Message'], true);
+        \Log::info('Message: ' . print_r($messageData, true));
 
         $jobs = self::getJobsByExternalId($messageData['jobId'])->get();
         if ($jobs->count() === 0) {
