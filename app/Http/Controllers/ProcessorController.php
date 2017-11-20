@@ -129,6 +129,22 @@ class ProcessorController extends Controller
     }
 
     /**
+     * @param Consumer $consumer
+     * @param Processor $processor
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function setDefault(Consumer $consumer, Processor $processor)
+    {
+        $this->authorize('edit', [ $processor ]);
+        $default = !!\Request::input('default');
+
+        $processor->default_variation = $default;
+        $processor->save();
+
+        return redirect(action('ProcessorController@index', [ $processor->consumer->id ]));
+    }
+
+    /**
      * Called by external processors.
      * @param \Illuminate\Http\Request $request
      * @param string $processorName

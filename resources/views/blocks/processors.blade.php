@@ -8,6 +8,7 @@
         <tr>
             <th>Variation name</th>
             <th>Triggers</th>
+            <th>Default?</th>
             <td>&nbsp;</td>
         </tr>
 
@@ -22,7 +23,17 @@
                 </td>
 
                 <td>
-                    <a href="{{ action('ProcessorController@run',  [ $consumer->id, $processor->id ]) }}">Run now</a>
+                    @if($processor->default_variation)
+                        default
+                    @endif
+                </td>
+
+                <td>
+                    @if($processor->default_variation)
+                        <a href="{{ action('ProcessorController@setDefault',  [ $consumer->id, $processor->id, 'default' => 0 ]) }}">Make not default</a>
+                    @else
+                        <a href="{{ action('ProcessorController@setDefault',  [ $consumer->id, $processor->id, 'default' => 1 ]) }}">Make default</a>
+                    @endif
                 </td>
             </tr>
         @endforeach
