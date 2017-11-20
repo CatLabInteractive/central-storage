@@ -71,14 +71,16 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         }
 
         // no variation requested? go to plain asset.
-        if (empty($variationName)) {
+        if (empty($variationName) || $variationName === 'original') {
             return $this->viewAsset($asset);
         } else {
             $variation = $asset->getVariation($variationName);
             if ($variation) {
                 return $this->viewAsset($variation->asset);
             } else {
-                abort(202, 'Asset variation "' . $variationName . '" not found. Still processing?');
+                return Response::json([
+                    'error' => [ 'message' => 'Asset variation "' . $variationName . '" not found. Still processing?' ]
+                ], 202);
             }
         }
     }

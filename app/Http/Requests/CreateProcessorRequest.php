@@ -33,7 +33,8 @@ class CreateProcessorRequest extends FormRequest
                 'required',
                 Rule::unique('processors')->where(function($query) use ($consumer) {
                     $query->where('consumer_id', '=', $consumer->id);
-                })
+                }),
+                Rule::notIn([ 'original' ])
             ],
             'trigger_mimetype' => 'required',
         ];
