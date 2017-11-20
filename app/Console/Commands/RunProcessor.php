@@ -43,7 +43,9 @@ class RunProcessor extends Command
         $processor->setOutput($this->output);
 
         // Create new jobs
-        $assetsToProcess = $processor->getProcessBatch()->take(10);
+        $assetsToProcess = $processor->getProcessBatch()->take(1000);
+        $this->output->writeln('Processing ' . $assetsToProcess->count() . ' assets');
+
         $assetsToProcess->each(
             function(ConsumerAsset $asset) use ($processor) {
                 $processor->process($asset);
