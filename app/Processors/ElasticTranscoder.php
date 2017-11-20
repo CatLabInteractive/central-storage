@@ -22,12 +22,18 @@ class ElasticTranscoder extends Processor
      * Note that this is called on an EMPTY processor (no id set yet)
      * So first job should be to find the right processor.
      * @param $request
+     * @return \Illuminate\Http\JsonResponse|void
      */
     public static function notify(\Illuminate\Http\Request $request)
     {
         $jobId = $request->input('jobId');
         if (!$jobId) {
-            abort(400, 'No job id found');
+            \Log::warning('No job ID found');
+            return \Response::json([
+                'error' => [
+                    'message' => 'Nob job id found.'
+                ]
+            ], 400);
         }
 
         $jobs = self::getJobsByExternalId($jobId);

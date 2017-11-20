@@ -9,6 +9,7 @@ use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use App\Models\ProcessorTrigger;
 use Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ProcessorController
@@ -135,8 +136,14 @@ class ProcessorController extends Controller
      */
     public function notification($processorName, \Illuminate\Http\Request $request)
     {
+        \Log::info('Incoming notification: ', print_r($request->input()));
+
         $processor = Processor::getFromClassName($processorName);
-        $processor->notify($request);
+
+        $response = $processor->notify($request);
+        if ($response instanceof Response) {
+            return $response;
+        }
 
         return \Response::json([ 'success' => true ]);
     }

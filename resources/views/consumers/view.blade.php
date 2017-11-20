@@ -25,7 +25,7 @@
     </table>
 
     <h2>Processors</h2>
-    <a href="{{ action('ConsumerController@index') }}">Back</a>
+    @include('blocks.processors', [ 'processors' => $consumer->processors ])
 
     <h2>Statistics</h2>
     <table class="table">
