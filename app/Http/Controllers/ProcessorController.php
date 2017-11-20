@@ -136,7 +136,7 @@ class ProcessorController extends Controller
      */
     public function notification($processorName, \Illuminate\Http\Request $request)
     {
-        \Log::info('Incoming notification: ', print_r($request->input()));
+        \Log::info('Incoming notification: ', print_r($request->input(), true));
 
         $processor = Processor::getFromClassName($processorName);
 
