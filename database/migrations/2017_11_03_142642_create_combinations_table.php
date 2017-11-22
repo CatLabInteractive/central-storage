@@ -17,7 +17,7 @@ class CreateCombinationsTable extends Migration
 
             $table->increments('id');
 
-            $table->string('hash');
+            $table->string('hash', 64);
             $table->unique('hash');
 
             $table->integer('asset_id')->unsigned();
