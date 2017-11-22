@@ -223,7 +223,7 @@ class Processor extends Model
                     // link this new variation
                     $newAsset = $variation->asset;
 
-                    $asset->linkVariation($newVariationName, $newAsset, $job);
+                    $asset->linkVariation($newVariationName, $newAsset, true, $job);
                 }
             }
         }
