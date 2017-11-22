@@ -222,7 +222,7 @@ class Processor extends Model
                     // link this new variation
                     $newAsset = $variation->asset;
 
-                    $asset->linkVariation($newVariationName, $newAsset, true, $job);
+                    $asset->linkVariationFromJob($newVariationName, $newAsset, true, $job);
                 }
             }
         }
@@ -520,6 +520,9 @@ class Processor extends Model
 
         $newAsset = new Asset();
         $newAsset->path = $path;
+
+        // Set consumer asset.
+        $newAsset->setConsumerAsset($consumerAsset);
 
         $newAsset->type = $original->type;
         $newAsset->mimetype = $this->getConfig('mimetype', $original->mimetype);
