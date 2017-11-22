@@ -20,7 +20,7 @@ class CreateProcessorConfig extends Migration
             $table->integer('processor_id')->unsigned();
             $table->foreign('processor_id')->references('id')->on('processors');
 
-            $table->string('name');
+            $table->string('name', 64);
             $table->unique([ 'processor_id', 'name' ]);
 
             $table->string('value')->nullable();

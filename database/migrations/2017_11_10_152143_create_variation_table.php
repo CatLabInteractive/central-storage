@@ -32,7 +32,7 @@ class CreateVariationTable extends Migration
 
         });
 
-        $assets = Asset::whereNotNull('root_asset_id')->get();
+        $assets = Asset::whereNotNull('root_asset_id')->groupBy('root_asset_id', 'width', 'height')->get();
         $assets->each(
             function(Asset $asset) {
 
