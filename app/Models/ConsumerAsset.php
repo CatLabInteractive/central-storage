@@ -43,7 +43,7 @@ class ConsumerAsset extends Model
     }
 
     /**
-     * @return Asset
+     * @return \App\Models\Asset
      */
     public function getAsset()
     {

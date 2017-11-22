@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Processors\ElasticTranscoder;
-use CatLab\Assets\Laravel\Models\Variation;
 use CatLab\Assets\Laravel\PathGenerators\PathGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -155,7 +154,7 @@ class Processor extends Model
      */
     protected function linkExistingVariations(ConsumerAsset $consumerAsset)
     {
-        $asset = $consumerAsset->asset;
+        $asset = $consumerAsset->getAsset();
 
         // Are we processing this asset now?
         $existingJobs = $this->jobs()->where('asset_id', '=', $asset->id);
