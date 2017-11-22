@@ -198,7 +198,7 @@ class Processor extends Model
             // make sure to process every processor only once.
             $processorId = $variation->processorJob->processor_id;
             if (isset($processedProcessors[$processorId])) {
-                continue;
+                break;
             }
 
             $processedProcessors[$processorId] = true;
