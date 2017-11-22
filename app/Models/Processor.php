@@ -109,7 +109,7 @@ class Processor extends Model
      */
     public final function process(ConsumerAsset $consumerAsset)
     {
-        $asset = $consumerAsset->asset;
+        $asset = $consumerAsset->getAsset();
 
         try {
             $this->validateConfig();
@@ -198,7 +198,7 @@ class Processor extends Model
             // make sure to process every processor only once.
             $processorId = $variation->processorJob->processor_id;
             if (isset($processedProcessors[$processorId])) {
-                break;
+                continue;
             }
 
             $processedProcessors[$processorId] = true;
@@ -212,12 +212,20 @@ class Processor extends Model
                 // This is basically the same job, so all variations that this job has created are applicable to this asset as well.
                 $result = true;
 
+                $variationNames = [];
+
                 $variations = $job->variations;
                 foreach ($variations as $variation) {
                     /** @var Variation $varation */
 
                     // replace the name with the name of this processor
                     $newVariationName = str_replace($job->processor->variation_name, $this->variation_name, $variation->variation_name);
+
+                    if (isset($variationNames[$newVariationName])) {
+                        continue;
+                    }
+
+                    $variationNames[$newVariationName] = true;
 
                     // link this new variation
                     $newAsset = $variation->asset;
