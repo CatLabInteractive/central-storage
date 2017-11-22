@@ -68,7 +68,7 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
      * @param ProcessorJob|null $job
      * @return \CatLab\Assets\Laravel\Models\Variation
      */
-    public function linkVariation(
+    public function linkVariationFromJob(
         $variationName,
         \CatLab\Assets\Laravel\Models\Asset $variationAsset,
         $shareGlobally = false,
