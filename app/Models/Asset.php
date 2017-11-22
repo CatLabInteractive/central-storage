@@ -24,7 +24,7 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
             ->where('variation_name', '=', $name);
 
         if (!$shareGlobally) {
-            $variation->where('consumer_id', '=', $this->getConsumerAsset()->consumer_id);
+            $variation = $variation->where('consumer_id', '=', $this->getConsumerAsset()->consumer_id);
         }
 
         return $variation->first();
