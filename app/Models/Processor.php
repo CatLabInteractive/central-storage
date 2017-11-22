@@ -109,7 +109,7 @@ class Processor extends Model
      */
     public final function process(ConsumerAsset $consumerAsset)
     {
-        $asset = $consumerAsset->getAsset();
+        $asset = $consumerAsset->asset;
 
         try {
             $this->validateConfig();
@@ -230,7 +230,7 @@ class Processor extends Model
                     // link this new variation
                     $newAsset = $variation->asset;
 
-                    $asset->linkVariationFromJob($newVariationName, $newAsset, true, $job);
+                    $asset->linkVariationFromJob($newVariationName, $newAsset, false, $job);
                 }
             }
         }
