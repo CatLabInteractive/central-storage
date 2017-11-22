@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use CatLab\Assets\Laravel\Models\Variation;
-
 /**
  * Class Asset
  * @package App\Models
@@ -16,6 +14,23 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
     private $consumerAsset;
 
     /**
+     * @param $name
+     * @param bool $shareGlobally TRUE to mark that this asset will always have this variation, whoever owns it.
+     * @return Variation|null
+     */
+    public function getVariation($name, $shareGlobally = false)
+    {
+        $variation = $this->variations
+            ->where('variation_name', '=', $name);
+
+        if (!$shareGlobally) {
+            $variation->where('consumer_id', '=', $this->getConsumerAsset()->consumer_id);
+        }
+
+        return $variation->first();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function variations()
@@ -26,23 +41,20 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
             ->with('asset')
         ;
 
-        if ($this->consumerAsset) {
-            $relation->where('consumer_id', '=', $this->getConsumerAsset()->consumer_id);
-        }
-
         return $relation;
     }
 
     /**
      * @param array $attributes
+     * @param bool $shareGlobally
      * @return Variation
      */
-    protected function createVariationModel(array $attributes)
+    protected function createVariationModel(array $attributes, $shareGlobally = false)
     {
         $variation = new Variation($attributes);
         $variation->original()->associate($this);
 
-        if ($this->consumerAsset) {
+        if ($this->consumerAsset && !$shareGlobally) {
             $variation->consumer_id = $this->getConsumerAsset()->consumer_id;
         }
 

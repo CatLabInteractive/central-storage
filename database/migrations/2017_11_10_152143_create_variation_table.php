@@ -32,9 +32,17 @@ class CreateVariationTable extends Migration
 
         });
 
-        $assets = Asset::whereNotNull('root_asset_id')->groupBy('root_asset_id', 'width', 'height')->get();
-        $assets->each(
-            function(Asset $asset) {
+        $assetIds = \DB::table('assets')
+            ->select(\DB::raw('MIN(id) as id'))
+            ->whereNotNull('root_asset_id')
+            ->groupBy('root_asset_id', 'width', 'height')
+            ->get()
+            ->pluck('id');
+
+        $assetIds->each(
+            function($assetId) {
+
+                $asset = Asset::find($assetId);
 
                 $variationName = 'resized:' . $asset->width . ':' . $asset->height;
 
