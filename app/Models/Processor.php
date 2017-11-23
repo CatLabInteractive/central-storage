@@ -453,6 +453,16 @@ class Processor extends Model
     }
 
     /**
+     * Check if this processor would generate a certain variation.
+     * @param $variationName
+     * @return bool
+     */
+    public function doesGenerateVariation($variationName)
+    {
+        return mb_strtolower($this->variation_name) === mb_strtolower($variationName);
+    }
+
+    /**
      * @param $key
      * @return ProcessorConfig
      */

@@ -35,6 +35,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     public function viewConsumerAsset(\Illuminate\Http\Request $request, $key, $extension = null)
     {
+        /** @var ConsumerAsset $consumerAsset */
         $consumerAsset = ConsumerAsset::assetKey($key)->first();
         if (!$consumerAsset) {
             abort(404, 'Asset not found: ' . $key);
@@ -75,12 +76,22 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             return $this->viewAsset($asset);
         } else {
             $variation = $asset->getVariation($variationName);
+
             if ($variation) {
                 return $this->viewAsset($variation->asset);
             } else {
-                return Response::json([
-                    'error' => [ 'message' => 'Asset variation "' . $variationName . '" not found. Still processing?' ]
-                ], 202);
+
+                // Variation not found. Check if we are processing this.
+                $isProcessing = $consumerAsset->isVariationProcessing($variationName);
+
+                if ($isProcessing) {
+                    return Response::json([
+                        'error' => ['message' => 'Asset variation "' . $variationName . '" is still being processed.']
+                    ], 202);
+                } else {
+                    // Not processing? return the original.
+                    return $this->viewAsset($asset);
+                }
             }
         }
     }

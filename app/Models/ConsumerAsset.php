@@ -84,6 +84,35 @@ class ConsumerAsset extends Model
     }
 
     /**
+     * Check if this variation is still being processed.
+     * @param $variationName
+     * @return bool
+     */
+    public function isVariationProcessing($variationName)
+    {
+        $consumer = $this->consumer;
+
+        // Look for the job that generates this variation.
+        foreach ($consumer->processors as $processor) {
+            /** @var Processor $processor */
+            if ($processor->doesGenerateVariation($variationName)) {
+                // look for a job for this asset.
+                $jobs = $processor
+                    ->jobs()
+                    ->where('consumer_asset_id', '=', $this->id)
+                    ->where('state', ProcessorJob::STATE_PENDING)
+                    ->count();
+
+                if ($jobs > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Return the data that should be exposed to the consumers
      * @return array
      */
