@@ -463,6 +463,14 @@ class Processor extends Model
     }
 
     /**
+     * @return int
+     */
+    public function countPendingJobs()
+    {
+        return $this->jobs()->where('state', '=', ProcessorJob::STATE_PENDING)->count();
+    }
+
+    /**
      * @param $key
      * @return ProcessorConfig
      */

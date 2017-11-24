@@ -9,6 +9,7 @@
             <th>Variation name</th>
             <th>Triggers</th>
             <th>Default?</th>
+            <th>Pending jobs</th>
             <td>&nbsp;</td>
         </tr>
 
@@ -26,6 +27,10 @@
                     @if($processor->default_variation)
                         default
                     @endif
+                </td>
+
+                <td>
+                    {{$processor->countPendingJobs()}}
                 </td>
 
                 <td>
