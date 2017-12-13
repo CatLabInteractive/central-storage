@@ -252,6 +252,8 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         $firstAsset = $consumerAssets[0]->asset;
 
+        $tmpFiles = [];
+
         // Now get the individual responses and combine.
         foreach ($consumerAssets as $consumerAsset) {
             /** @var Asset $asset */
@@ -283,9 +285,15 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             $rowWidth += $size[0];
             $rowHeight = max($rowHeight, $size[1]);
 
+            // Store the image in a temporary file (again)
+            $tmpFile = tempnam(sys_get_temp_dir(), 'asset');
+            $tmpFiles[] = $tmpFile;
+
+            file_put_contents($tmpFile, $data);
+
             $images[] = [
                 'size' => $size,
-                'image' => Image::make(imagecreatefromstring($data))
+                'image' => Image::make($tmpFile)
             ];
         }
 
@@ -325,15 +333,25 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         switch ($ext) {
             case 'png':
-                return $canvas->encode('png');
+                $output = $canvas->encode('png');
+                break;
 
             case 'jpg':
             case 'jpeg':
-                return $canvas->encode('jpeg');
+                $output =  $canvas->encode('jpeg');
+                break;
 
             default:
-                return $canvas->encode();
+                $output = $canvas->encode();
+                break;
         }
+
+        // Remove all temporary files we just created
+        foreach ($tmpFiles as $tmpFile) {
+            unlink($tmpFile);
+        }
+
+        return $output;
     }
 
     /**
