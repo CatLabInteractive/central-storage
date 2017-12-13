@@ -214,6 +214,9 @@ class Processor extends Model
 
                 $variationNames = [];
 
+                // Make a list of all variations that we have already processed.
+
+
                 $variations = $job->variations;
                 foreach ($variations as $variation) {
                     /** @var Variation $varation */
@@ -226,6 +229,13 @@ class Processor extends Model
                     }
 
                     $variationNames[$newVariationName] = true;
+
+                    // Check if this is an asset that we have processed earlier
+                    $existingVariation = $asset->getVariation($newVariationName, false);
+                    if ($existingVariation) {
+                        // Found? Don't re-link it.
+                        continue;
+                    }
 
                     // link this new variation
                     $newAsset = $variation->asset;
