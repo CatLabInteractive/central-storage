@@ -7,6 +7,7 @@ use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\Models\Asset;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\UploadedFile;
 use DateInterval;
 use DateTime;
@@ -221,7 +222,14 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             'path' => $queryPath
         ]);
         $combination->asset()->associate($asset);
-        $combination->save();
+
+        try {
+            $combination->save();
+        } catch (QueryException $e) {
+            // Probably a duplicate record due to race conditions.
+            // Not really a problem, but log it anyway
+            \Log::error($e->getMessage());
+        }
 
         return $this->getAssetResponse($combination->asset);
     }
