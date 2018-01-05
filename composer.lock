@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c4aa178daaee2b067e05384d7ecc92f",
+    "content-hash": "b9e354e595a21f38eb9cdbf2b2c5d03a",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -455,16 +455,16 @@
         },
         {
             "name": "catlabinteractive/laravel-assets",
-            "version": "v2.0.12",
+            "version": "v2.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "65fc1a1de9182e1ef73681203380ea9ed2aee78d"
+                "reference": "d9232e2a7de3abfcb0fa7773326f70fce52b6b77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/65fc1a1de9182e1ef73681203380ea9ed2aee78d",
-                "reference": "65fc1a1de9182e1ef73681203380ea9ed2aee78d",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/d9232e2a7de3abfcb0fa7773326f70fce52b6b77",
+                "reference": "d9232e2a7de3abfcb0fa7773326f70fce52b6b77",
                 "shasum": ""
             },
             "require": {
@@ -492,7 +492,7 @@
                 }
             ],
             "description": "Handle asset upload",
-            "time": "2017-11-22T12:28:12+00:00"
+            "time": "2018-01-05T13:50:10+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -3631,16 +3631,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "c8664b92a6d5bc229e48b0923486c097e45a7877"
+                "reference": "ed6ce7e2105c400ca10277643a8327957c0384b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/c8664b92a6d5bc229e48b0923486c097e45a7877",
-                "reference": "c8664b92a6d5bc229e48b0923486c097e45a7877",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/ed6ce7e2105c400ca10277643a8327957c0384b7",
+                "reference": "ed6ce7e2105c400ca10277643a8327957c0384b7",
                 "shasum": ""
             },
             "require": {
@@ -3659,8 +3659,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev",
-                    "dev-develop": "1.7-dev"
+                    "dev-master": "1.7.x-dev",
+                    "dev-develop": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -3679,7 +3679,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2017-10-12T15:24:51+00:00"
+            "time": "2018-01-04T18:21:48+00:00"
         }
     ],
     "packages-dev": [
