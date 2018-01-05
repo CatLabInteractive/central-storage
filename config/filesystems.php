@@ -61,8 +61,9 @@ return [
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'cloudfront' => env('AWS_CLOUDFRONT'),
-            'redirect' => env('AWS_REDIRECT') == 'true' || env('AWS_REDIRECT') == 1
+            'http' => [
+                'connect_timeout' => 30
+            ]
         ],
 
     ],

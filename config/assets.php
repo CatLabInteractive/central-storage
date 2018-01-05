@@ -10,4 +10,9 @@ return [
 
     'disk' => env('ASSETS_DISK', 'local'),
 
+    's3' => [
+        'cloudfront' => env('AWS_CLOUDFRONT'),
+        'redirect' => env('AWS_REDIRECT') == 'true' || env('AWS_REDIRECT') == 1,
+    ]
+
 ];
