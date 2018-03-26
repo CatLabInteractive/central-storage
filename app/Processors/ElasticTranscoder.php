@@ -105,8 +105,8 @@ class ElasticTranscoder extends Processor
             'presets' => 'required',
             'extensions' => 'required',
             'mimetype' => 'required',
-            'timeSpanStartTime' => 'numeric',
-            'timeSpanDuration' => 'numeric',
+            'timeSpanStartTime' => 'nullable|numeric',
+            'timeSpanDuration' => 'nullable|numeric',
         ];
     }
 
