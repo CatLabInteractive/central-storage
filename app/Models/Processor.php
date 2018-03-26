@@ -240,7 +240,17 @@ class Processor extends Model
                     // link this new variation
                     $newAsset = $variation->asset;
 
-                    $asset->linkVariationFromJob($this, $newVariationName, $newAsset, false, $job);
+                    // Create a new job.
+                    $newJob = new ProcessorJob();
+                    $newJob->asset_id = $this->id;
+                    $newJob->consumerAsset()->associate($consumerAsset);
+                    $newJob->processor()->associate($this);
+                    $newJob->setState(ProcessorJob::STATE_FINISHED);
+                    $newJob->originalJob()->associate($job);
+
+                    $newJob->save();
+
+                    $asset->linkVariationFromJob($this, $newVariationName, $consumerAsset, $newAsset, false, $newJob);
                 }
             }
         }

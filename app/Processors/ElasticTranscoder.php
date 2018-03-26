@@ -226,7 +226,7 @@ class ElasticTranscoder extends Processor
                 $newAsset->duration = $output['Duration'];
             }
 
-            $variation = $asset->linkVariationFromJob($this, $variationName, $newAsset, false, $job);
+            $variation = $asset->linkVariationFromJob($this, $variationName, $consumerAsset, $newAsset, false, $job);
             $existingVariationNames[$variationName] = $variation;
 
             $index ++;

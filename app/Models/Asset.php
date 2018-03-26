@@ -62,7 +62,9 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
     }
 
     /**
+     * @param Processor $processor
      * @param $variationName
+     * @param ConsumerAsset $consumerAsset
      * @param \CatLab\Assets\Laravel\Models\Asset $variationAsset
      * @param bool $shareGlobally
      * @param ProcessorJob|null $job
@@ -71,23 +73,17 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
     public function linkVariationFromJob(
         Processor $processor,
         $variationName,
+        ConsumerAsset $consumerAsset,
         \CatLab\Assets\Laravel\Models\Asset $variationAsset,
         $shareGlobally = false,
         ProcessorJob $job = null
     ) {
+        /** @var Variation $variation */
         $variation = parent::linkVariation($variationName, $variationAsset, $shareGlobally);
 
-        // Is job set?
-        if (isset($job)) {
-            $variation->processorJob()->associate($job);
-            $variation->save();
-        }
-
-        // Is processor set?
-        if (isset($processor)) {
-            $variation->processor()->associate($processor);
-            $variation->save();
-        }
+        $variation->processorJob()->associate($job);
+        $variation->processor()->associate($processor);
+        $variation->save();
 
         return $variation;
     }

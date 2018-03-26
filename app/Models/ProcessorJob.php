@@ -79,6 +79,14 @@ class ProcessorJob extends Model
         return $this->hasMany(Variation::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function originalJob()
+    {
+        return $this->belongsTo(ProcessorJob::class, 'original_job_id');
+    }
+
     public function locks()
     {
         return $this->hasMany(ProcessorLock::class);
