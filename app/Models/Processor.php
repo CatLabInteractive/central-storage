@@ -393,7 +393,7 @@ class Processor extends Model
         $consumerAssets->leftJoin('processor_jobs', function($join) use ($processorId) {
 
             $join->on('assets.id', '=', 'processor_jobs.asset_id');
-            $join->on('processor_jobs.processor_id', '=', $processorId);
+            $join->on('processor_jobs.processor_id', '=', \DB::raw($processorId));
 
         });
 
