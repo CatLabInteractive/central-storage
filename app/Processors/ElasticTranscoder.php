@@ -105,6 +105,8 @@ class ElasticTranscoder extends Processor
             'presets' => 'required',
             'extensions' => 'required',
             'mimetype' => 'required',
+            'timeSpanStartTime' => 'numeric',
+            'timeSpanDuration' => 'numeric',
         ];
     }
 
@@ -316,6 +318,23 @@ class ElasticTranscoder extends Processor
     ) {
         # Setup the job input using the provided input key.
         $input = array('Key' => $input_key);
+
+        # Look for timespan stuff
+        $start = $this->getConfig('timeSpanStartTime');
+        if ($start) {
+            if (!isset($input['TimeSpan'])) {
+                $input['TimeSpan'] = [];
+            }
+            $input['TimeSpan']['StartTime'] = $start;
+        }
+
+        $duration = $this->getConfig('timeSpanDuration');
+        if ($duration) {
+            if (!isset($input['TimeSpan'])) {
+                $input['TimeSpan'] = [];
+            }
+            $input['TimeSpan']['Duration'] = $duration;
+        }
 
         # Specify the outputs based on the hls presets array spefified.
         $outputs = array();
