@@ -215,7 +215,7 @@ class ElasticTranscoder extends Processor
             }
 
             if (isset($output['FileSize'])) {
-                $newAsset->size = $output['Height'];
+                $newAsset->size = $output['FileSize'];
             }
 
             if (isset($output['DurationMillis'])) {

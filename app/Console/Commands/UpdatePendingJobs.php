@@ -38,7 +38,12 @@ class UpdatePendingJobs extends Command
     {
         // Check for pending jobs
         Processor::all()->each(function(Processor $processor) {
-            $pendingJobs = $processor->getPendingJobs()->take(10)->get();
+            $pendingJobs = $processor->getPendingJobs()->take(10);
+
+            if ($pendingJobs->count() > 0) {
+                $this->output->writeln('Processor ' . $processor->id . ': Found ' . $pendingJobs->count() . ' pending jobs');
+            }
+
             $pendingJobs->each(
                 function(ProcessorJob $job) use ($processor) {
                     $processor->updateJob($job);
