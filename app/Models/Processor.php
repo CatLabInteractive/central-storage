@@ -178,7 +178,6 @@ class Processor extends Model
         }
 
         // Next up, check for similar processors that have already created variations like this.
-        // These are always owned by a different consumer.
         $existingVariation = Variation::select('variations.*')
             ->where('original_asset_id', '=', $asset->id)
             ->with('processorJob')

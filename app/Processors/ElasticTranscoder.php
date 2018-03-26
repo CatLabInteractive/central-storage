@@ -370,6 +370,21 @@ class ElasticTranscoder extends Processor
         $myPresets = $this->getPresets();
         $theirPresets = $processor->getPresets();
 
-        return $myPresets == $theirPresets;
+        if ($myPresets != $theirPresets) {
+            return false;
+        }
+
+        $configToCheck = [
+            'timeSpanStartTime',
+            'timeSpanDuration'
+        ];
+
+        foreach ($configToCheck as $v) {
+            if ($processor->getConfig($v) != $processor->getConfig($v)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
