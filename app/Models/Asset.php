@@ -69,6 +69,7 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
      * @return \CatLab\Assets\Laravel\Models\Variation
      */
     public function linkVariationFromJob(
+        Processor $processor,
         $variationName,
         \CatLab\Assets\Laravel\Models\Asset $variationAsset,
         $shareGlobally = false,
@@ -79,6 +80,12 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
         // Is job set?
         if (isset($job)) {
             $variation->processorJob()->associate($job);
+            $variation->save();
+        }
+
+        // Is processor set?
+        if (isset($processor)) {
+            $variation->processor()->associate($processor);
             $variation->save();
         }
 

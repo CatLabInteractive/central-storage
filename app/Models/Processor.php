@@ -168,8 +168,7 @@ class Processor extends Model
         // Did we ever process this asset already?
         $existingAssetVariations = Variation::select('variations.*')
             ->where('original_asset_id', '=', $asset->id)
-            ->leftJoin('processor_jobs', 'processor_jobs.id', '=', 'variations.processor_job_id')
-            ->where('processor_jobs.processor_id', '=', $this->id)
+            ->where('processor_id', '=', $this->id)
             ->count();
 
         // If we have variations on this asset by earlier processes, don't try to create new ones.
@@ -241,7 +240,7 @@ class Processor extends Model
                     // link this new variation
                     $newAsset = $variation->asset;
 
-                    $asset->linkVariationFromJob($newVariationName, $newAsset, false, $job);
+                    $asset->linkVariationFromJob($this, $newVariationName, $newAsset, false, $job);
                 }
             }
         }

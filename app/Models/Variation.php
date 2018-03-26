@@ -15,4 +15,12 @@ class Variation extends \CatLab\Assets\Laravel\Models\Variation
     {
         return $this->belongsTo(ProcessorJob::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function processor()
+    {
+        return $this->belongsTo(Processor::class);
+    }
 }
