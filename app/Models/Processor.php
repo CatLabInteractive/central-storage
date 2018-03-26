@@ -203,9 +203,11 @@ class Processor extends Model
 
             $processedProcessors[$processorId] = true;
 
+            /*
             if ($job->processor->consumer_id === $this->consumer_id) {
                 throw new \LogicException("A variation created by the same owner is found. This is impossible.");
             }
+            */
 
             // Is the processor similar to this processor?
             if ($this->isSimilar($job->processor)) {
