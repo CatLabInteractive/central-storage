@@ -380,7 +380,7 @@ class ElasticTranscoder extends Processor
         ];
 
         foreach ($configToCheck as $v) {
-            if ($processor->getConfig($v) != $processor->getConfig($v)) {
+            if ($this->getConfig($v) != $processor->getConfig($v)) {
                 return false;
             }
         }
