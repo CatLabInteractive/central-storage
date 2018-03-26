@@ -64,7 +64,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             $processor = $consumerAsset
                 ->consumer
                 ->processors
-                ->where('varation_name', '=', $variationName)
+                ->where('variation_name', '=', $variationName)
                 ->first();
 
             if ($processor) {
