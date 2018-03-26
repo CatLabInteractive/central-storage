@@ -387,8 +387,16 @@ class Processor extends Model
         // left join assets
         $consumerAssets->leftJoin('assets', 'consumer_assets.asset_id', '=', 'assets.id');
 
+        $processorId = $this->id;
+
         // left join any jobs that have been registered already
-        $consumerAssets->leftJoin('processor_jobs', 'assets.id', '=', 'processor_jobs.asset_id');
+        $consumerAssets->leftJoin('processor_jobs', function($join) use ($processorId) {
+
+            $join->on('assets.id', '=', 'processor_jobs.asset_id');
+            $join->on('processor_jobs.processor_id', '=', $processorId);
+
+        });
+
         $consumerAssets->whereNull('processor_jobs.id');
 
         // filter on mimetype (this is going to be super slow.)
