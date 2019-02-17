@@ -43,6 +43,14 @@ class ConsumerAsset extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function consumer()
+    {
+        return $this->belongsTo(Consumer::class);
+    }
+
+    /**
      * @return \App\Models\Asset
      */
     public function getAsset()
@@ -51,14 +59,6 @@ class ConsumerAsset extends Model
         $asset->setConsumerAsset($this);
 
         return $asset;
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function consumer()
-    {
-        return $this->belongsTo(Consumer::class);
     }
 
     /**
@@ -90,26 +90,7 @@ class ConsumerAsset extends Model
      */
     public function isVariationProcessing($variationName)
     {
-        $consumer = $this->consumer;
-
-        // Look for the job that generates this variation.
-        foreach ($consumer->processors as $processor) {
-            /** @var Processor $processor */
-            if ($processor->doesGenerateVariation($variationName)) {
-                // look for a job for this asset.
-                $jobs = $processor
-                    ->jobs()
-                    ->where('consumer_asset_id', '=', $this->id)
-                    ->where('state', ProcessorJob::STATE_PENDING)
-                    ->count();
-
-                if ($jobs > 0) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $this->asset->isVariationProcessing($variationName, $this->consumer);
     }
 
     /**

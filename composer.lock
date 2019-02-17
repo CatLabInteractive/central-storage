@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bc47422ae72126d838c9f757b8394e2",
+    "content-hash": "2a820461c3ce97532b16e406cd09c9c5",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -414,11 +414,11 @@
         },
         {
             "name": "catlabinteractive/central-storage-client",
-            "version": "dev-master",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:catlabinteractive/central-storage-client.git",
-                "reference": "c12d187bd752f3e2dba7ca4885010a474aad6c5c"
+                "reference": "9bb87da37acd4f2f27894a803de9978af2f948d2"
             },
             "require": {
                 "guzzlehttp/guzzle": ">=6.0",
@@ -451,7 +451,7 @@
                 }
             ],
             "description": "Client for CatLab central storage.",
-            "time": "2018-01-03T12:56:44+00:00"
+            "time": "2019-02-17T11:56:54+00:00"
         },
         {
             "name": "catlabinteractive/laravel-assets",
@@ -2499,6 +2499,51 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "rap2hpoutre/create-user-command",
+            "version": "v0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rap2hpoutre/create-user-command.git",
+                "reference": "548002a81b3fc89813a544fdb47d764211e2dd00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rap2hpoutre/create-user-command/zipball/548002a81b3fc89813a544fdb47d764211e2dd00",
+                "reference": "548002a81b3fc89813a544fdb47d764211e2dd00",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.*",
+                "illuminate/support": "5.*",
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rap2hpoutre\\CreateUser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "rap2h",
+                    "email": "raphaelht@gmail.com"
+                }
+            ],
+            "description": "Create a user with artisan command",
+            "keywords": [
+                "artisan",
+                "create",
+                "laravel",
+                "php",
+                "user"
+            ],
+            "time": "2016-12-15T15:57:23+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5294,9 +5339,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "catlabinteractive/central-storage-client": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

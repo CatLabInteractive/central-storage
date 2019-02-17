@@ -72,6 +72,7 @@ class UploadController
      * Remove a file
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function remove(Request $request, $key)
     {

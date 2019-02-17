@@ -39,12 +39,12 @@ class ProcessorTrigger extends Model
     }
 
     /**
-     * @param ConsumerAsset $asset
+     * @param Asset $asset
      * @return bool
      */
-    public function check(ConsumerAsset $asset)
+    public function check(Asset $asset)
     {
-        $mimetype = $asset->getAsset()->mimetype;
+        $mimetype = $asset->mimetype;
 
         $mimetypeReg = preg_quote($this->mimetype, '/');
         $regex = '/^' . str_replace('\*', '(.*)', $mimetypeReg) . '$/i';

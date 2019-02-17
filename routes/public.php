@@ -11,3 +11,5 @@ Route::get('/assets/{id}{extension}', 'AssetController@viewConsumerAsset')
 Route::get('/assets/{id}', 'AssetController@viewConsumerAsset');
 
 Route::any('processors/notification/{processorName}', 'ProcessorController@notification');
+
+Route::get('/proxy/{consumerKey}/{urlBase64}/{signature}', 'CachedProxyController@cache');

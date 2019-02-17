@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
         AssetCacheClear::class,
         RunProcessor::class,
         UpdatePendingJobs::class,
-
+        \Rap2hpoutre\CreateUser\Command::class,
     ];
 
     /**

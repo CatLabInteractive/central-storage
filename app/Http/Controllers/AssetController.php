@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Combination;
+use App\Models\Consumer;
 use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
@@ -45,14 +46,30 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         /** @var \App\Models\Asset $asset */
         $asset = $consumerAsset->getAsset();
 
+        $consumer = $consumerAsset->consumer;
+
+        return $this->viewConsumerWithAsset($request, $asset, $consumer);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Asset $asset
+     * @param Consumer $consumer
+     * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function viewConsumerWithAsset(
+        \Illuminate\Http\Request $request,
+        \App\Models\Asset $asset,
+        Consumer $consumer
+    ) {
         // Check processors
         $variationName = \Request::query('variation');
         if (empty($variationName)) {
             // do we have a "default variation"?
-            $processors = $consumerAsset->consumer->processors;
+            $processors = $consumer->processors;
             foreach ($processors as $processor) {
                 /** @var Processor $processor */
-                if ($processor->isDefaultVariation($consumerAsset)) {
+                if ($processor->isDefaultVariation($asset)) {
                     $variationName = $processor->getDesiredVariation($request);
                     break;
                 }
@@ -61,8 +78,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             // Look for the processor with this specific variation name
 
             /** @var Processor|null $processor */
-            $processor = $consumerAsset
-                ->consumer
+            $processor = $consumer
                 ->processors
                 ->where('variation_name', '=', $variationName)
                 ->first();
@@ -83,7 +99,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             } else {
 
                 // Variation not found. Check if we are processing this.
-                $isProcessing = $consumerAsset->isVariationProcessing($variationName);
+                $isProcessing = $asset->isVariationProcessing($variationName, $consumer);
 
                 if ($isProcessing) {
                     return Response::json([
@@ -365,6 +381,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     /**
      * @param Asset $asset
      * @return array
+     * @throws \Exception
      */
     protected function getCacheHeaders(Asset $asset)
     {
@@ -383,6 +400,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * @param Asset $asset
      * @param array $forceHeaders
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\StreamedResponse
+     * @throws \Exception
      */
     protected function getAssetResponse(Asset $asset, $forceHeaders = [])
     {

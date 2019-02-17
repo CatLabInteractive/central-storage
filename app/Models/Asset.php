@@ -105,4 +105,32 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
         $this->consumerAsset = $consumerAsset;
         return $this;
     }
+
+    /**
+     * @param $variationName
+     * @param Consumer $consumer
+     * @return bool
+     */
+    public function isVariationProcessing($variationName, Consumer $consumer)
+    {
+        // Look for the job that generates this variation.
+        foreach ($consumer->processors as $processor) {
+            /** @var Processor $processor */
+            if ($processor->doesGenerateVariation($variationName)) {
+                // look for a job for this asset.
+                $jobs = $processor
+                    ->jobs()
+                    ->where('consumer_asset_id', '=', $this->id)
+                    ->where('state', ProcessorJob::STATE_PENDING)
+                    ->count();
+
+                if ($jobs > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }

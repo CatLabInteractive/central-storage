@@ -442,10 +442,10 @@ class Processor extends Model
 
     /**
      * Check if this processor generates the "default variation" that will be returned to the user.
-     * @param ConsumerAsset $asset
+     * @param Asset $asset
      * @return bool
      */
-    public function isDefaultVariation(ConsumerAsset $asset)
+    public function isDefaultVariation(Asset $asset)
     {
         if (!$this->default_variation) {
             return false;
@@ -455,10 +455,10 @@ class Processor extends Model
     }
 
     /**
-     * @param ConsumerAsset $asset
+     * @param Asset $asset
      * @return bool
      */
-    public function isTriggered(ConsumerAsset $asset)
+    public function isTriggered(Asset $asset)
     {
         foreach ($this->triggers as $trigger) {
             /** @var ProcessorTrigger $trigger */
