@@ -46,7 +46,7 @@ class UploadController
             // Processors
             foreach ($consumer->processors as $processor) {
                 /** @var Processor $processor */
-                if ($processor->isTriggered($consumerAsset)) {
+                if ($processor->isTriggered($asset)) {
                     $processor->process($consumerAsset);
                 }
             }
