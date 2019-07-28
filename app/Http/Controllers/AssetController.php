@@ -64,17 +64,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     ) {
         // Check processors
         $variationName = \Request::query('variation');
-        if (empty($variationName)) {
-            // do we have a "default variation"?
-            $processors = $consumer->processors;
-            foreach ($processors as $processor) {
-                /** @var Processor $processor */
-                if ($processor->isDefaultVariation($asset)) {
-                    $variationName = $processor->getDesiredVariation($request);
-                    break;
-                }
-            }
-        } else {
+        if ($variationName) {
             // Look for the processor with this specific variation name
 
             /** @var Processor|null $processor */
@@ -85,6 +75,19 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             if ($processor) {
                 $variationName = $processor->getDesiredVariation($request);
+            }
+        }
+
+        // no variation name found? Look for a default one
+        if (empty($variationName)) {
+            // do we have a "default variation"?
+            $processors = $consumer->processors;
+            foreach ($processors as $processor) {
+                /** @var Processor $processor */
+                if ($processor->isDefaultVariation($asset)) {
+                    $variationName = $processor->getDesiredVariation($request);
+                    break;
+                }
             }
         }
 
