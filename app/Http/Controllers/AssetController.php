@@ -75,6 +75,9 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             if ($processor) {
                 $variationName = $processor->getDesiredVariation($request);
+            } else {
+                // Invalid variationname? Then set to null.
+                $variationName = null;
             }
         }
 
