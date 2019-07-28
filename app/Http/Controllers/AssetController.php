@@ -22,6 +22,8 @@ use Response;
  */
 class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 {
+    const VARIATION_ORIGINAL = 'original';
+
     const SIZE_THUMBNAIL = 'thumbnail';
     const SIZE_ORIGINAL = 'original';
     const SIZE_LOWRES = 'lowres';
@@ -64,7 +66,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     ) {
         // Check processors
         $variationName = \Request::query('variation');
-        if ($variationName) {
+        if ($variationName && $variationName !== self::VARIATION_ORIGINAL) {
             // Look for the processor with this specific variation name
 
             /** @var Processor|null $processor */
@@ -73,7 +75,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
                 ->where('variation_name', '=', $variationName)
                 ->first();
 
-            if ($processor) {
+            if ($processor && $processor->isTriggered($asset)) {
                 $variationName = $processor->getDesiredVariation($request);
             } else {
                 // Invalid variationname? Then set to null.
@@ -95,7 +97,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         }
 
         // no variation requested? go to plain asset.
-        if (empty($variationName) || $variationName === 'original') {
+        if (empty($variationName) || $variationName === self::VARIATION_ORIGINAL) {
             return $this->viewAsset($asset);
         } else {
             $variation = $asset->getVariation($variationName);
