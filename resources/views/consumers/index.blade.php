@@ -17,6 +17,7 @@
                 <th>Name</th>
                 <th>Owner</th>
                 <th>Key</th>
+                <th>Actions</th>
             </tr>
 
             @foreach($consumers as $consumer)
@@ -27,6 +28,10 @@
 
                     <td>{{ $consumer->user->name }}</td>
                     <td>{{ $consumer->key }}</td>
+                    <td>
+                        <a href="{{ action('ExplorerController@explore', [ $consumer->id ]) }}">Explore</a> |
+                        <a href="{{ action('ConsumerController@test', [ $consumer->id ]) }}">Test</a>
+                    </td>
                 </tr>
             @endforeach
 

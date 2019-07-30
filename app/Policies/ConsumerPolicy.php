@@ -32,6 +32,16 @@ class ConsumerPolicy
 
     /**
      * @param User $user
+     * @param Consumer $consumer
+     * @return bool
+     */
+    public function explore(User $user, Consumer $consumer)
+    {
+        return $user->isAdmin() || $consumer->user->equals($user);
+    }
+
+    /**
+     * @param User $user
      * @return bool
      */
     public function create(User $user)
