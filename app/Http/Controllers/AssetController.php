@@ -179,6 +179,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function combine()
     {

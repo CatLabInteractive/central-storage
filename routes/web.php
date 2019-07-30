@@ -59,5 +59,7 @@ Route::group(
         Route::get('/consumers/{consumer}/processors/{processor}/change', 'ProcessorController@setDefault');
         Route::get('/consumers/{consumer}/processors/{processor}/run', 'ProcessorController@run');
 
+        Route::get('/consumers/{consumer}/explore', 'ExplorerController@explore');
+
     }
 );
