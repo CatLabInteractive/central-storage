@@ -11,7 +11,7 @@
         "aws/aws-sdk-php": "3.30.4",
         "barryvdh/laravel-cors": "^0.9.2",
         "barryvdh/laravel-ide-helper": "^2.3",
-        "catlabinteractive/central-storage-client": "~1.0.2",
+        "catlabinteractive/central-storage-client": "~1.0",
         "catlabinteractive/laravel-assets": "~2.0.14",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^6.3",
@@ -66,12 +66,5 @@
         "platform": {
             "php": "7.0"
         }
-    },
-
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:catlabinteractive/central-storage-client.git"
-        }
-    ]
+    }
 }
