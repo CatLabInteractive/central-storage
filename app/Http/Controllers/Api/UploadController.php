@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Consumer;
 use App\Models\ConsumerAsset;
 use App\Models\Processor;
+use Carbon\Carbon;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Http\Request;
@@ -40,6 +41,13 @@ class UploadController
 
             $consumerAsset = ConsumerAsset::createFromAsset($asset, $consumer);
             $consumerAsset->name = $file->getClientOriginalName();
+
+            if ($request->post('expires')) {
+                $expires = Carbon::parse($request->post('expires'));
+                if ($expires) {
+                    $consumerAsset->expires_at = $expires;
+                }
+            }
 
             $consumerAsset->save();
 

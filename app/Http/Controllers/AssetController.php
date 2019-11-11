@@ -37,6 +37,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * @param $extension
      * @param string $subPath
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function viewConsumerAsset(Request $request, $key) {
         $extension = $request->route('extension');
@@ -45,6 +46,10 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         /** @var ConsumerAsset $consumerAsset */
         $consumerAsset = ConsumerAsset::assetKey($key)->first();
         if (!$consumerAsset) {
+            abort(404, 'Asset not found: ' . $key);
+        }
+
+        if ($consumerAsset->expires_at && $consumerAsset->expires_at < new DateTime()) {
             abort(404, 'Asset not found: ' . $key);
         }
 
