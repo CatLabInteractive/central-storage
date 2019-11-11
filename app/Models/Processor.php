@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use App\Processors\ElasticTranscoder;
+use App\Processors\ExtractArchive;
+use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\PathGenerators\PathGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Validation\ValidationException;
 use Request;
+use SplFileInfo;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Validator;
 
 /**
@@ -43,7 +47,8 @@ class Processor extends Model
     public static function getProcessors()
     {
         return [
-            ElasticTranscoder::class
+            ElasticTranscoder::class,
+            ExtractArchive::class
         ];
     }
 
@@ -135,6 +140,26 @@ class Processor extends Model
         $this->handle($job, $outputPath);
 
         $job->save();
+    }
+
+    protected function uploadProcessedFile(
+        ConsumerAsset $consumer,
+        UploadedFile $fileInfo,
+        $variationName,
+        $shareGlobally = false,
+        ProcessorJob $job = null
+    ) {
+        $uploader = new AssetUploader();
+
+        // Look for duplicate file
+        $variationAsset = $uploader->getDuplicate($fileInfo);
+        if (!$variationAsset) {
+            $variationAsset = $uploader->uploadFile($fileInfo);
+        }
+
+        /** @var Asset $consumerAsset */
+        $consumerAsset = $consumer->asset;
+        return $consumerAsset->linkVariationFromJob($this, $variationName, $consumer, $variationAsset, $shareGlobally, $job);
     }
 
     /**
@@ -472,12 +497,19 @@ class Processor extends Model
 
     /**
      * Get the name of the desired variation (based on request parameters)
+     * @param Asset $asset
      * @param \Illuminate\Http\Request $request
-     * @return string
+     * @param string $subPath
+     * @return Variation|bool|null|\Symfony\Component\HttpFoundation\Response
      */
-    public function getDesiredVariation(\Illuminate\Http\Request $request)
+    public function getDesiredVariation(Asset $asset, \Illuminate\Http\Request $request, $subPath)
     {
-        return $this->variation_name;
+        $variation = $asset->getVariation($this->variation_name);
+        if (!$variation) {
+            // we should return FALSE to notify the controller that we are still processing this variation.
+            return false;
+        }
+        return $variation;
     }
 
     /**

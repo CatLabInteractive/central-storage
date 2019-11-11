@@ -9,11 +9,11 @@ use App\Models\Processor;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use DateInterval;
 use DateTime;
 use Image;
-use Request;
 use Response;
 
 /**
@@ -32,13 +32,16 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
     /**
      * View an asset
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param $key
      * @param $extension
+     * @param string $subPath
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewConsumerAsset(\Illuminate\Http\Request $request, $key, $extension = null)
-    {
+    public function viewConsumerAsset(Request $request, $key) {
+        $extension = $request->route('extension');
+        $subPath = $request->route('subPath');
+
         /** @var ConsumerAsset $consumerAsset */
         $consumerAsset = ConsumerAsset::assetKey($key)->first();
         if (!$consumerAsset) {
@@ -50,22 +53,26 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         $consumer = $consumerAsset->consumer;
 
-        return $this->viewConsumerWithAsset($request, $asset, $consumer);
+        return $this->viewConsumerWithAsset($request, $asset, $consumer, $subPath);
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param \App\Models\Asset $asset
      * @param Consumer $consumer
+     * @param string $subPath
      * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     protected function viewConsumerWithAsset(
-        \Illuminate\Http\Request $request,
+        Request $request,
         \App\Models\Asset $asset,
-        Consumer $consumer
+        Consumer $consumer,
+        $subPath = null
     ) {
         // Check processors
-        $variationName = \Request::query('variation');
+        $variationName = $request->query('variation');
+        $variation = null;
+
         if ($variationName && $variationName !== self::VARIATION_ORIGINAL) {
             // Look for the processor with this specific variation name
 
@@ -76,7 +83,8 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
                 ->first();
 
             if ($processor && $processor->isTriggered($asset)) {
-                $variationName = $processor->getDesiredVariation($request);
+                //$variationName = $processor->getDesiredVariation($request);
+                $variation = $processor->getDesiredVariation($asset, $request, $subPath);
             } else {
                 // Invalid variationname? Then set to null.
                 $variationName = null;
@@ -90,18 +98,19 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             foreach ($processors as $processor) {
                 /** @var Processor $processor */
                 if ($processor->isDefaultVariation($asset)) {
-                    $variationName = $processor->getDesiredVariation($request);
+                    //$variationName = $processor->getDesiredVariation($request);
+                    $variation = $processor->getDesiredVariation($asset, $request, $subPath);
                     break;
                 }
             }
         }
 
         // no variation requested? go to plain asset.
-        if (empty($variationName) || $variationName === self::VARIATION_ORIGINAL) {
+        if ($variation === null) {
             return $this->viewAsset($asset);
+        } elseif ($variation instanceof \Symfony\Component\HttpFoundation\Response) {
+            return $variation;
         } else {
-            $variation = $asset->getVariation($variationName);
-
             if ($variation) {
                 return $this->viewAsset($variation->asset);
             } else {
@@ -178,12 +187,14 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     }
 
     /**
+     * @param Request $request
      * @return mixed
      * @throws \Exception
      */
-    public function combine()
-    {
-        $assetsKeys = Request::query('assets');
+    public function combine(
+        Request $request
+    ) {
+        $assetsKeys = $request->query('assets');
         if (empty($assetsKeys)) {
             abort(404, 'No assets provided.');
         }
@@ -221,7 +232,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         /** @var Asset $firstAsset */
         $firstAsset = $consumerAssets[0]->asset;
 
-        $cols = Request::input('cols', 2);
+        $cols = $request->input('cols', 2);
         $combination = $this->generateCombination($consumerAssets, $cols);
 
         // encode image data only if image is not encoded yet

@@ -17,7 +17,7 @@ Route::get('/v1/healthcheck', 'Api\HealthCheckController@healthCheck');
 Route::group(
     [
         'middleware' => [ 'auth.api' ],
-        'namespace' => '\Api'
+        'namespace' => '\App\Http\Controllers\Api'
     ],
     function()
     {

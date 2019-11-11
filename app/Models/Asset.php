@@ -133,4 +133,21 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
         return false;
     }
 
+    /**
+     * @param $destination
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function saveToFile($destination)
+    {
+        $writeStream = fopen($destination, 'w+');
+
+        $disk = $this->getDisk();
+        $stream = $disk->readStream($this->path);
+        while (!feof($stream)) {
+            fwrite($writeStream, fgets($stream, 1024));
+        }
+        fclose($writeStream);
+        fclose($stream);
+    }
+
 }

@@ -2,13 +2,19 @@
 
 Route::get('/assets/combine', 'AssetController@combine');
 
-Route::get('/assets/{id}{extension}', 'AssetController@viewConsumerAsset')
+Route::get('/assets/{id}{extension?}/{subPath?}', 'AssetController@viewConsumerAsset')
     ->where([
         'id' => '[a-zA-Z0-9-_]+',
-        'extension' => '\..+'
+        'extension' => '\.[a-zA-Z0-9]+',
+        'subPath' => '(.*)'
     ]);
 
-Route::get('/assets/{id}', 'AssetController@viewConsumerAsset');
+Route::get('/assets/{id}/{subPath?}', 'AssetController@viewConsumerAsset')
+    ->where([
+        'id' => '[a-zA-Z0-9-_]+',
+        'extension' => '\.[a-zA-Z0-9]+',
+        'subPath' => '(.*)'
+    ]);
 
 Route::any('processors/notification/{processorName}', 'ProcessorController@notification');
 
