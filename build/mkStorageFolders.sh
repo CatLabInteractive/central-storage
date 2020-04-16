@@ -6,6 +6,6 @@ mkdir storage/app/public
 mkdir storage/app/uploads
 mkdir storage/framework
 mkdir storage/framework/cache
-mkdir fstorage/framework/sessions
-mkdir fstorage/framework/testing
-mkdir fstorage/framework/views
+mkdir storage/framework/sessions
+mkdir storage/framework/testing
+mkdir storage/framework/views
