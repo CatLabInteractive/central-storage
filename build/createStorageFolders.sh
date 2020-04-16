@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+mkdir bootstrap/cache
+mkdir storage
+mkdir storage/app
+mkdir storage/app/public
+mkdir storage/app/uploads
+mkdir storage/framework
+mkdir storage/framework/cache
+mkdir fstorage/framework/sessions
+mkdir fstorage/framework/testing
+mkdir fstorage/framework/views
