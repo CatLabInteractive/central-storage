@@ -25,3 +25,5 @@ echo
 echo "Caching config & routes"
 $PHP_BIN artisan config:cache
 $PHP_BIN artisan route:cache
+
+$PHP_BIN artisan optimize
