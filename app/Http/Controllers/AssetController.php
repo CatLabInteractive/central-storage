@@ -447,6 +447,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         return [
             'Expires' => $expireDate->format('r'),
+            'Vary: Origin, Access-Control-Request-Headers, Access-Control-Request-Method',
             'Last-Modified' => $asset->created_at ? $asset->created_at->format('r') : null,
             'Cache-Control' => 'max-age=' . $this->dateIntervalToSeconds($expireInterval) . ', public',
             'Access-Control-Allow-Origin' => '*'
