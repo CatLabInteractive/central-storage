@@ -63,6 +63,38 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
     /**
      * @param Request $request
+     * @param $key
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function assetOptionsRequest(Request $request, $key)
+    {
+        $extension = $request->route('extension');
+        $subPath = $request->route('subPath');
+
+        /** @var ConsumerAsset $consumerAsset */
+        $consumerAsset = ConsumerAsset::assetKey($key)->first();
+        if (!$consumerAsset) {
+            abort(404, 'Asset not found: ' . $key);
+        }
+
+        if ($consumerAsset->expires_at && $consumerAsset->expires_at < new DateTime()) {
+            abort(404, 'Asset not found: ' . $key);
+        }
+
+        /** @var \App\Models\Asset $asset */
+        $asset = $consumerAsset->getAsset();
+
+        $headers = [
+            'Allow' => 'GET'
+        ];
+
+        $headers = array_merge($headers, $this->getCacheHeaders($asset));
+        return response('')
+            ->withHeaders($headers);
+    }
+
+    /**
+     * @param Request $request
      * @param \App\Models\Asset $asset
      * @param Consumer $consumer
      * @param string $subPath

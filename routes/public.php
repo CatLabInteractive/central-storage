@@ -9,7 +9,21 @@ Route::get('/assets/{id}{extension?}/{subPath?}', 'AssetController@viewConsumerA
         'subPath' => '(.*)'
     ]);
 
+Route::options('/assets/{id}{extension?}/{subPath?}', 'AssetController@assetOptionsRequest')
+    ->where([
+        'id' => '[a-zA-Z0-9-_]+',
+        'extension' => '\.[a-zA-Z0-9]+',
+        'subPath' => '(.*)'
+    ]);
+
 Route::get('/assets/{id}/{subPath?}', 'AssetController@viewConsumerAsset')
+    ->where([
+        'id' => '[a-zA-Z0-9-_]+',
+        'extension' => '\.[a-zA-Z0-9]+',
+        'subPath' => '(.*)'
+    ]);
+
+Route::options('/assets/{id}/{subPath?}', 'AssetController@assetOptionsRequest')
     ->where([
         'id' => '[a-zA-Z0-9-_]+',
         'extension' => '\.[a-zA-Z0-9]+',
