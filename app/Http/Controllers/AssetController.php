@@ -183,6 +183,12 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             $dMin = min($dw, $dh);
             return [ intval($dMin * $asset->width), intval($dMin * $asset->height) ];
+        } elseif ($maxWidth) {
+            $dw = $maxWidth / $asset->width;
+            return [ intval($dw * $asset->width), intval($dw * $asset->height) ];
+        } elseif ($maxHeight) {
+            $dh = $maxHeight / $asset->height;
+            return [ intval($dh * $asset->width), intval($dh * $asset->height) ];
         }
 
         switch ($size) {
