@@ -174,6 +174,17 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     {
         $size = \Request::get('size');
 
+        // Min and max width?
+        $maxWidth = intval(\Request::get('maxWidth'));
+        $maxHeight = intval(\Request::get('maxHeight'));
+        if ($maxWidth && $maxHeight) {
+            $dw = $maxWidth / $asset->width;
+            $dh = $maxHeight / $asset->height;
+
+            $dMin = min($dw, $dh);
+            return [ intval($dMin * $asset->width), intval($dMin * $asset->height) ];
+        }
+
         switch ($size) {
             case self::SIZE_DIN:
                 $width = 350;
