@@ -11,7 +11,7 @@
         "barryvdh/laravel-cors": "^0.11.4",
         "barryvdh/laravel-ide-helper": "^2.3",
         "catlabinteractive/central-storage-client": "~1.0",
-        "catlabinteractive/laravel-assets": "~2.0.14",
+        "catlabinteractive/laravel-assets": "~2.0.15",
         "chumper/zipper": "^1.0",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^6.3",
