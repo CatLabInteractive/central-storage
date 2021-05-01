@@ -525,19 +525,4 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             return 'https://s3.' . $region . '.amazonaws.com/' . $bucket . '/' . $asset->path;
         }
     }
-
-    /**
-     * @param Asset $asset
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\StreamedResponse
-     * @throws \Exception
-     */
-    protected function getImageResponse(Asset $asset)
-    {
-        $shape = \Request::input(self::QUERY_PARAM_SHAPE);
-
-        $targetSize = $this->getImageSize($asset);
-        $variation = $asset->getResizedImage($targetSize[0], $targetSize[1], $shape);
-
-        return $this->getAssetResponse($variation);
-    }
 }
