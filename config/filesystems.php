@@ -60,11 +60,12 @@ return [
             'key' => env('AWS_KEY'),
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
-            'bucket' => env('AWS_BUCKET')
-            /*,
-            'http' => [
-                'connect_timeout' => 30
-            ]*/
+            'bucket' => env('AWS_BUCKET'),
+            'options' => [
+                '@http' => [
+                    'stream' => false,
+                ],
+            ]
         ],
 
     ],
