@@ -61,7 +61,7 @@ return [
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'http' => [
+            '@http' => [
                 'stream' => false
             ]
         ],
