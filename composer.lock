@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "395f54e0e976b91a8805254c883325f6",
+    "content-hash": "f5e47ea73117ede6d850c7af5de2b2b0",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -552,16 +552,16 @@
         },
         {
             "name": "catlabinteractive/laravel-assets",
-            "version": "v2.0.16",
+            "version": "v2.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "9f59928c7f05f7aadf5161445ccca8f72fb3c7aa"
+                "reference": "53412a7c8ad74b7e6c29e8e8e69e0b923661e2c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/9f59928c7f05f7aadf5161445ccca8f72fb3c7aa",
-                "reference": "9f59928c7f05f7aadf5161445ccca8f72fb3c7aa",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/53412a7c8ad74b7e6c29e8e8e69e0b923661e2c5",
+                "reference": "53412a7c8ad74b7e6c29e8e8e69e0b923661e2c5",
                 "shasum": ""
             },
             "require": {
@@ -591,9 +591,9 @@
             "description": "Handle asset upload",
             "support": {
                 "issues": "https://github.com/CatLabInteractive/laravel-assets/issues",
-                "source": "https://github.com/CatLabInteractive/laravel-assets/tree/v2.0.16"
+                "source": "https://github.com/CatLabInteractive/laravel-assets/tree/master"
             },
-            "time": "2021-04-30T23:57:57+00:00"
+            "time": "2019-02-17T09:23:25+00:00"
         },
         {
             "name": "chumper/zipper",
@@ -739,21 +739,20 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.0.13",
+            "version": "2.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "986e8b86b7b570632ad0a905c3726c33dd4c0efb"
+                "reference": "6c12ce263da71641903e399c3ce8ecb08fd375fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/986e8b86b7b570632ad0a905c3726c33dd4c0efb",
-                "reference": "986e8b86b7b570632ad0a905c3726c33dd4c0efb",
+                "url": "https://api.github.com/repos/composer/composer/zipball/6c12ce263da71641903e399c3ce8ecb08fd375fb",
+                "reference": "6c12ce263da71641903e399c3ce8ecb08fd375fb",
                 "shasum": ""
             },
             "require": {
                 "composer/ca-bundle": "^1.0",
-                "composer/metadata-minifier": "^1.0",
                 "composer/semver": "^3.0",
                 "composer/spdx-licenses": "^1.2",
                 "composer/xdebug-handler": "^1.1",
@@ -817,7 +816,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.0.13"
+                "source": "https://github.com/composer/composer/tree/2.0.12"
             },
             "funding": [
                 {
@@ -833,76 +832,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-27T11:11:08+00:00"
-        },
-        {
-            "name": "composer/metadata-minifier",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/metadata-minifier.git",
-                "reference": "c549d23829536f0d0e984aaabbf02af91f443207"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/metadata-minifier/zipball/c549d23829536f0d0e984aaabbf02af91f443207",
-                "reference": "c549d23829536f0d0e984aaabbf02af91f443207",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.2 || ^7.0 || ^8.0"
-            },
-            "require-dev": {
-                "composer/composer": "^2",
-                "phpstan/phpstan": "^0.12.55",
-                "symfony/phpunit-bridge": "^4.2 || ^5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Composer\\MetadataMinifier\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Small utility library that handles metadata minification and expansion.",
-            "keywords": [
-                "composer",
-                "compression"
-            ],
-            "support": {
-                "issues": "https://github.com/composer/metadata-minifier/issues",
-                "source": "https://github.com/composer/metadata-minifier/tree/1.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://packagist.com",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/composer",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-04-07T13:37:33+00:00"
+            "time": "2021-04-01T08:14:59+00:00"
         },
         {
             "name": "composer/semver",
