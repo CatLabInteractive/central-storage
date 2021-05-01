@@ -528,7 +528,8 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
     /**
      * @param Asset $asset
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\StreamedResponse
+     * @throws \Exception
      */
     protected function getImageResponse(Asset $asset)
     {
@@ -537,16 +538,6 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $targetSize = $this->getImageSize($asset);
         $variation = $asset->getResizedImage($targetSize[0], $targetSize[1], $shape);
 
-        //return $this->getAssetResponse($variation);
-        return \Response::make(
-            $variation->getData(),
-            200,
-            array_merge(
-                [
-                    'Content-type' => $asset->mimetype
-                ],
-                $this->getCacheHeaders($asset)
-            )
-        );
+        return $this->getAssetResponse($variation);
     }
 }
