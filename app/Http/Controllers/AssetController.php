@@ -538,7 +538,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $variation = $asset->getResizedImage($targetSize[0], $targetSize[1], $shape);
 
         //return $this->getAssetResponse($variation);
-        $response = \Response::make(
+        return \Response::make(
             $variation->getData(),
             200,
             array_merge(
@@ -548,7 +548,5 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
                 $this->getCacheHeaders($asset)
             )
         );
-
-        return $response;
     }
 }
