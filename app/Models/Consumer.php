@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\StatisticsHelper;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Class Consumer
@@ -26,7 +27,7 @@ class Consumer extends Model
         $consumer->name = $name;
 
         $consumer->key = self::createUniqueKey();
-        $consumer->secret = str_random(32);
+        $consumer->secret = Str::random(32);
 
         return $consumer;
     }
@@ -46,7 +47,7 @@ class Consumer extends Model
     public static function createUniqueKey()
     {
         do {
-            $key = str_random(16);
+            $key = Str::random(16);
         } while (
             Consumer::whereKey($key)->count() > 0
         );

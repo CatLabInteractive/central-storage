@@ -35,7 +35,7 @@ class ExtractArchive extends Processor
 
         $fileCounter = 0;
 
-        $zip = \Zipper::make($tempFile);
+        $zip = \Madzipper::make($tempFile);
         foreach ($zip->listFiles() as $file) {
             $content = $zip->getFileContent($file);
             $variationName = $this->variation_name . ':' . (++ $fileCounter);

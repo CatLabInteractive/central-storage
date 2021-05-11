@@ -20,8 +20,7 @@ class Kernel extends ConsoleKernel
         MigrateDisk::class,
         AssetCacheClear::class,
         RunProcessor::class,
-        UpdatePendingJobs::class,
-        \Rap2hpoutre\CreateUser\Command::class,
+        UpdatePendingJobs::class
     ];
 
     /**

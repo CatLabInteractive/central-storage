@@ -6,6 +6,7 @@ use CatLab\Assets\Laravel\Helpers\AssetFactory;
 use CatLab\Assets\Laravel\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 /**
  * Class ConsumerAsset
@@ -72,7 +73,7 @@ class ConsumerAsset extends Model
     public static function createUniqueKey()
     {
         do {
-            $key = str_random(self::KEY_LENGTH);
+            $key = Str::random(self::KEY_LENGTH);
         } while (
             self::assetKey($key)->count() > 0
         );

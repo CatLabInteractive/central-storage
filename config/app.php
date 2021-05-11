@@ -149,7 +149,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -169,8 +168,7 @@ return [
         CatLab\CentralStorage\Client\CentralStorageServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
-        Barryvdh\Cors\ServiceProvider::class,
-        Chumper\Zipper\ZipperServiceProvider::class
+        Madnest\Madzipper\MadzipperServiceProvider::class,
 
     ],
 
@@ -227,6 +225,7 @@ return [
 
         'CentralStorage' => \CatLab\CentralStorage\Client\CentralStorageClientFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Madzipper' => Madnest\Madzipper\Madzipper::class
 
     ],
 
