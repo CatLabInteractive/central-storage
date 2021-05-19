@@ -149,5 +149,4 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
         fclose($writeStream);
         fclose($stream);
     }
-
 }

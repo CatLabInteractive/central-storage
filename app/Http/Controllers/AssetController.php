@@ -65,6 +65,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * @param Request $request
      * @param $key
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
      */
     public function assetOptionsRequest(Request $request, $key)
     {
@@ -99,6 +100,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * @param Consumer $consumer
      * @param string $subPath
      * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function viewConsumerWithAsset(
         Request $request,
@@ -275,6 +277,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             // YOU NEVER KNOW FOR SURE OKAY?!
             // MD5 collision COULD happen.
             if ($combination->path === $queryPath) {
+                $combination->asset->updateLastUsed();
                 return $this->getAssetResponse($combination->asset);
             }
         }
@@ -333,6 +336,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             \Log::error($e->getMessage());
         }
 
+        $combination->asset->updateLastUsed();
         return $this->getAssetResponse($combination->asset);
     }
 

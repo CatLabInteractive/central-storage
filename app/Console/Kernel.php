@@ -6,6 +6,7 @@ use App\Console\Commands\AssetCacheClear;
 use App\Console\Commands\MigrateDisk;
 use App\Console\Commands\RunProcessor;
 use App\Console\Commands\UpdatePendingJobs;
+use CatLab\Assets\Laravel\Commands\CleanupUnusedVariations;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -20,9 +21,11 @@ class Kernel extends ConsoleKernel
         MigrateDisk::class,
         AssetCacheClear::class,
         RunProcessor::class,
-        UpdatePendingJobs::class
+        UpdatePendingJobs::class,
+        CleanupUnusedVariations::class
     ];
 
+    /**
     /**
      * Define the application's command schedule.
      *
