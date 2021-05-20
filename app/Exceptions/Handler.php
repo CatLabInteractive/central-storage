@@ -35,7 +35,7 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         if ($this->shouldReport($exception)) {
-            if (Config::get('airbrake.projectId')) {
+            if (class_exists('\Config') && Config::get('airbrake.projectId')) {
                 $airbrakeNotifier = app(\Airbrake\Notifier::class);
                 if ($airbrakeNotifier) {
                     $airbrakeNotifier->notify($exception);
