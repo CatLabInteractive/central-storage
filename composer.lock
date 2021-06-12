@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84451e6f4603cc90eaed033541bec16f",
+    "content-hash": "87d0dab5a1d7ab919eb3af8161e4f7ee",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -492,16 +492,16 @@
         },
         {
             "name": "catlabinteractive/laravel-assets",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "afb54e94985967af38b4500eb79a719d47985de8"
+                "reference": "df76f6c3f93464eabbdbd13f56780c371eb90a82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/afb54e94985967af38b4500eb79a719d47985de8",
-                "reference": "afb54e94985967af38b4500eb79a719d47985de8",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/df76f6c3f93464eabbdbd13f56780c371eb90a82",
+                "reference": "df76f6c3f93464eabbdbd13f56780c371eb90a82",
                 "shasum": ""
             },
             "require": {
@@ -531,9 +531,9 @@
             "description": "Handle asset upload",
             "support": {
                 "issues": "https://github.com/CatLabInteractive/laravel-assets/issues",
-                "source": "https://github.com/CatLabInteractive/laravel-assets/tree/v3.0.1"
+                "source": "https://github.com/CatLabInteractive/laravel-assets/tree/v3.0.2"
             },
-            "time": "2021-05-19T15:32:29+00:00"
+            "time": "2021-06-12T10:30:27+00:00"
         },
         {
             "name": "composer/ca-bundle",

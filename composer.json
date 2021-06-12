@@ -10,7 +10,7 @@
         "aws/aws-sdk-php": "3.30.4",
         "barryvdh/laravel-ide-helper": "^2.3",
         "catlabinteractive/central-storage-client": "~1.0",
-        "catlabinteractive/laravel-assets": "~3.0.1",
+        "catlabinteractive/laravel-assets": "~3.0.2",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^6.3",
         "guzzlehttp/psr7": "1.8.1",
