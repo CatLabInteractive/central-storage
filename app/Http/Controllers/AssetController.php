@@ -345,6 +345,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * @param ConsumerAsset[] $consumerAssets
      * @param int $columns
      * @return \Intervention\Image\Image
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     private function generateCombination($consumerAssets, $columns = 2)
     {

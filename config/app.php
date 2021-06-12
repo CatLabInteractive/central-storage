@@ -168,7 +168,7 @@ return [
         CatLab\CentralStorage\Client\CentralStorageServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
-        Madnest\Madzipper\MadzipperServiceProvider::class,
+        Madnest\Madzipper\MadzipperServiceProvider::class
 
     ],
 
