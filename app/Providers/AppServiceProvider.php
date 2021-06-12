@@ -14,7 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (Config::get('airbrake.projectId')) {
+        if (
+            Config::get('airbrake.projectId') &&
+            Config::get('airbrake.projectKey')
+        ) {
             $this->app->bind(\Airbrake\Notifier::class, function () {
                 // Create new Notifier instance.
                 $notifier = new \Airbrake\Notifier([
