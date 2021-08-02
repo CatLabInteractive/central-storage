@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -39,7 +40,7 @@ class CachedProxyController extends AssetController
         $url = base64_decode($urlBase64);
         if (
             !$url ||
-            !starts_with(strtolower($url), [ 'http://', 'https://' ])
+            !Str::starts_with(strtolower($url), [ 'http://', 'https://' ])
         ) {
             abort(404, 'Invalid url provided');
             return null;
