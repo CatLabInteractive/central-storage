@@ -40,7 +40,7 @@ class CachedProxyController extends AssetController
         $url = base64_decode($urlBase64);
         if (
             !$url ||
-            !Str::starts_with(strtolower($url), [ 'http://', 'https://' ])
+            !Str::startsWith(strtolower($url), [ 'http://', 'https://' ])
         ) {
             abort(404, 'Invalid url provided');
             return null;
