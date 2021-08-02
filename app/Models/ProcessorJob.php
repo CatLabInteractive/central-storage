@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CatLab\Assets\Laravel\Models\Variation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class ProcessorJob
@@ -15,6 +16,11 @@ class ProcessorJob extends Model
     const STATE_PENDING = 'PENDING';
     const STATE_FINISHED = 'FINISHED';
     const STATE_FAILED = 'FAILED';
+
+    /**
+     * @var \Illuminate\Contracts\Cache\Lock
+     */
+    private $cacheLock;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -87,16 +93,16 @@ class ProcessorJob extends Model
         return $this->belongsTo(ProcessorJob::class, 'original_job_id');
     }
 
-    public function locks()
-    {
-        return $this->hasMany(ProcessorLock::class);
-    }
-
     /**
      * @return bool
      */
     public function lockJob()
     {
+        // Make sure we use a lock to prevent other processes from generating the same variation
+        $this->cacheLock = Cache::lock('ctlb-processorJob-' . $this->id, 30);
+        return $this->cacheLock->get();
+
+        /*
         $result = false;
         \DB::transaction(function() use (&$result) {
 
@@ -112,6 +118,7 @@ class ProcessorJob extends Model
         });
 
         return $result;
+        */
     }
 
     /**
@@ -119,6 +126,8 @@ class ProcessorJob extends Model
      */
     public function unlockJob()
     {
-        $this->locks()->delete();
+        if ($this->cacheLock) {
+            $this->cacheLock->release();
+        }
     }
 }
