@@ -85,6 +85,9 @@ class RunProcessorAgain extends Command
             $this->output->writeln('Executing job again: ' . $job->id);
 
             $job->runAgain($this->output, $processor);
+
+            // make sure we don't reach the request limit.
+            sleep(1);
         });
     }
 }
