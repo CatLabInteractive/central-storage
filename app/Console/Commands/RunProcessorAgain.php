@@ -17,7 +17,7 @@ class RunProcessorAgain extends Command
      *
      * @var string
      */
-    protected $signature = 'processor:run-again {id} {--since=} {--job=}';
+    protected $signature = 'processor:run-again {id} {--since=} {--until=} {--job=}';
 
     /**
      * The console command description.
@@ -58,6 +58,15 @@ class RunProcessorAgain extends Command
             }
         }
 
+        $until = $this->option('until');
+        if ($until) {
+            $until = Carbon::parse($until);
+            if (!$until) {
+                $this->output->error('Could not parse until parameter');
+                return;
+            }
+        }
+
         $jobId = $this->option('job');
 
         $jobs = $processor
@@ -68,13 +77,17 @@ class RunProcessorAgain extends Command
 
         if ($jobId) {
             $jobs = $jobs->where('id', '=', $jobId);
-            $this->output->writeln('We will run ' . $jobs->count() . ' jobs again.');
-        } else if ($since) {
-            $jobs = $jobs->whereDate('created_at', '>=', $since);
-            $this->output->writeln('We will run ' . $jobs->count() . ' jobs again.');
-        } else {
-            $this->output->writeln('We will run all of these jobs again.');
         }
+
+        if ($since) {
+            $jobs = $jobs->whereDate('created_at', '>=', $since);
+        }
+
+        if ($until) {
+            $jobs = $jobs->whereDate('created_at', '<', $until);
+        }
+
+        $this->output->writeln('We will run ' . $jobs->count() . ' jobs again.');
 
         if (!$this->confirm('Are you sure you want to continue?')) {
             $this->output->writeln('Alright, I\'ll be here if you need me :-)');
