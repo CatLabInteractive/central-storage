@@ -17,7 +17,7 @@ class RunProcessorAgain extends Command
      *
      * @var string
      */
-    protected $signature = 'processor:run-again {id} {--since=}';
+    protected $signature = 'processor:run-again {id} {--since=} {--job=}';
 
     /**
      * The console command description.
@@ -58,13 +58,18 @@ class RunProcessorAgain extends Command
             }
         }
 
+        $jobId = $this->option('job');
+
         $jobs = $processor
             ->jobs()
             ->where('state', '=', ProcessorJob::STATE_FINISHED);
 
         $this->output->writeln('Processor executed ' . $jobs->count() . ' jobs in total.');
 
-        if ($since) {
+        if ($jobId) {
+            $jobs = $jobs->where('id', '=', $jobId);
+            $this->output->writeln('We will run ' . $jobs->count() . ' jobs again.');
+        } else if ($since) {
             $jobs = $jobs->whereDate('created_at', '>=', $since);
             $this->output->writeln('We will run ' . $jobs->count() . ' jobs again.');
         } else {
