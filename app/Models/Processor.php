@@ -135,6 +135,7 @@ class Processor extends Model
         $job->consumerAsset()->associate($consumerAsset);
         $job->processor()->associate($this);
         $job->setState(ProcessorJob::STATE_PREPARED);
+        $job->save();
 
         $this->output->writeln('Processing ' . $asset->id . ' -> ' . $outputPath);
         $this->handle($job, $outputPath);
@@ -142,6 +143,14 @@ class Processor extends Model
         $job->save();
     }
 
+    /**
+     * @param ConsumerAsset $consumer
+     * @param UploadedFile $fileInfo
+     * @param $variationName
+     * @param false $shareGlobally
+     * @param ProcessorJob|null $job
+     * @return Variation|\CatLab\Assets\Laravel\Models\Variation
+     */
     protected function uploadProcessedFile(
         ConsumerAsset $consumer,
         UploadedFile $fileInfo,
@@ -163,7 +172,7 @@ class Processor extends Model
     }
 
     /**
-     * This method is very important. Since duplicate assets are avoided, one asset an have multiple CustomerAssets.
+     * This method is very important. Since duplicate assets are avoided, one asset can have multiple CustomerAssets.
      * All these CustomerAssets have their own variations (since variations are customer-specific), but that doesn't
      * mean they should create duplicate assets.
      *
@@ -182,7 +191,10 @@ class Processor extends Model
         $asset = $consumerAsset->getAsset();
 
         // Are we processing this asset now?
-        $existingJobs = $this->jobs()->where('asset_id', '=', $asset->id);
+        $existingJobs = $this
+            ->jobs()
+            ->where('asset_id', '=', $asset->id)
+            ->where('state', '=', ProcessorJob::STATE_FINISHED);
 
         // Already processing this asset? Then don't continue.
         // The resulting variations will be ours anyway, so we will be able to just use them.
@@ -234,13 +246,14 @@ class Processor extends Model
 
             // Is the processor similar to this processor?
             if ($this->isSimilar($job->processor)) {
-                // This is basically the same job, so all variations that this job has created are applicable to this asset as well.
+
+                // This is basically the same job, so all variations that
+                // this job has created are applicable to this asset as well.
                 $result = true;
 
                 $variationNames = [];
 
                 // Make a list of all variations that we have already processed.
-
 
                 $variations = $job->variations;
                 foreach ($variations as $variation) {
@@ -362,6 +375,14 @@ class Processor extends Model
     public function jobs()
     {
         return $this->hasMany(ProcessorJob::class, 'processor_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variations()
+    {
+        return $this->hasMany(Variation::class, 'processor_id');
     }
 
     /**

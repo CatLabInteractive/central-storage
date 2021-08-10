@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\AssetCacheClear;
 use App\Console\Commands\MigrateDisk;
 use App\Console\Commands\RunProcessor;
+use App\Console\Commands\RunProcessorAgain;
 use App\Console\Commands\UpdatePendingJobs;
 use CatLab\Assets\Laravel\Commands\CleanupUnusedVariations;
 use Illuminate\Console\Scheduling\Schedule;
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
         AssetCacheClear::class,
         RunProcessor::class,
         UpdatePendingJobs::class,
-        CleanupUnusedVariations::class
+        CleanupUnusedVariations::class,
+        RunProcessorAgain::class
     ];
 
     /**

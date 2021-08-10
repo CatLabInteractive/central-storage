@@ -45,6 +45,14 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consumerAssets()
+    {
+        return $this->hasMany(ConsumerAsset::class, 'asset_id');
+    }
+
+    /**
      * @param array $attributes
      * @param bool $shareGlobally
      * @return Variation
@@ -69,6 +77,7 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
      * @param bool $shareGlobally
      * @param ProcessorJob|null $job
      * @return \CatLab\Assets\Laravel\Models\Variation
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function linkVariationFromJob(
         Processor $processor,

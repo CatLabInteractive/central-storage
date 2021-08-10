@@ -16,6 +16,7 @@ class ProcessorJob extends Model
     const STATE_PENDING = 'PENDING';
     const STATE_FINISHED = 'FINISHED';
     const STATE_FAILED = 'FAILED';
+    const STATE_RESCHEDULED = 'RESCHEDULED';
 
     /**
      * @var \Illuminate\Contracts\Cache\Lock

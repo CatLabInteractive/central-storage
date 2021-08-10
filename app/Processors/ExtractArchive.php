@@ -64,6 +64,9 @@ class ExtractArchive extends Processor
         }
 
         unlink($tempFile);
+
+        // finished.
+        $job->setState(ProcessorJob::STATE_FINISHED);
     }
 
     /**
