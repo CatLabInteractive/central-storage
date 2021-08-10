@@ -17,7 +17,7 @@ class RunProcessorAgain extends Command
      *
      * @var string
      */
-    protected $signature = 'processor:run-again {id} {--lastUsed=} {--since=}';
+    protected $signature = 'processor:run-again {id} {--since=}';
 
     /**
      * The console command description.
@@ -49,41 +49,26 @@ class RunProcessorAgain extends Command
         $processor = Processor::findOrFail($processorId);
         $processor->setOutput($this->output);
 
-        $lastUsed = $this->option('lastUsed');
-        if ($lastUsed) {
-            $lastUsed = Carbon::parse($lastUsed);
-            if (!$lastUsed) {
-                $this->output->error('Could not parse lastUsed parameter');
-                return;
-            }
-        }
-
         $since = $this->option('since');
         if ($since) {
-            $since = Carbon::parse($lastUsed);
+            $since = Carbon::parse($since);
             if (!$since) {
                 $this->output->error('Could not parse since parameter');
                 return;
             }
         }
 
-        $variations = $processor->variations();
-        $this->output->writeln('Processor created ' . $variations->count() . ' variations in total.');
+        $jobs = $processor
+            ->jobs()
+            ->where('state', '=', ProcessorJob::STATE_FINISHED);
 
-        if ($lastUsed) {
-            $variations = $variations
-                ->leftJoin('assets', 'variations.variation_asset_id', '=', 'assets.id')
-                ->whereDate('assets.last_used_at', '>', $lastUsed);
+        $this->output->writeln('Processor executed ' . $jobs->count() . ' jobs in total.');
 
-            $this->output->writeln('We will run ' . $variations->count() . ' processes again.');
-        } elseif ($since) {
-            $variations = $variations
-                ->leftJoin('assets', 'variations.variation_asset_id', '=', 'assets.id')
-                ->whereDate('assets.created_at', '>=', $since);
-
-            $this->output->writeln('We will run ' . $variations->count() . ' processes again.');
+        if ($since) {
+            $jobs = $jobs->whereDate('created_at', '>=', $since);
+            $this->output->writeln('We will run ' . $jobs->count() . ' jobs again.');
         } else {
-            $this->output->writeln('We will run all of these processes again.');
+            $this->output->writeln('We will run all of these jobs again.');
         }
 
         if (!$this->confirm('Are you sure you want to continue?')) {
@@ -91,31 +76,10 @@ class RunProcessorAgain extends Command
             return;
         }
 
-        $variations->each(function(Variation $variation) use ($processor) {
+        $jobs->each(function(ProcessorJob $job) use ($processor) {
+            $this->output->writeln('Executing job again: ' . $job->id);
 
-            $this->output->writeln('Removing variation ' . $variation->id);
-
-            /** @var Asset $asset */
-            $asset = $variation->original;
-
-            $job = $variation->processorJob;
-            if ($job) {
-                $job->state = ProcessorJob::STATE_RESCHEDULED;
-                $job->save();
-            } else {
-                $this->output->error('Variation without job found for variation ' . $variation->id);
-            }
-
-            // Delete the original variation
-            $variation->delete();
-
-            // re-run all consumer assets
-            $consumerAssets = $asset->consumerAssets;
-
-            $consumerAssets->each(function(ConsumerAsset $consumerAsset) use ($processor) {
-                $this->output->writeln('- Running processor again for consumerAsset ' . $consumerAsset->id);
-                $processor->process($consumerAsset);
-            });
+            $job->runAgain($this->output, $processor);
         });
     }
 }

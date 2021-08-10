@@ -5,6 +5,7 @@ namespace App\Models;
 use CatLab\Assets\Laravel\Models\Variation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class ProcessorJob
@@ -92,6 +93,29 @@ class ProcessorJob extends Model
     public function originalJob()
     {
         return $this->belongsTo(ProcessorJob::class, 'original_job_id');
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param Processor $processor
+     * @throws \Exception
+     */
+    public function runAgain(OutputInterface $output, Processor $processor)
+    {
+        // Delete all created variations
+        $this->variations->each(function(Variation $variation) {
+            $variation->delete();
+        });
+
+        // mark the job as rescheduled
+        $this->state = ProcessorJob::STATE_RESCHEDULED;
+        $this->save();
+
+        // re-run all consumer assets
+        $consumerAsset = $this->consumerAsset;
+
+        $output->writeln('- Running processor again for consumerAsset ' . $consumerAsset->id);
+        $processor->process($consumerAsset);
     }
 
     /**
