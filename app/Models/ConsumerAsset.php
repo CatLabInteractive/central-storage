@@ -110,4 +110,12 @@ class ConsumerAsset extends Model
             'name' => $this->name
         ], $this->asset->getMetaData());
     }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return action('AssetController@viewConsumerAsset', [ $this->ca_key ]);
+    }
 }

@@ -105,4 +105,13 @@ class ExtractArchive extends Processor
             'exposeFileIndex' => 'required|boolean'
         ];
     }
+
+    /**
+     * @param Processor $processor
+     * @return bool
+     */
+    protected function isConfigSimilar(Processor $processor)
+    {
+        return false;
+    }
 }

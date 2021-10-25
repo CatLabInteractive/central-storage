@@ -71,7 +71,8 @@ class RunProcessorAgain extends Command
 
         $jobs = $processor
             ->jobs()
-            ->where('state', '=', ProcessorJob::STATE_FINISHED);
+            ->where('state', '=', ProcessorJob::STATE_FINISHED)
+            ->orWhere('state', '=', ProcessorJob::STATE_FAILED);
 
         $this->output->writeln('Processor executed ' . $jobs->count() . ' jobs in total.');
 

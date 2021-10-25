@@ -20,6 +20,7 @@ class ProcessorController extends Controller
     /**
      * @param Consumer $consumer
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Consumer $consumer)
     {
@@ -38,6 +39,7 @@ class ProcessorController extends Controller
     /**
      * @param Consumer $consumer
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Consumer $consumer)
     {
@@ -61,6 +63,7 @@ class ProcessorController extends Controller
      * @param Consumer $consumer
      * @param CreateProcessorRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function processCreate(Consumer $consumer, CreateProcessorRequest $request)
     {
@@ -88,6 +91,7 @@ class ProcessorController extends Controller
      * @param Consumer $consumer
      * @param Processor $processor
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Consumer $consumer, Processor $processor)
     {
@@ -107,6 +111,7 @@ class ProcessorController extends Controller
      * @param Processor $processor
      * @param EditProcessorRequest $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function processEdit(Consumer $consumer, Processor $processor, EditProcessorRequest $request)
     {
@@ -122,6 +127,7 @@ class ProcessorController extends Controller
     /**
      * @param Consumer $consumer
      * @param Processor $processor
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function run(Consumer $consumer, Processor $processor)
     {
@@ -132,6 +138,7 @@ class ProcessorController extends Controller
      * @param Consumer $consumer
      * @param Processor $processor
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function setDefault(Consumer $consumer, Processor $processor)
     {

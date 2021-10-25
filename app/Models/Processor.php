@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Processors\ElasticTranscoder;
 use App\Processors\ExtractArchive;
+use App\Processors\GreenScreen;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\PathGenerators\PathGenerator;
+use CatLab\CentralStorage\Client\CentralStorageClient;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\Jobs\Job;
@@ -42,13 +44,25 @@ class Processor extends Model
     protected $table = 'processors';
 
     /**
+     * @var bool
+     */
+    protected $runOnTheFly = false;
+
+    protected $configTypes = [
+        'file' => 'file',
+        'string' => 'text',
+        'int' => 'number'
+    ];
+
+    /**
      * @return array
      */
     public static function getProcessors()
     {
         return [
             ElasticTranscoder::class,
-            ExtractArchive::class
+            ExtractArchive::class,
+            GreenScreen::class,
         ];
     }
 
@@ -111,15 +125,22 @@ class Processor extends Model
 
     /**
      * @param ConsumerAsset $consumerAsset
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public final function process(ConsumerAsset $consumerAsset)
     {
         $asset = $consumerAsset->asset;
 
         try {
-            $this->validateConfig();
+            $this->validateConfig(false);
         } catch (ValidationException $e) {
             $this->output->writeln('ERROR: Processor config failed validation');
+            $this->output->writeln($e->errors());
+            return;
+        }
+
+        if ($this->shouldRunOnTheFly()) {
+            // These processors want to run on the fly. Skip variations.
             return;
         }
 
@@ -150,6 +171,7 @@ class Processor extends Model
      * @param false $shareGlobally
      * @param ProcessorJob|null $job
      * @return Variation|\CatLab\Assets\Laravel\Models\Variation
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function uploadProcessedFile(
         ConsumerAsset $consumer,
@@ -185,6 +207,7 @@ class Processor extends Model
      *
      * @param ConsumerAsset $consumerAsset
      * @return bool
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function linkExistingVariations(ConsumerAsset $consumerAsset)
     {
@@ -402,22 +425,64 @@ class Processor extends Model
     {
         $config = $this->config->where('name', '=', $key)->first();
         if ($config) {
-            return $config->value;
+            $type = $this->getConfigType($key);
+
+            switch ($type) {
+                case 'file':
+                    $consumerAsset = ConsumerAsset::assetKey($config->value)->first();
+                    if ($consumerAsset) {
+                        return $consumerAsset;
+                    } else {
+                        return null;
+                    }
+
+                default:
+                    return $config->value;
+            }
+
+
         }
         return $default;
     }
 
     /**
      * @param $config
+     * @throws \CatLab\CentralStorage\Client\Exceptions\StorageServerException
      */
     public function saveConfig(array $config)
     {
         foreach ($config as $k => $v) {
-            $config = $this->touchConfigModel($k);
-            $config->value = $v;
-
-            $config->save();
+            $this->setConfig($k, $v);
         }
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @throws \CatLab\CentralStorage\Client\Exceptions\StorageServerException
+     */
+    protected function setConfig($key, $value)
+    {
+        $type = $this->getConfigType($key);
+        switch ($type) {
+            case 'file':
+                $file = \Request::file($key);
+
+                $client = new CentralStorageClient(
+                    url('/'),
+                    $this->consumer->key,
+                    $this->consumer->secret
+                );
+
+                $asset = $client->store($file);
+                $value = $asset->asset_key;
+                break;
+        }
+
+        $config = $this->touchConfigModel($key);
+        $config->value = $value;
+
+        $config->save();
     }
 
     /**
@@ -552,6 +617,32 @@ class Processor extends Model
     }
 
     /**
+     * @return bool
+     */
+    public function shouldRunOnTheFly()
+    {
+        return $this->runOnTheFly;
+    }
+
+    /**
+     * @param $key
+     * @return string
+     */
+    public function getConfigType($key)
+    {
+        $config = $this->getConfigValidation();
+        if (isset($config[$key])) {
+            foreach ($this->configTypes as $typeName => $fieldType) {
+                if (strpos($config[$key], $typeName) !== false) {
+                    return $fieldType;
+                }
+            }
+        }
+
+        return 'text';
+    }
+
+    /**
      * @param $key
      * @return ProcessorConfig
      */
@@ -591,10 +682,26 @@ class Processor extends Model
     /**
      *
      */
-    protected function validateConfig()
+    protected function validateConfig($onChange = true)
     {
+        $requirements = $this->getConfigAssoc();
+        if (!$onChange) {
+            $out = [];
+            foreach ($requirements as $requirement => $value) {
+                switch ($this->getConfigType($requirement)) {
+                    case 'file':
+                        // do nothing;
+                        break;
+
+                    default:
+                        $out[$requirement] = $value;
+                }
+            }
+            $requirements = $out;
+        }
+
         $validator = Validator::make(
-            $this->getConfigAssoc(),
+            $requirements,
             $this->getConfigValidation()
         );
 
@@ -608,7 +715,6 @@ class Processor extends Model
     {
         return $this->config->mapWithKeys(
             function(ProcessorConfig $v) {
-
                 return [
                     $v->name => $v->value
                 ];

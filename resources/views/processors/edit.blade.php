@@ -6,10 +6,27 @@
 
 @section('inner-content')
 
-    {!! BootForm::open() !!}
+    {!! BootForm::open([ 'files' => true ]) !!}
 
     @foreach($processor->getConfigValidation() as $k => $v)
-        {!! BootForm::text($k, $k, $processor->getConfig($k)) !!}
+        @switch($processor->getConfigType($k))
+            @case('file')
+                @if($processor->getConfig($k))
+                    <a href="{{ $processor->getConfig($k)->getUrl() }}" target="_blank">{{ $processor->getConfig($k)->name }}</a>
+                @endif
+                {!! BootForm::file($k, $k) !!}
+                @break;
+
+            @case('number')
+                {!! BootForm::number($k, $k, $processor->getConfig($k)) !!}
+            @break;
+
+            @default
+            @case('text')
+                {!! BootForm::text($k, $k, $processor->getConfig($k)) !!}
+                @break;
+        @endswitch
+
     @endforeach
 
     {!! BootForm::submit('Save') !!}

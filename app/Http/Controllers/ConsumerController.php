@@ -42,6 +42,7 @@ class ConsumerController extends Controller
     /**
      * @param Consumer $consumer
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function test(Consumer $consumer)
     {
@@ -53,6 +54,7 @@ class ConsumerController extends Controller
      * @param Consumer $consumer
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function uploadTest(Consumer $consumer, Request $request)
     {
@@ -80,6 +82,7 @@ class ConsumerController extends Controller
     /**
      * @param Consumer $consumer
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function view(Consumer $consumer)
     {
@@ -89,6 +92,7 @@ class ConsumerController extends Controller
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -99,6 +103,7 @@ class ConsumerController extends Controller
     /**
      * @param CreateConsumerRequest $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function processCreate(CreateConsumerRequest $request)
     {

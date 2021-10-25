@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use CatLab\Assets\Laravel\Controllers\AssetController;
+
 /**
  * Class Asset
  * @package App\Models

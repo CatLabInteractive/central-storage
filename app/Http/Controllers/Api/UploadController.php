@@ -20,6 +20,7 @@ class UploadController
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function upload(Request $request)
     {
