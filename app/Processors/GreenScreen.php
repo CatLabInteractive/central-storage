@@ -59,7 +59,7 @@ class GreenScreen extends Processor
         $background->saveToFile($tmpDir . '/' . $backgroundFileName);
 
         // Resize the asset to match the background
-        $image = Image::make($asset->getOriginalImage());
+        $image = Image::make($asset->getData());
         $image = $image->fit($background->width, $background->height);
 
         file_put_contents($tmpDir . '/' . $assetFileName, $image->encode());
