@@ -10,6 +10,8 @@ use App\Models\ProcessorJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 
+use Image;
+
 /**
  *
  */
@@ -55,7 +57,14 @@ class GreenScreen extends Processor
         $assetFileName = 'foreground.' . $asset->getExtension();
 
         $background->saveToFile($tmpDir . '/' . $backgroundFileName);
-        $asset->saveToFile($tmpDir . '/' . $assetFileName);
+
+        // Resize the asset to match the background
+        $image = Image::make($asset->getOriginalImage());
+        $image = $image->fit($background->width, $background->height);
+
+        file_put_contents($tmpDir . '/' . $assetFileName, $image->encode());
+
+        //$asset->saveToFile($tmpDir . '/' . $assetFileName);
 
         chdir($tmpDir);
         $command = __DIR__ . '/scripts/greenscreen ' . $assetFileName . ' ' . $backgroundFileName . ' output.png';
