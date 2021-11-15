@@ -102,7 +102,7 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
     /**
      * @return ConsumerAsset
      */
-    public function getConsumerAsset(): ConsumerAsset
+    public function getConsumerAsset()
     {
         return $this->consumerAsset;
     }

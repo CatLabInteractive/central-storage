@@ -479,12 +479,21 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $expireInterval = new DateInterval('P1Y');
         $expireDate = (new DateTime())->add($expireInterval);
 
-        return [
+        $headers = [
             'Expires' => $expireDate->format('r'),
             'Last-Modified' => $asset->created_at ? $asset->created_at->format('r') : null,
             'Cache-Control' => 'max-age=' . $this->dateIntervalToSeconds($expireInterval) . ', public',
             'Access-Control-Allow-Origin' => '*'
         ];
+
+        if ($asset instanceof \App\Models\Asset) {
+            $consumerAsset = $asset->getConsumerAsset();
+            if ($consumerAsset) {
+                $headers['Content-Disposition'] = 'inline; filename="' . addslashes($consumerAsset->name). '"';
+            }
+        }
+
+        return $headers;
     }
 
     /**
