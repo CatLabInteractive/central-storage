@@ -58,7 +58,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         $consumer = $consumerAsset->consumer;
 
-        return $this->viewConsumerWithAsset($request, $asset, $consumer, $subPath);
+        return $this->viewConsumerWithAsset($request, $asset, $consumer, $subPath, $consumerAsset);
     }
 
     /**
@@ -106,7 +106,8 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         Request $request,
         \App\Models\Asset $asset,
         Consumer $consumer,
-        $subPath = null
+        $subPath = null,
+        ConsumerAsset $consumerAsset = null
     ) {
         // Check processors
         $variationName = $request->query('variation');
@@ -151,6 +152,9 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
             return $variation;
         } else {
             if ($variation) {
+                if ($consumerAsset) {
+                    $variation->asset->setConsumerAsset($consumerAsset);
+                }
                 return $this->viewAsset($variation->asset);
             } else {
 
