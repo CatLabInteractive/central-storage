@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\AssetCacheClear;
+use App\Console\Commands\CreateUser;
 use App\Console\Commands\MigrateDisk;
 use App\Console\Commands\RunProcessor;
 use App\Console\Commands\RunProcessorAgain;
@@ -24,7 +25,8 @@ class Kernel extends ConsoleKernel
         RunProcessor::class,
         UpdatePendingJobs::class,
         CleanupUnusedVariations::class,
-        RunProcessorAgain::class
+        RunProcessorAgain::class,
+        CreateUser::class,
     ];
 
     /**

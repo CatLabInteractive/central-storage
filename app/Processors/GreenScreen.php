@@ -67,7 +67,7 @@ class GreenScreen extends Processor
         //$asset->saveToFile($tmpDir . '/' . $assetFileName);
 
         chdir($tmpDir);
-        $command = __DIR__ . '/scripts/greenscreen ' . $assetFileName . ' ' . $backgroundFileName . ' output.png';
+        $command = __DIR__ . '/scripts/greenscreen ' . $assetFileName . ' ' . $backgroundFileName . ' output.jpg';
 
         $output = shell_exec($command);
 
