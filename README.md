@@ -44,7 +44,17 @@ Fill in a descriptive name.
 
 You should now get your consumer key and consumer secret.
 
-### Setting up your client project (in Laravel)
+### File resize
+In order for file resizing to work, you need to either install the GD or the Imagick php extensions. In your .env file,
+set ```INTERVENTION_DRIVER=imagick``` accordingly. The project uses the [Intervention Image](https://github.com/Intervention/image)
+library to manipulate images, so for further install instructions, take a look there.
+
+### Content delivery network
+In order to use a CDN with Central Storage (like Amazon Cloudfront), point the origin of the network to your asset website
+and configure your Central Storage Client projects `FRONT` config parameter to the CDN network. This way, uploads will 
+use the direct connection to Central Storage, but all generated links fetch content will use the CDN.
+
+## Setting up your client project (in Laravel)
 Central Storage provides a standard REST API and is thus consumable by any language or framework. We will focus on the
 existing Laravel client here. Note that it is a trivial task to implement a new client, as there is only a few methods
 to implement.
@@ -117,8 +127,6 @@ class AssetController
 }
 ```
 
-### File resize
-In order for file resizing to work, you need to either install the GD or the Imagick php extensions. In your .env file, 
-set ```INTERVENTION_DRIVER=imagick``` accordingly. The project uses the [Intervention Image](https://github.com/Intervention/image)
-library to manipulate images, so for further install instructions, take a look there.
+For further instructions on how to upload and consume assets, please check out the
+[Central Storage Client](https://github.com/catlabinteractive/central-storage-client) documentation.
 
