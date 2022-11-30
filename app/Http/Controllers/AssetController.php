@@ -493,11 +493,24 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         if ($asset instanceof \App\Models\Asset) {
             $consumerAsset = $asset->getConsumerAsset();
             if ($consumerAsset) {
-                $headers['Content-Disposition'] = 'inline; filename="' . addslashes($consumerAsset->name). '"';
+                $headers['Content-Disposition'] = $this->getContentDisposition($asset) . '; filename="' . addslashes($consumerAsset->name). '"';
             }
         }
 
         return $headers;
+    }
+
+    /**
+     * @param Asset $asset
+     * @return string
+     */
+    protected function getContentDisposition(Asset $asset)
+    {
+        if (\Request::get('download') == 1) {
+            return 'attachment';
+        } else {
+            return 'inline';
+        }
     }
 
     /**
