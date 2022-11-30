@@ -71,7 +71,7 @@ class GreenScreen extends Processor
 
         $output = shell_exec($command);
 
-        $fileInfo = new UploadedFile($tmpDir . '/output.png', $job->consumerAsset->name . '-' . $asset->getExtension());
+        $fileInfo = new UploadedFile($tmpDir . '/output.jpg', $job->consumerAsset->name . '-' . $asset->getExtension());
         $variation = $this->uploadProcessedFile(
             $job->consumerAsset,
             $fileInfo,
