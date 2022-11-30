@@ -493,7 +493,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         if ($asset instanceof \App\Models\Asset) {
             $consumerAsset = $asset->getConsumerAsset();
             if ($consumerAsset) {
-                $headers['Content-Disposition'] = $this->getContentDisposition($asset) . '; filename="' . addslashes($consumerAsset->name). '"';
+                $headers['Content-Disposition'] = $this->getContentDisposition($consumerAsset);
             }
         }
 
@@ -501,16 +501,26 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     }
 
     /**
-     * @param Asset $asset
+     * @param ConsumerAsset $asset
      * @return string
      */
-    protected function getContentDisposition(Asset $asset)
+    protected function getContentDisposition(ConsumerAsset $consumerAsset)
     {
         if (\Request::get('download') == 1) {
-            return 'attachment';
+            $contentDisposition = 'attachment';
         } else {
-            return 'inline';
+            $contentDisposition = 'inline';
         }
+
+
+        $filename = \Request::get('filename');
+        if ($filename) {
+            $contentDisposition .= '; filename="' . addslashes($filename). '"';
+        } else {
+            $contentDisposition .= '; filename="' . addslashes($consumerAsset->name). '"';
+        }
+
+        return $contentDisposition;
     }
 
     /**
