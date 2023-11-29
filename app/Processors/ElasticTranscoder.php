@@ -226,6 +226,10 @@ class ElasticTranscoder extends Processor
                 $newAsset->duration = $output['Duration'];
             }
 
+            if (isset($output['FrameRate'])) {
+                $newAsset->framerate = $output['FrameRate'];
+            }
+
             $variation = $asset->linkVariationFromJob($this, $variationName, $consumerAsset, $newAsset, false, $job);
             $existingVariationNames[$variationName] = $variation;
 
