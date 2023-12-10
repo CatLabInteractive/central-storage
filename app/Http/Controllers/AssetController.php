@@ -184,6 +184,11 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $maxWidth = intval(\Request::get('maxWidth'));
         $maxHeight = intval(\Request::get('maxHeight'));
         if ($maxWidth && $maxHeight) {
+
+            if ($asset->width === 0 || $asset->height === 0) {
+                return [ null, null];
+            }
+
             $dw = $maxWidth / $asset->width;
             $dh = $maxHeight / $asset->height;
 
@@ -194,6 +199,11 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             return [ intval($dMin * $asset->width), intval($dMin * $asset->height) ];
         } elseif ($maxWidth) {
+
+            if ($asset->width === 0 || $asset->height === 0) {
+                return [ null, null];
+            }
+
             $dw = $maxWidth / $asset->width;
             if ($dw > 1) {
                 return [ $asset->width, $asset->height ];
@@ -201,6 +211,11 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             return [ intval($dw * $asset->width), intval($dw * $asset->height) ];
         } elseif ($maxHeight) {
+
+            if ($asset->width === 0 || $asset->height === 0) {
+                return [ null, null];
+            }
+
             $dh = $maxHeight / $asset->height;
             if ($dh > 1) {
                 return [ $asset->width, $asset->height ];
@@ -224,6 +239,10 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
                 $targetHeight = $this->getTargetHeight($size);
 
                 if ($targetHeight) {
+
+                    if ($asset->width === 0 || $asset->height === 0) {
+                        return [ null, null];
+                    }
 
                     $factor = $targetHeight / $asset->height;
 
