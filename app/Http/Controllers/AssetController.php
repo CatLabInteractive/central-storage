@@ -14,7 +14,7 @@ use Illuminate\Http\UploadedFile;
 use DateInterval;
 use DateTime;
 use Image;
-use ImagickException;
+use Intervention\Image\Exception\NotReadableException;
 use Response;
 
 /**
@@ -178,7 +178,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     {
         try {
             return parent::getImageResponse($asset);
-        } catch (ImagickException $e) {
+        } catch (NotReadableException $e) {
             return $this->getAssetResponse($asset, []);
         }
     }
