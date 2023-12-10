@@ -14,6 +14,7 @@ use Illuminate\Http\UploadedFile;
 use DateInterval;
 use DateTime;
 use Image;
+use ImagickException;
 use Response;
 
 /**
@@ -170,6 +171,15 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
                     return $this->viewAsset($asset);
                 }
             }
+        }
+    }
+
+    protected function getImageResponse(Asset $asset)
+    {
+        try {
+            return parent::getImageResponse($asset);
+        } catch (ImagickException $e) {
+            return $this->getAssetResponse($asset, []);
         }
     }
 
