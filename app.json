@@ -1,0 +1,23 @@
+{
+  "name": "CatLab Central Storage",
+  "env": {
+    "DB_DATABASE": {
+      "required": true
+    },
+    "DB_USERNAME": {
+      "required": true
+    },
+    "DB_PASSWORD": {
+      "required": true
+    },
+    "DB_HOST": {
+      "required": true
+    },
+    "APP_URL": {
+      "required": true
+    }
+  },
+  "cron": [
+
+  ]
+}
