@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install mysqli pdo pdo_mysql gettext bcmath zip intl gd
 
 COPY docker/apache/apache.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/php/upload.ini /usr/local/etc/php/conf.d/upload.ini
 
 # Install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
