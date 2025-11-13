@@ -34,7 +34,7 @@ Central Storage uses the default File Storage systems, so you can configure wher
 The files are stored in various folders based on a hashing mechanism that should in theory improve performance
 when reading a lot of sequentially uploaded files.
 
-Note that certain Processors (like the Elastic Transcoder processor) requires the files to be stored on Amazon S3.
+Note that certain Processors (like the AWS MediaConvert processor, formerly Elastic Transcoder) requires the files to be stored on Amazon S3.
 
 ### Setting up a consumer
 A 'consumer' is an application that will use central storage for storing files.
@@ -129,4 +129,3 @@ class AssetController
 
 For further instructions on how to upload and consume assets, please check out the
 [Central Storage Client](https://github.com/catlabinteractive/central-storage-client) documentation.
-

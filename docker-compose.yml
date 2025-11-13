@@ -2,7 +2,7 @@ version: '3.9'
 services:
   webserver:
     container_name: catlab-files
-    working_dir: /var/www/
+    working_dir: /var/www/html
     build:
       context: .
       dockerfile: Dockerfile
@@ -24,4 +24,4 @@ services:
     env_file:
       - ./.env
     ports:
-      - "3312:3306"
+      - "3313:3306"

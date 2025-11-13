@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Processors\ElasticTranscoder;
 use App\Processors\ExtractArchive;
 use App\Processors\GreenScreen;
+use App\Processors\AwsMediaConvert;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use CatLab\Assets\Laravel\PathGenerators\PathGenerator;
 use CatLab\CentralStorage\Client\CentralStorageClient;
@@ -61,6 +62,7 @@ class Processor extends Model
     {
         return [
             ElasticTranscoder::class,
+            AwsMediaConvert::class,
             ExtractArchive::class,
             GreenScreen::class,
         ];

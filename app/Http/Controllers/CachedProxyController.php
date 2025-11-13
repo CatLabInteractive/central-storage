@@ -6,8 +6,6 @@ use App\Models\Consumer;
 use App\Models\CachedProxyFile;
 use CatLab\Assets\Laravel\Helpers\AssetUploader;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
