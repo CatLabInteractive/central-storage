@@ -542,7 +542,7 @@ class Processor extends Model
      */
     public function getPendingJobs()
     {
-        return $this->jobs->where('state', '=', ProcessorJob::STATE_PENDING);
+        return $this->jobs()->where('state', '=', ProcessorJob::STATE_PENDING);
     }
 
     /**
