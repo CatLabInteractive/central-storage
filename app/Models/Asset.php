@@ -89,6 +89,12 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
         $shareGlobally = false,
         ProcessorJob $job = null
     ) {
+        // Do we already have this variation? Then remove it and replace it.
+        $existingVariation = $this->getVariation($variationName, $shareGlobally);
+        if ($existingVariation) {
+            $existingVariation->delete();
+        }
+
         /** @var Variation $variation */
         $variation = parent::linkVariation($variationName, $variationAsset, $shareGlobally);
 
