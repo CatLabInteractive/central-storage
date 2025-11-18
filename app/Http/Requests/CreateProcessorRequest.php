@@ -32,7 +32,8 @@ class CreateProcessorRequest extends FormRequest
             'variation_name' => [
                 'required',
                 Rule::unique('processors')->where(function($query) use ($consumer) {
-                    $query->where('consumer_id', '=', $consumer->id);
+                    $query->where('consumer_id', '=', $consumer->id)
+                        ->whereNull('deleted_at');
                 }),
                 Rule::notIn([ 'original' ])
             ],
