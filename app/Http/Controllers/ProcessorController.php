@@ -27,6 +27,11 @@ class ProcessorController extends Controller
         $this->authorize('index', [ $consumer, Processor::class ]);
         $processors = $consumer->processors;
 
+        // Sort on processor name + variation name
+        usort($processors, function($a, $b) {
+            return strcmp($a->processor . $a->variation_name, $b->processor . $b->variation_name);
+        });
+
         return view(
             'processors/index',
             [

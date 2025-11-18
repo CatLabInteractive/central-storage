@@ -64,7 +64,7 @@ class Processor extends Model
     public static function getProcessors()
     {
         return [
-            ElasticTranscoder::class,
+            //ElasticTranscoder::class,
             AwsMediaConvert::class,
             ExtractArchive::class,
             GreenScreen::class,
