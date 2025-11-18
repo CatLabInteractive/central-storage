@@ -14,6 +14,7 @@ use Aws\MediaConvert\MediaConvertClient;
 use Aws\Sns\Exception\InvalidSnsMessageException;
 use Aws\Sns\Message;
 use Aws\Sns\MessageValidator;
+use League\Flysystem\FileNotFoundException;
 
 class AwsMediaConvert extends Processor
 {
@@ -337,7 +338,13 @@ class AwsMediaConvert extends Processor
 
                 // If MediaConvert did not provide size, fetch it from S3
                 if ($size === null) {
-                    $size = $newAsset->getDisk()->size($newPath);
+                    try {
+                        $size = $newAsset->getDisk()->size($newPath);
+                    } catch (FileNotFoundException $e) {
+                        \Log::error('Could not fetch size for ' . $newPath . ': ' . $e->getMessage());
+                        $job->setState(ProcessorJob::STATE_FAILED);
+                        return;
+                    }
                 }
 
                 if ($width !== null) { $newAsset->width = (int) $width; }
