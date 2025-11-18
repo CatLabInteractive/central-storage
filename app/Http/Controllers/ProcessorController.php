@@ -8,6 +8,7 @@ use App\Models\Consumer;
 use App\Models\ConsumerAsset;
 use App\Models\Processor;
 use App\Models\ProcessorTrigger;
+use Illuminate\Support\Collection;
 use Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,12 +26,16 @@ class ProcessorController extends Controller
     public function index(Consumer $consumer)
     {
         $this->authorize('index', [ $consumer, Processor::class ]);
+
+        /** @var Collection $processors */
         $processors = $consumer->processors;
 
         // Sort on processor name + variation name
-        usort($processors, function($a, $b) {
-            return strcmp($a->processor . $a->variation_name, $b->processor . $b->variation_name);
-        });
+        $processors = $processors->sortBy(
+            function (Processor $processor) {
+                return class_basename($processor->processor) . ' ' . $processor->variation_name;
+            }
+        );
 
         return view(
             'processors/index',
