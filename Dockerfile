@@ -32,9 +32,9 @@ RUN chown -R www-data:www-data /var/www/html
 # Copy the source code in /www into the container at /var/www/html
 COPY . /var/www/html
 
-WORKDIR /var/www/html
-USER www-data
-
-RUN composer install
-
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+WORKDIR /var/www/html
+
+USER www-data
+RUN composer install
