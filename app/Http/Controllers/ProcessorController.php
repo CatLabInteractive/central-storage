@@ -87,6 +87,32 @@ class ProcessorController extends Controller
         return redirect(action('ProcessorController@edit', [ $consumer->id, $processor->id ]));
     }
 
+    public function delete(Consumer $consumer, Processor $processor)
+    {
+        return view(
+            'processors/delete',
+            [
+                'consumer' => $consumer,
+                'processor' => $processor
+            ]
+        );
+    }
+
+    public function processDelete(Consumer $consumer, Processor $processor)
+    {
+        $this->authorize('delete', [ $processor ]);
+
+        // delete associated triggers
+        foreach ($processor->triggers as $trigger) {
+            $trigger->delete();
+        }
+
+        // delete the processor
+        $processor->delete();
+
+        return redirect(action('ProcessorController@index', [ $consumer->id ]));
+    }
+
     /**
      * @param Consumer $consumer
      * @param Processor $processor

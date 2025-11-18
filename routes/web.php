@@ -57,6 +57,10 @@ Route::group(
 
         Route::get('/consumers/{consumer}/processors/{processor}', 'ProcessorController@edit');
         Route::post('/consumers/{consumer}/processors/{processor}', 'ProcessorController@processEdit');
+
+        Route::get('/consumers/{consumer}/processors/{processor}/delete', 'ProcessorController@delete');
+        Route::post('/consumers/{consumer}/processors/{processor}/delete', 'ProcessorController@processDelete');
+
         Route::get('/consumers/{consumer}/processors/{processor}/change', 'ProcessorController@setDefault');
         Route::get('/consumers/{consumer}/processors/{processor}/run', 'ProcessorController@run');
 

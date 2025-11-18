@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -10,6 +11,8 @@ use Illuminate\Database\Query\Builder;
  */
 class ProcessorTrigger extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'mimetype'
     ];

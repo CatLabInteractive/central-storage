@@ -41,6 +41,11 @@ class ProcessorPolicy
         return $user->isAdmin() || $processor->consumer->user->equals($user);
     }
 
+    public function delete(User $user, Processor $processor)
+    {
+        return $user->isAdmin() || $processor->consumer->user->equals($user);
+    }
+
     /**
      * @param User $user
      * @param Processor $processor

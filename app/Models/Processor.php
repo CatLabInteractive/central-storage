@@ -11,6 +11,7 @@ use CatLab\Assets\Laravel\PathGenerators\PathGenerator;
 use CatLab\CentralStorage\Client\CentralStorageClient;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Validation\ValidationException;
 use Request;
@@ -29,6 +30,8 @@ use Validator;
  */
 class Processor extends Model
 {
+    use SoftDeletes;
+
     const PATH_PREFIX = 'proc/';
 
     protected $fillable = [

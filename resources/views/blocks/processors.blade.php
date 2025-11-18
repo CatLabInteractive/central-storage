@@ -39,6 +39,8 @@
                     @else
                         <a href="{{ action('ProcessorController@setDefault',  [ $consumer->id, $processor->id, 'default' => 1 ]) }}">Make default</a>
                     @endif
+
+                    | <a href="{{ action('ProcessorController@delete',  [ $consumer->id, $processor->id ]) }}">Delete</a>
                 </td>
             </tr>
         @endforeach
