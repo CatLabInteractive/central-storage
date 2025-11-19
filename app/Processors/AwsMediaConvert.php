@@ -39,6 +39,7 @@ class AwsMediaConvert extends Processor
                     'secret' => $secret
                 ],
                 'retries' => 5,
+                'default_caching_config' => sys_get_temp_dir(),
             ]);
 
             if (!$endpoint) {
@@ -58,6 +59,7 @@ class AwsMediaConvert extends Processor
                 // When endpoint is resolved, instruct client to use it
                 'endpoint' => $endpoint ?: null,
                 'retries' => 5,
+                'default_caching_config' => sys_get_temp_dir(),
             ]);
 
             self::$awsClients[$cacheKey] = $client;
