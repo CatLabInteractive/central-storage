@@ -26,10 +26,10 @@ class AwsMediaConvert extends Processor
      */
     private static $awsClients;
 
-    private static function getAwsClient(string $region, string $key, string $secret)
+    private static function getAwsClient(string $region, string $key, string $secret, string $endpoint = null)
     {
-        $key = implode('-', [ $region, $key,  $secret ]);
-        if (!isset(self::$awsClients[$key])) {
+        $cacheKey = implode('-', [ $region, $key,  $secret ]);
+        if (!isset(self::$awsClients[$cacheKey])) {
 
             $baseClient = new MediaConvertClient([
                 'region' => $region,
@@ -41,10 +41,11 @@ class AwsMediaConvert extends Processor
                 'retries' => 5,
             ]);
 
-
-            $describe = $baseClient->describeEndpoints(['MaxResults' => 1])->toArray();
-            if (!empty($describe['Endpoints'][0]['Url'])) {
-                $endpoint = $describe['Endpoints'][0]['Url'];
+            if (!$endpoint) {
+                $describe = $baseClient->describeEndpoints(['MaxResults' => 1])->toArray();
+                if (!empty($describe['Endpoints'][0]['Url'])) {
+                    $endpoint = $describe['Endpoints'][0]['Url'];
+                }
             }
 
             $client = new MediaConvertClient([
@@ -59,10 +60,10 @@ class AwsMediaConvert extends Processor
                 'retries' => 5,
             ]);
 
-            self::$awsClients[$key] = $client;
+            self::$awsClients[$cacheKey] = $client;
         }
 
-        return self::$awsClients[$key];
+        return self::$awsClients[$cacheKey];
     }
 
     /**
@@ -454,7 +455,8 @@ class AwsMediaConvert extends Processor
         return self::getAwsClient(
             $this->getConfig('region'),
             $this->getConfig('key'),
-            $this->getConfig('secret')
+            $this->getConfig('secret'),
+            $this->getConfig('endpoint')
         );
     }
 
