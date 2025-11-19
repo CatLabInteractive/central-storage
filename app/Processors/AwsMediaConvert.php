@@ -24,7 +24,25 @@ class AwsMediaConvert extends Processor
     /**
      * @var MediaConvertClient
      */
-    private $awsClient;
+    private static $awsClients;
+
+    private static function getAwsClient(string $region, string $key, string $secret)
+    {
+        $key = implode('-', [ $region, $key, $secret ]);
+        if (!isset(self::$awsClients[$key])) {
+            self::$awsClients[$key] = new MediaConvertClient([
+                'region' => $region,
+                'version' => self::AWS_VERSION_MEDIACONVERT,
+                'default_caching_config' => sys_get_temp_dir(),
+                'retries' => 3,
+                'credentials' => [
+                    'key' => $key,
+                    'secret' => $secret
+                ]
+            ]);
+        }
+        return self::$awsClients[$key];
+    }
 
     /**
      * @return array
@@ -412,39 +430,7 @@ class AwsMediaConvert extends Processor
      */
     protected function getMediaConvertClient()
     {
-        if (isset($this->awsClient)) {
-            return $this->awsClient;
-        }
-
-        $baseClient = new MediaConvertClient([
-            'region' => $this->getConfig('region'),
-            'version' => self::AWS_VERSION_MEDIACONVERT,
-            'credentials' => [
-                'key' => $this->getConfig('key'),
-                'secret' => $this->getConfig('secret')
-            ]
-        ]);
-
-        $endpoint = $this->getConfig('endpoint');
-        if (!$endpoint) {
-            $describe = $baseClient->describeEndpoints(['MaxResults' => 1])->toArray();
-            if (!empty($describe['Endpoints'][0]['Url'])) {
-                $endpoint = $describe['Endpoints'][0]['Url'];
-            }
-        }
-
-        $this->awsClient = new MediaConvertClient([
-            'region' => $this->getConfig('region'),
-            'version' => self::AWS_VERSION_MEDIACONVERT,
-            'credentials' => [
-                'key' => $this->getConfig('key'),
-                'secret' => $this->getConfig('secret')
-            ],
-            // When endpoint is resolved, instruct client to use it
-            'endpoint' => $endpoint ?: null
-        ]);
-
-        return $this->awsClient;
+        return self::getAwsClient($this->getConfig('region'), $this->getConfig('key'), $this->getConfig('secret'));
     }
 
     /**
