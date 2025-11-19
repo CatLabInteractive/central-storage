@@ -28,19 +28,40 @@ class AwsMediaConvert extends Processor
 
     private static function getAwsClient(string $region, string $key, string $secret)
     {
-        $key = implode('-', [ $region, $key, $secret ]);
+        $key = implode('-', [ $region, $key,  $secret ]);
         if (!isset(self::$awsClients[$key])) {
-            self::$awsClients[$key] = new MediaConvertClient([
+
+            $baseClient = new MediaConvertClient([
                 'region' => $region,
                 'version' => self::AWS_VERSION_MEDIACONVERT,
-                'default_caching_config' => sys_get_temp_dir(),
-                'retries' => 3,
                 'credentials' => [
                     'key' => $key,
                     'secret' => $secret
-                ]
+                ],
+                'retries' => 5,
             ]);
+
+
+            $describe = $baseClient->describeEndpoints(['MaxResults' => 1])->toArray();
+            if (!empty($describe['Endpoints'][0]['Url'])) {
+                $endpoint = $describe['Endpoints'][0]['Url'];
+            }
+
+            $client = new MediaConvertClient([
+                'region' => $region,
+                'version' => self::AWS_VERSION_MEDIACONVERT,
+                'credentials' => [
+                    'key' => $key,
+                    'secret' => $secret
+                ],
+                // When endpoint is resolved, instruct client to use it
+                'endpoint' => $endpoint ?: null,
+                'retries' => 5,
+            ]);
+
+            self::$awsClients[$key] = $client;
         }
+
         return self::$awsClients[$key];
     }
 
@@ -430,7 +451,11 @@ class AwsMediaConvert extends Processor
      */
     protected function getMediaConvertClient()
     {
-        return self::getAwsClient($this->getConfig('region'), $this->getConfig('key'), $this->getConfig('secret'));
+        return self::getAwsClient(
+            $this->getConfig('region'),
+            $this->getConfig('key'),
+            $this->getConfig('secret')
+        );
     }
 
     /**
