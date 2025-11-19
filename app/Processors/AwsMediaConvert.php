@@ -217,6 +217,10 @@ class AwsMediaConvert extends Processor
         $input = [
             'FileInput' => $inputS3,
 
+            'VideoSelector' => [
+                'Rotate' => 'AUTO'
+            ],
+
             // Ensure at least one audio selector exists so selector_sequence_id 0 is valid
             'AudioSelectors' => [
                 // name can be arbitrary; MediaConvert will assign selector_sequence_id based on order
@@ -336,8 +340,6 @@ class AwsMediaConvert extends Processor
         /** @var Asset $originalAsset */
         $originalAsset = $consumerAsset->getAsset();
 
-        $diskName = $originalAsset->disk;
-        $bucket = config('filesystems.disks.' . $diskName . '.bucket');
         $outputKeyPrefix = $this->getOutputPath($consumerAsset) . '/';
 
         // Base name without extension
