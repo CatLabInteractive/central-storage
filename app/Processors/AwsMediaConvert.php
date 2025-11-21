@@ -80,8 +80,10 @@ class AwsMediaConvert extends Processor
             'region' => 'required',
 
             // MediaConvert specifics
-            'role' => 'required',        // IAM role ARN for MediaConvert (e.g. MediaConvert_Default_Role)
+            'role' => 'required|string',        // IAM role ARN for MediaConvert (e.g. MediaConvert_Default_Role)
             'queue' => 'nullable|string', // Optional queue ARN
+            'sns_topic_arn' => 'required|string', // SNS topic ARN for job notifications
+
             'endpoint' => 'nullable|string', // Optional custom endpoint; if omitted we'll discover it
 
             // Processing
@@ -270,8 +272,17 @@ class AwsMediaConvert extends Processor
                     ],
                     'Outputs' => $outputs
                 ]
-            ]
+            ],
         ];
+
+        if ($this->getConfig('sns_topic_arn')) {
+            $jobSettings['Notifications'] = [
+                'Progressing' => $this->getConfig('sns_topic_arn'),
+                'Completed' => $this->getConfig('sns_topic_arn'),
+                'Error' => $this->getConfig('sns_topic_arn'),
+                'Warning' => $this->getConfig('sns_topic_arn'),
+            ];
+        }
 
         $params = [
             'Role' => $this->getConfig('role'),
