@@ -275,19 +275,19 @@ class AwsMediaConvert extends Processor
             ],
         ];
 
+        $params = [
+            'Role' => $this->getConfig('role'),
+            'Settings' => $jobSettings
+        ];
+
         if ($this->getConfig('sns_topic_arn')) {
-            $jobSettings['Notifications'] = [
+            $params['Notifications'] = [
                 'Progressing' => $this->getConfig('sns_topic_arn'),
                 'Completed' => $this->getConfig('sns_topic_arn'),
                 'Error' => $this->getConfig('sns_topic_arn'),
                 'Warning' => $this->getConfig('sns_topic_arn'),
             ];
         }
-
-        $params = [
-            'Role' => $this->getConfig('role'),
-            'Settings' => $jobSettings
-        ];
 
         $queue = $this->getConfig('queue');
         if ($queue) { $params['Queue'] = $queue; }
