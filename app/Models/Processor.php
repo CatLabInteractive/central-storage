@@ -759,11 +759,15 @@ class Processor extends Model
     }
 
     /**
-     * @param Processor $processor
+     * @param Processor|null $processor
      * @return bool|null
      */
-    private function isSimilar(Processor $processor)
+    private function isSimilar(Processor $processor = null)
     {
+        if (!$processor) {
+            return false;
+        }
+
         if ($this->id === $processor->id) {
             return true;
         }
