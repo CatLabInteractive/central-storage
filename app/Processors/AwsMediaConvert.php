@@ -15,6 +15,7 @@ use Aws\Sns\Exception\InvalidSnsMessageException;
 use Aws\Sns\Message;
 use Aws\Sns\MessageValidator;
 use League\Flysystem\FileNotFoundException;
+use Cache;
 
 class AwsMediaConvert extends Processor
 {
@@ -39,13 +40,28 @@ class AwsMediaConvert extends Processor
                     'secret' => $secret
                 ],
                 'retries' => 5,
-                'default_caching_config' => sys_get_temp_dir(),
             ]);
 
+            // Cache key / TTL for discovered endpoint
+            $endpointCacheKey = 'mediaconvert_endpoint_' . md5($region . '|' . $key);
+            $endpointTtl = config('services.mediaconvert.endpoint_ttl', 60 * 60 * 24); // default 24h
+
             if (!$endpoint) {
-                $describe = $baseClient->describeEndpoints(['MaxResults' => 1])->toArray();
-                if (!empty($describe['Endpoints'][0]['Url'])) {
-                    $endpoint = $describe['Endpoints'][0]['Url'];
+                // Try cached endpoint first
+                $cached = Cache::get($endpointCacheKey);
+                if ($cached) {
+                    $endpoint = $cached;
+                } else {
+                    try {
+                        $describe = $baseClient->describeEndpoints(['MaxResults' => 1])->toArray();
+                        if (!empty($describe['Endpoints'][0]['Url'])) {
+                            $endpoint = $describe['Endpoints'][0]['Url'];
+                            Cache::put($endpointCacheKey, $endpoint, $endpointTtl);
+                        }
+                    } catch (AwsException $e) {
+                        \Log::error('MediaConvert describeEndpoints failed: ' . $e->getMessage());
+                        // don't throw here — let client be created without discovered endpoint if possible
+                    }
                 }
             }
 
@@ -56,10 +72,8 @@ class AwsMediaConvert extends Processor
                     'key' => $key,
                     'secret' => $secret
                 ],
-                // When endpoint is resolved, instruct client to use it
                 'endpoint' => $endpoint ?: null,
                 'retries' => 5,
-                'default_caching_config' => sys_get_temp_dir(),
             ]);
 
             self::$awsClients[$cacheKey] = $client;
