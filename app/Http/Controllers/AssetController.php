@@ -522,7 +522,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         if ($asset instanceof \App\Models\Asset) {
             $consumerAsset = $asset->getConsumerAsset();
             if ($consumerAsset) {
-                $headers['Content-Disposition'] = $this->getContentDisposition($consumerAsset);
+                $headers['Content-Disposition'] = $this->getContentDisposition($asset, $consumerAsset);
             }
         }
 
@@ -533,7 +533,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * @param ConsumerAsset $asset
      * @return string
      */
-    protected function getContentDisposition(ConsumerAsset $consumerAsset)
+    protected function getContentDisposition(Asset $asset, ConsumerAsset $consumerAsset)
     {
         if (\Request::get('download') == 1) {
             $contentDisposition = 'attachment';
@@ -543,12 +543,11 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
 
         $filename = \Request::get('filename');
-        if ($filename) {
-            $contentDisposition .= '; filename="' . addslashes($filename). '"';
-        } else {
-            $contentDisposition .= '; filename="' . addslashes($this->getConsumerAssetNameWithReplacedExtension($consumerAsset)) . '"';
+        if (!$filename) {
+            $filename = $this->getConsumerAssetNameWithReplacedExtension($asset, $consumerAsset);
         }
 
+        $contentDisposition .= '; filename="' . addslashes($filename). '"';
         return $contentDisposition;
     }
 
@@ -556,10 +555,8 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * Make sure the extension of the consumer asset matches the extension of the asset
      * (as processors might have changed the extension)
      */
-    protected function getConsumerAssetNameWithReplacedExtension(ConsumerAsset $consumerAsset)
+    protected function getConsumerAssetNameWithReplacedExtension(Asset $asset, ConsumerAsset $consumerAsset)
     {
-        $asset = $consumerAsset->getAsset();
-
         $consumerAssetExtension = pathinfo($consumerAsset->name, PATHINFO_EXTENSION);
         if (!$consumerAssetExtension) {
             return $consumerAsset->name;
