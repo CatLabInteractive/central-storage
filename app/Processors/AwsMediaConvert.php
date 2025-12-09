@@ -376,6 +376,9 @@ class AwsMediaConvert extends Processor
             $newPath = $outputKeyPrefix . $baseName . '-' . $index . '.' . $this->getExtension($index);
             $newAsset = $this->createAsset($consumerAsset, $newPath);
 
+            // Set the name of the file with the updated extension
+            $newAsset->name = $this->getOriginalNameWithReplacedExtension($originalAsset, $this->getExtension($index));
+
             $od = $outputDetailsList[$index] ?? null;
             if ($od !== null) {
                 // Width / Height
@@ -507,5 +510,23 @@ class AwsMediaConvert extends Processor
         }
 
         return true;
+    }
+
+    /**
+     * @param Asset $originalAsset
+     * @param $extension
+     * @return string
+     */
+    protected function getOriginalNameWithReplacedExtension(Asset $originalAsset, $extension)
+    {
+        $originalName = $originalAsset->name;
+
+        // Remove the extension
+        $dotPos = strrpos($originalName, '.');
+        if ($dotPos !== false) {
+            $originalName = substr($originalName, 0, $dotPos);
+        }
+
+        return $originalName . '.' . $extension;
     }
 }
