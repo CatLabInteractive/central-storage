@@ -60,6 +60,7 @@ class AwsMediaConvert extends Processor
                         }
                     } catch (AwsException $e) {
                         \Log::error('MediaConvert describeEndpoints failed: ' . $e->getMessage());
+                        report($e);
                         // don't throw here — let client be created without discovered endpoint if possible
                     }
                 }
@@ -268,9 +269,12 @@ class AwsMediaConvert extends Processor
         // Build outputs using FILE_GROUP (one file per preset)
         $outputs = [];
         foreach ($presets as $i => $preset) {
+
+            $nameModifier = '-' . $i . '.' . $this->getExtension($i);
+
             $outputs[] = [
                 'Preset' => $preset, // Name or ARN
-                'NameModifier' => '-' . $i
+                'NameModifier' => $nameModifier,
             ];
         }
 
@@ -401,6 +405,8 @@ class AwsMediaConvert extends Processor
                         $size = $newAsset->getDisk()->size($newPath);
                     } catch (FileNotFoundException $e) {
                         \Log::error('Could not fetch size for ' . $newPath . ': ' . $e->getMessage());
+                        report($e);
+
                         $job->setState(ProcessorJob::STATE_FAILED);
                         return;
                     }
