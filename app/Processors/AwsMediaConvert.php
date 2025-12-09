@@ -269,12 +269,10 @@ class AwsMediaConvert extends Processor
         // Build outputs using FILE_GROUP (one file per preset)
         $outputs = [];
         foreach ($presets as $i => $preset) {
-
-            $nameModifier = '-' . $i . '.' . $this->getExtension($i);
-
             $outputs[] = [
                 'Preset' => $preset, // Name or ARN
-                'NameModifier' => $nameModifier,
+                'NameModifier' => '-' . $i,
+                'Extension' => $this->getExtension($i),
             ];
         }
 
