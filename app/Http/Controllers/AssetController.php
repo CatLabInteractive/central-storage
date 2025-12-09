@@ -546,10 +546,32 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         if ($filename) {
             $contentDisposition .= '; filename="' . addslashes($filename). '"';
         } else {
-            $contentDisposition .= '; filename="' . addslashes($consumerAsset->name). '"';
+            $contentDisposition .= '; filename="' . addslashes($this->getConsumerAssetNameWithReplacedExtension($consumerAsset->name)) . '"';
         }
 
         return $contentDisposition;
+    }
+
+    /**
+     * Make sure the extension of the consumer asset matches the extension of the asset
+     * (as processors might have changed the extension)
+     */
+    protected function getConsumerAssetNameWithReplacedExtension(ConsumerAsset $consumerAsset, Asset $asset)
+    {
+        $consumerAssetExtension = pathinfo($consumerAsset->name, PATHINFO_EXTENSION);
+        if (!$consumerAssetExtension) {
+            return $consumerAsset->name;
+        }
+
+        $assetExtension = $asset->getExtension();
+        if (!$assetExtension) {
+            return $consumerAsset->name;
+        }
+
+        // Replace filename extension in $consumerAsset->name with $assetExtension
+        $baseFilename = explode('.', $consumerAsset->name);
+        $baseFilename[count($baseFilename) - 1] = $assetExtension;
+        return implode('.', $baseFilename);
     }
 
     /**
