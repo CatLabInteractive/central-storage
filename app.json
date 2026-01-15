@@ -18,6 +18,9 @@
     }
   },
   "cron": [
-
+    {
+      "command": "php artisan processor:update-jobs",
+      "schedule": "45 * * * *"
+    }
   ]
 }
