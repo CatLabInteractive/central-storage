@@ -44,6 +44,15 @@ Fill in a descriptive name.
 
 You should now get your consumer key and consumer secret.
 
+### Upload limits
+Image uploads are limited to 20MB by default. This limit only applies to image files (`image/*`); videos and 
+other file types are not affected. The limit can be configured via the `MAX_IMAGE_FILE_SIZE` environment variable
+(value in bytes).
+
+```MAX_IMAGE_FILE_SIZE=20971520```
+
+The PHP-level upload limits (`upload_max_filesize` and `post_max_size`) are set to 1GB in `docker/php/upload.ini`.
+
 ### File resize
 In order for file resizing to work, you need to either install the GD or the Imagick php extensions. In your .env file,
 set ```INTERVENTION_DRIVER=imagick``` accordingly. The project uses the [Intervention Image](https://github.com/Intervention/image)
