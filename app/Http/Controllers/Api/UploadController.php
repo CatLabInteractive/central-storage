@@ -149,7 +149,7 @@ class UploadController
      */
     protected function isImage(UploadedFile $file)
     {
-        $mimeType = $file->getClientMimeType();
+        $mimeType = $file->getMimeType();
         return str_starts_with($mimeType, 'image/');
     }
 
