@@ -1,1 +1,0 @@
-{"version":1,"defects":{"Tests\\Unit\\UploadTest::testBasicTest":5},"times":{"Tests\\Unit\\UploadTest::testBasicTest":0.052,"Tests\\Unit\\UploadTest::testIsImageReturnsTrueForImageFiles":0.012,"Tests\\Unit\\UploadTest::testIsImageReturnsFalseForNonImageFiles":0.009,"Tests\\Unit\\UploadTest::testMaxImageFileSizeConfigExists":0.009}}
