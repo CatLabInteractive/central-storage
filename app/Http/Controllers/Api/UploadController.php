@@ -147,7 +147,7 @@ class UploadController
      * @param UploadedFile $file
      * @return bool
      */
-    protected function isImage(UploadedFile $file)
+    protected function isImage(\Symfony\Component\HttpFoundation\File\UploadedFile $file)
     {
         $mimeType = $file->getMimeType();
         return str_starts_with($mimeType, 'image/');
