@@ -38,6 +38,13 @@ class UploadController
                 abort(400, 'Uploaded file is not valid: ' . $file->getErrorMessage());
             }
 
+            // Check file size limit for images
+            $maxImageFileSize = config('assets.max_image_file_size');
+            if ($maxImageFileSize && $this->isImage($file) && $file->getSize() > $maxImageFileSize) {
+                $maxInMB = round($maxImageFileSize / 1024 / 1024, 1);
+                abort(422, 'Image file size exceeds the maximum allowed size of ' . $maxInMB . 'MB.');
+            }
+
             $asset = $this->uploadFile($file);
 
             $consumerAsset = ConsumerAsset::createFromAsset($asset, $consumer);
@@ -133,6 +140,17 @@ class UploadController
         }
 
         return $asset;
+    }
+
+    /**
+     * Check if the uploaded file is an image based on its MIME type.
+     * @param UploadedFile $file
+     * @return bool
+     */
+    protected function isImage(UploadedFile $file)
+    {
+        $mimeType = $file->getClientMimeType();
+        return str_starts_with($mimeType, 'image/');
     }
 
 }
