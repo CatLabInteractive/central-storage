@@ -139,7 +139,22 @@ class UploadController
             $asset = $uploader->uploadFile($file);
         }
 
-        return $asset;
+        return $this->resolveRootAsset($asset);
+    }
+
+    /**
+     * When the uploaded file is byte-identical to a processor output (a variation),
+     * the duplicate lookup returns that variation asset. Submitting it to the processors
+     * again would feed a processor its own output (MediaConvert rejects this as a
+     * feedback loop), so resolve to the root asset: the consumer then gets the original
+     * and every variation that already exists for it.
+     *
+     * @param Asset $asset
+     * @return Asset
+     */
+    protected function resolveRootAsset(Asset $asset)
+    {
+        return $asset->getRootAsset();
     }
 
     /**

@@ -211,6 +211,14 @@ class AwsMediaConvert extends Processor
         /** @var Asset $sourceAsset */
         $sourceAsset = $job->consumerAsset->getAsset();
 
+        $inputKey = ltrim($sourceAsset->path, '/');
+        if (strpos('/' . $inputKey, '/' . self::PATH_PREFIX) !== false) {
+            throw new \RuntimeException(
+                'Refusing to submit MediaConvert job: input ' . $inputKey . ' is a processor output. ' .
+                'MediaConvert rejects jobs that use the output of an identical job as input.'
+            );
+        }
+
         $presets = $this->getPresets();
         $this->output->writeln('Presets: ' . implode(', ', $presets));
 
@@ -223,7 +231,6 @@ class AwsMediaConvert extends Processor
             throw new \RuntimeException('Cannot resolve S3 bucket for disk: ' . $diskName);
         }
 
-        $inputKey = ltrim($sourceAsset->path, '/');
         $inputS3 = 's3://' . $bucket . '/' . $inputKey;
 
         $outputPrefix = trim($outputPath, '/') . '/';
