@@ -15,8 +15,14 @@ class StatisticsHelper
      */
     public static function formatBytes($size, $precision = 2)
     {
-        $base = log($size, 1024);
         $suffixes = array('', 'K', 'M', 'G', 'T');
+
+        // log(0) is -INF, which PHP 8.1+ refuses to use as an array index.
+        if ($size <= 0) {
+            return '0 ' . $suffixes[0];
+        }
+
+        $base = log($size, 1024);
 
         return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
     }
