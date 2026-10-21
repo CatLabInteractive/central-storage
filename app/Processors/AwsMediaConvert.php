@@ -27,7 +27,7 @@ class AwsMediaConvert extends Processor
      */
     private static $awsClients;
 
-    private static function getAwsClient(string $region, string $key, string $secret, string $endpoint = null)
+    private static function getAwsClient(string $region, string $key, string $secret, ?string $endpoint = null)
     {
         $cacheKey = implode('-', [ $region, $key,  $secret ]);
         if (!isset(self::$awsClients[$cacheKey])) {

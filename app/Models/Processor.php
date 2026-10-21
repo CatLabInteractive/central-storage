@@ -183,7 +183,7 @@ class Processor extends Model
         UploadedFile $fileInfo,
         $variationName,
         $shareGlobally = false,
-        ProcessorJob $job = null
+        ?ProcessorJob $job = null
     ) {
         $uploader = new AssetUploader();
 
@@ -762,7 +762,7 @@ class Processor extends Model
      * @param Processor|null $processor
      * @return bool|null
      */
-    private function isSimilar(Processor $processor = null)
+    private function isSimilar(?Processor $processor = null)
     {
         if (!$processor) {
             return false;

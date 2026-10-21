@@ -108,7 +108,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         \App\Models\Asset $asset,
         Consumer $consumer,
         $subPath = null,
-        ConsumerAsset $consumerAsset = null
+        ?ConsumerAsset $consumerAsset = null
     ) {
         // Check processors
         $variationName = $request->query('variation');
