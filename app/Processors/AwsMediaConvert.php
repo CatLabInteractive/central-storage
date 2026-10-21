@@ -14,7 +14,7 @@ use Aws\MediaConvert\MediaConvertClient;
 use Aws\Sns\Exception\InvalidSnsMessageException;
 use Aws\Sns\Message;
 use Aws\Sns\MessageValidator;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Cache;
 
 class AwsMediaConvert extends Processor
@@ -411,7 +411,7 @@ class AwsMediaConvert extends Processor
                 if ($size === null) {
                     try {
                         $size = $newAsset->getDisk()->size($newPath);
-                    } catch (FileNotFoundException $e) {
+                    } catch (UnableToRetrieveMetadata $e) {
                         \Log::error('Could not fetch size for ' . $newPath . ': ' . $e->getMessage());
                         report($e);
 
