@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2afadead2d7d81da466ee97e3ef9c15",
+    "content-hash": "22c221afb836b4a1f71aa5e7a9a7a32a",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -2542,79 +2542,6 @@
                 "source": "https://github.com/laravel/ui/tree/v4.6.3"
             },
             "time": "2026-03-17T13:41:52+00:00"
-        },
-        {
-            "name": "laravelcollective/html",
-            "version": "v6.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "64ddfdcaeeb8d332bd98bef442bef81e39c3910b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/64ddfdcaeeb8d332bd98bef442bef81e39c3910b",
-                "reference": "64ddfdcaeeb8d332bd98bef442bef81e39c3910b",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/http": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "illuminate/routing": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "illuminate/session": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "illuminate/view": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "php": ">=7.2.5"
-            },
-            "require-dev": {
-                "illuminate/database": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "mockery/mockery": "~1.0",
-                "phpunit/phpunit": "~8.5|^9.5.10"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Form": "Collective\\Html\\FormFacade",
-                        "Html": "Collective\\Html\\HtmlFacade"
-                    },
-                    "providers": [
-                        "Collective\\Html\\HtmlServiceProvider"
-                    ]
-                },
-                "branch-alias": {
-                    "dev-master": "6.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Collective\\Html\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Adam Engebretson",
-                    "email": "adam@laravelcollective.com"
-                },
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "description": "HTML and Form Builders for the Laravel Framework",
-            "homepage": "https://laravelcollective.com",
-            "support": {
-                "issues": "https://github.com/LaravelCollective/html/issues",
-                "source": "https://github.com/LaravelCollective/html"
-            },
-            "abandoned": "spatie/laravel-html",
-            "time": "2023-04-25T02:46:11+00:00"
         },
         {
             "name": "league/commonmark",
@@ -7199,43 +7126,6 @@
                 }
             ],
             "time": "2026-04-26T05:33:54+00:00"
-        },
-        {
-            "name": "watson/bootstrap-form",
-            "version": "2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dwightwatson/bootstrap-form.git",
-                "reference": "381d50796c63eff51ca6d27850018d6aeac3a065"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dwightwatson/bootstrap-form/zipball/381d50796c63eff51ca6d27850018d6aeac3a065",
-                "reference": "381d50796c63eff51ca6d27850018d6aeac3a065"
-            },
-            "require": {
-                "illuminate/config": "~8.0|^9.0|^10.0",
-                "illuminate/session": "~8.0|^9.0|^10.0",
-                "illuminate/support": "~8.0|^9.0|^10.0",
-                "laravelcollective/html": "~6.0",
-                "php": "^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Watson\\BootstrapForm\\BootstrapFormServiceProvider"
-                    ],
-                    "aliases": {
-                        "BootForm": "Watson\\BootstrapForm\\Facades\\BootstrapForm"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Watson\\BootstrapForm\\": "src/"
-                }
-            }
         }
     ],
     "packages-dev": [
