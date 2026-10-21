@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22c221afb836b4a1f71aa5e7a9a7a32a",
+    "content-hash": "7b7cd94b52e0c41ca6a4f9267132500c",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -637,27 +637,26 @@
         },
         {
             "name": "catlabinteractive/laravel-assets",
-            "version": "v3.0.8",
+            "version": "dev-laravel-12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CatLabInteractive/laravel-assets.git",
-                "reference": "1e4f999394595aadaf8ed37d7feddff204af0e4a"
+                "reference": "457bafd66b9ae9732745ed1b23f201aef7479635"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/1e4f999394595aadaf8ed37d7feddff204af0e4a",
-                "reference": "1e4f999394595aadaf8ed37d7feddff204af0e4a",
+                "url": "https://api.github.com/repos/CatLabInteractive/laravel-assets/zipball/457bafd66b9ae9732745ed1b23f201aef7479635",
+                "reference": "457bafd66b9ae9732745ed1b23f201aef7479635",
                 "shasum": ""
             },
             "require": {
                 "catlabinteractive/base": "~1.0",
                 "intervention/image": "^2.7",
-                "intervention/imagecache": "^2.5",
-                "laravel/framework": ">=8.0",
-                "php": ">=7.0.0"
+                "laravel/framework": "^10.0 || ^11.0 || ^12.0",
+                "php": "^8.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0"
             },
             "type": "library",
             "autoload": {
@@ -665,7 +664,6 @@
                     "CatLab\\Assets\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -677,10 +675,10 @@
             ],
             "description": "Handle asset upload",
             "support": {
-                "issues": "https://github.com/CatLabInteractive/laravel-assets/issues",
-                "source": "https://github.com/CatLabInteractive/laravel-assets/tree/v3.0.8"
+                "source": "https://github.com/CatLabInteractive/laravel-assets/tree/laravel-12",
+                "issues": "https://github.com/CatLabInteractive/laravel-assets/issues"
             },
-            "time": "2022-06-21T08:12:30+00:00"
+            "time": "2026-10-21T15:23:18+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -2084,74 +2082,6 @@
                 }
             ],
             "time": "2022-05-21T17:30:32+00:00"
-        },
-        {
-            "name": "intervention/imagecache",
-            "version": "2.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Intervention/imagecache.git",
-                "reference": "86136575a62d3634b51f196a998fce4a583b49bb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/imagecache/zipball/86136575a62d3634b51f196a998fce4a583b49bb",
-                "reference": "86136575a62d3634b51f196a998fce4a583b49bb",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/cache": "^5.5|~6|~7|~8|~9|~10",
-                "illuminate/filesystem": "^5.5|~6|~7|~8|~9|~10",
-                "intervention/image": "~2.2",
-                "nesbot/carbon": "^2.39",
-                "opis/closure": "^3.5",
-                "php": "~7.2|~8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Intervention\\Image\\": "src/Intervention/Image"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oliver Vogel",
-                    "email": "oliver@intervention.io",
-                    "homepage": "http://intervention.io/"
-                }
-            ],
-            "description": "Caching extension for the Intervention Image Class",
-            "homepage": "https://image.intervention.io",
-            "keywords": [
-                "cache",
-                "gd",
-                "image",
-                "imagick",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/Intervention/imagecache/issues",
-                "source": "https://github.com/Intervention/imagecache/tree/2.6.0"
-            },
-            "funding": [
-                {
-                    "url": "https://paypal.me/interventionio",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/Intervention",
-                    "type": "github"
-                }
-            ],
-            "abandoned": true,
-            "time": "2023-02-25T19:40:47+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3613,71 +3543,6 @@
                 }
             ],
             "time": "2024-11-21T10:36:35+00:00"
-        },
-        {
-            "name": "opis/closure",
-            "version": "3.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/opis/closure.git",
-                "reference": "b1a22a6be71c1263f3ca6e68f00b3fd4d394abc4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/b1a22a6be71c1263f3ca6e68f00b3fd4d394abc4",
-                "reference": "b1a22a6be71c1263f3ca6e68f00b3fd4d394abc4",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.4 || ^7.0 || ^8.0"
-            },
-            "require-dev": {
-                "jeremeamia/superclosure": "^2.0",
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.6.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "functions.php"
-                ],
-                "psr-4": {
-                    "Opis\\Closure\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marius Sarca",
-                    "email": "marius.sarca@gmail.com"
-                },
-                {
-                    "name": "Sorin Sarca",
-                    "email": "sarca_sorin@hotmail.com"
-                }
-            ],
-            "description": "A library that can be used to serialize closures (anonymous functions) and arbitrary objects.",
-            "homepage": "https://opis.io/closure",
-            "keywords": [
-                "anonymous functions",
-                "closure",
-                "function",
-                "serializable",
-                "serialization",
-                "serialize"
-            ],
-            "support": {
-                "issues": "https://github.com/opis/closure/issues",
-                "source": "https://github.com/opis/closure/tree/3.7.0"
-            },
-            "time": "2025-07-08T20:30:08+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -8853,9 +8718,18 @@
             "time": "2025-11-17T20:03:58+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "catlabinteractive/laravel-assets",
+            "version": "dev-laravel-12",
+            "alias": "4.0.0",
+            "alias_normalized": "4.0.0.0"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "catlabinteractive/laravel-assets": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
