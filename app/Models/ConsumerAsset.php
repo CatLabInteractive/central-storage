@@ -16,11 +16,8 @@ class ConsumerAsset extends Model
 {
     use SoftDeletes;
 
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-        'expires_at'
+    protected $casts = [
+        'expires_at' => 'datetime',
     ];
 
     const KEY_LENGTH = 24;

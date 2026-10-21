@@ -25,10 +25,8 @@ class CachedProxyFile extends Model
         });
     }
 
-    protected $dates = [
-        'expires_at',
-        'created_at',
-        'updated_at'
+    protected $casts = [
+        'expires_at' => 'datetime',
     ];
 
     /**
