@@ -12,10 +12,10 @@
         "barryvdh/laravel-ide-helper": "^3.0",
         "catlabinteractive/central-storage-client": "~1.0",
         "catlabinteractive/laravel-assets": "dev-laravel-12 as 4.0.0",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^12.0",
         "laravel/ui": "^4.0",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "madnest/madzipper": "^1.5",
+        "madnest/madzipper": "^1.6",
 
         "ext-json": "*",
         "ext-intl": "*",
