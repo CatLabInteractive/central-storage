@@ -188,11 +188,11 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getImageSize(Asset $asset)
     {
-        $size = \Request::get('size');
+        $size = \Request::input('size');
 
         // Min and max width?
-        $maxWidth = intval(\Request::get('maxWidth'));
-        $maxHeight = intval(\Request::get('maxHeight'));
+        $maxWidth = intval(\Request::input('maxWidth'));
+        $maxHeight = intval(\Request::input('maxHeight'));
         if ($maxWidth && $maxHeight) {
 
             if ($asset->width === 0 || $asset->height === 0) {
@@ -535,14 +535,14 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getContentDisposition(Asset $asset, ConsumerAsset $consumerAsset)
     {
-        if (\Request::get('download') == 1) {
+        if (\Request::input('download') == 1) {
             $contentDisposition = 'attachment';
         } else {
             $contentDisposition = 'inline';
         }
 
 
-        $filename = \Request::get('filename');
+        $filename = \Request::input('filename');
         if (!$filename) {
             $filename = $this->getConsumerAssetNameWithReplacedExtension($asset, $consumerAsset);
         }
@@ -581,7 +581,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getAssetResponse(Asset $asset, $forceHeaders = [])
     {
-        $useRedirect = \Request::get('redirect', \Config::get('assets.s3.redirect'));
+        $useRedirect = \Request::input('redirect', \Config::get('assets.s3.redirect'));
 
         // Look for redirect header
         $redirectHeader = \Request::header('X-Asset-Redirect');
