@@ -1,5 +1,5 @@
 # Use an official PHP runtime
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 # Enable Apache modules
 RUN a2enmod rewrite
