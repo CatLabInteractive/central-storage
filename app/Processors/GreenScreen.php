@@ -62,7 +62,7 @@ class GreenScreen extends Processor
         $image = (new ImageManager(config('assets.imageDriver')))->decodeBinary($asset->getData());
         $image = $image->cover($background->width, $background->height);
 
-        file_put_contents($tmpDir . '/' . $assetFileName, $image->encode()->toString());
+        file_put_contents($tmpDir . '/' . $assetFileName, Asset::encodeImage($image)->toString());
 
         //$asset->saveToFile($tmpDir . '/' . $assetFileName);
 

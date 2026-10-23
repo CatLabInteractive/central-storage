@@ -488,13 +488,13 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             case 'jpg':
             case 'jpeg':
-                $output = $canvas->encodeUsingFormat(Format::JPEG);
+                $output = Asset::encodeImage($canvas, Format::JPEG);
                 break;
 
             default:
                 // A blank canvas has no source format, so take the one of the first asset.
                 try {
-                    $output = $canvas->encodeUsingMediaType($firstAsset->mimetype);
+                    $output = $canvas->encodeUsingMediaType($firstAsset->mimetype, quality: Asset::ENCODE_QUALITY);
                 } catch (\Intervention\Image\Exceptions\ImageException $e) {
                     $output = $canvas->encodeUsingFormat(Format::PNG);
                 }
