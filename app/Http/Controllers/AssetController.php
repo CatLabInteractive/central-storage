@@ -191,10 +191,9 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     {
         $size = \Request::input('size');
 
-        // Min and max width? Chrome's address bar autocompletes
-        // ?maxWidth to a ?maxwidth from its history, so take both.
-        $maxWidth = intval(\Request::input('maxWidth', \Request::input('maxwidth')));
-        $maxHeight = intval(\Request::input('maxHeight', \Request::input('maxheight')));
+        // Min and max width? (Also accepted in lowercase.)
+        $maxWidth = intval($this->getQueryParameter('maxWidth'));
+        $maxHeight = intval($this->getQueryParameter('maxHeight'));
         if ($maxWidth && $maxHeight) {
 
             if ($asset->width === 0 || $asset->height === 0) {
