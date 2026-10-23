@@ -191,9 +191,9 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     {
         $size = \Request::input('size');
 
-        // Min and max width?
-        $maxWidth = intval(\Request::input('maxWidth'));
-        $maxHeight = intval(\Request::input('maxHeight'));
+        // Min and max width? (Also accepted in lowercase.)
+        $maxWidth = intval($this->getQueryParameter('maxWidth'));
+        $maxHeight = intval($this->getQueryParameter('maxHeight'));
         if ($maxWidth && $maxHeight) {
 
             if ($asset->width === 0 || $asset->height === 0) {
