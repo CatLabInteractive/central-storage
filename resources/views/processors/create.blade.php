@@ -6,26 +6,27 @@
 
 @section('inner-content')
 
-    {!! BootForm::open() !!}
+    <form method="POST" action="{{ action('ProcessorController@create', [ $consumer ]) }}" accept-charset="UTF-8" role="form" class="vertical">
+        @csrf
 
-    {!! BootForm::select('processor', 'Processor', $processors) !!}
+        @include('blocks.form.select', [ 'name' => 'processor', 'label' => 'Processor', 'options' => $processors ])
 
-    {!! BootForm::text('variation_name', 'Target variation name') !!}
-    <div class="alert alert-info" role="alert">
-        Variation name must be unique.
-    </div>
+        @include('blocks.form.input', [ 'name' => 'variation_name', 'label' => 'Target variation name' ])
+        <div class="alert alert-info" role="alert">
+            Variation name must be unique.
+        </div>
 
-    {!! BootForm::checkbox('default_variation', 'Make this the default variation') !!}
-    <div class="alert alert-info" role="alert">
-        Any call to assets matching the mimetype filter will load the default variation when called without
-        variation parameter.
-    </div>
+        @include('blocks.form.checkbox', [ 'name' => 'default_variation', 'label' => 'Make this the default variation' ])
+        <div class="alert alert-info" role="alert">
+            Any call to assets matching the mimetype filter will load the default variation when called without
+            variation parameter.
+        </div>
 
-    {!! BootForm::text('trigger_mimetype', 'Mimetype trigger') !!}
+        @include('blocks.form.input', [ 'name' => 'trigger_mimetype', 'label' => 'Mimetype trigger' ])
 
-    {!! BootForm::submit('Create') !!}
+        @include('blocks.form.submit', [ 'label' => 'Create' ])
 
-    {!! BootForm::close() !!}
+    </form>
 
     <a href="{{ action('ProcessorController@index', [ $consumer ]) }}" class="btn btn-default">Back</a>
 

@@ -6,12 +6,13 @@
 
 @section('inner-content')
 
-    {!! BootForm::open() !!}
+    <form method="POST" action="{{ action('ConsumerController@create') }}" accept-charset="UTF-8" role="form" class="vertical">
+        @csrf
 
-    {!! BootForm::text('name', 'Consumer name') !!}
-    {!! BootForm::submit('Create') !!}
+        @include('blocks.form.input', [ 'name' => 'name', 'label' => 'Consumer name' ])
+        @include('blocks.form.submit', [ 'label' => 'Create' ])
 
-    {!! BootForm::close() !!}
+    </form>
 
     <a href="{{ action('ConsumerController@index') }}">Back</a>
 

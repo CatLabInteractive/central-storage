@@ -13,8 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use DateInterval;
 use DateTime;
-use Image;
-use Intervention\Image\Exception\NotReadableException;
+use Intervention\Image\Exceptions\ImageDecoderException;
+use Intervention\Image\Format;
+use Intervention\Image\ImageManager;
 use Response;
 
 /**
@@ -108,7 +109,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         \App\Models\Asset $asset,
         Consumer $consumer,
         $subPath = null,
-        ConsumerAsset $consumerAsset = null
+        ?ConsumerAsset $consumerAsset = null
     ) {
         // Check processors
         $variationName = $request->query('variation');
@@ -178,7 +179,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
     {
         try {
             return parent::getImageResponse($asset);
-        } catch (NotReadableException $e) {
+        } catch (ImageDecoderException $e) {
             return $this->getAssetResponse($asset, []);
         }
     }
@@ -188,11 +189,11 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getImageSize(Asset $asset)
     {
-        $size = \Request::get('size');
+        $size = \Request::input('size');
 
         // Min and max width?
-        $maxWidth = intval(\Request::get('maxWidth'));
-        $maxHeight = intval(\Request::get('maxHeight'));
+        $maxWidth = intval(\Request::input('maxWidth'));
+        $maxHeight = intval(\Request::input('maxHeight'));
         if ($maxWidth && $maxHeight) {
 
             if ($asset->width === 0 || $asset->height === 0) {
@@ -343,8 +344,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $cols = $request->input('cols', 2);
         $combination = $this->generateCombination($consumerAssets, $cols);
 
-        // encode image data only if image is not encoded yet
-        $combination = $combination->encoded ? $combination->encoded : (string) $combination->encode();
+        $combination = $combination->toString();
 
         // put in temporary file
         $tmpFile = tempnam(sys_get_temp_dir(), 'asset');
@@ -383,7 +383,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      * Generate a combination of provided consumer assets.
      * @param ConsumerAsset[] $consumerAssets
      * @param int $columns
-     * @return \Intervention\Image\Image
+     * @return \Intervention\Image\Interfaces\EncodedImageInterface
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     private function generateCombination($consumerAssets, $columns = 2)
@@ -407,6 +407,8 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $firstAsset = $consumerAssets[0]->asset;
 
         $tmpFiles = [];
+
+        $imageManager = new ImageManager(config('assets.imageDriver'));
 
         // Now get the individual responses and combine.
         foreach ($consumerAssets as $consumerAsset) {
@@ -447,7 +449,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
             $images[] = [
                 'size' => $size,
-                'image' => Image::make($tmpFile)
+                'image' => $imageManager->decodePath($tmpFile)
             ];
         }
 
@@ -455,7 +457,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
         $width = max($width, $rowWidth);
 
         // Now put both in one canvas.
-        $canvas = Image::canvas($width, $height);
+        $canvas = $imageManager->createImage($width, $height);
 
         /**
          * Start the actual drawing.
@@ -472,7 +474,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
                 $rowHeight = $image['size'][1];
             }
 
-            $canvas->insert($image['image'], 'top-left', $x, $y);
+            $canvas->insert($image['image'], $x, $y);
 
             $rowHeight = max($image['size'][1], $rowHeight);
             $x += $image['size'][0];
@@ -487,16 +489,21 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
 
         switch ($ext) {
             case 'png':
-                $output = $canvas->encode('png');
+                $output = $canvas->encodeUsingFormat(Format::PNG);
                 break;
 
             case 'jpg':
             case 'jpeg':
-                $output =  $canvas->encode('jpeg');
+                $output = Asset::encodeImage($canvas, Format::JPEG);
                 break;
 
             default:
-                $output = $canvas->encode();
+                // A blank canvas has no source format, so take the one of the first asset.
+                try {
+                    $output = $canvas->encodeUsingMediaType($firstAsset->mimetype, quality: Asset::ENCODE_QUALITY);
+                } catch (\Intervention\Image\Exceptions\ImageException $e) {
+                    $output = $canvas->encodeUsingFormat(Format::PNG);
+                }
                 break;
         }
 
@@ -541,14 +548,14 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getContentDisposition(Asset $asset, ConsumerAsset $consumerAsset)
     {
-        if (\Request::get('download') == 1) {
+        if (\Request::input('download') == 1) {
             $contentDisposition = 'attachment';
         } else {
             $contentDisposition = 'inline';
         }
 
 
-        $filename = \Request::get('filename');
+        $filename = \Request::input('filename');
         if (!$filename) {
             $filename = $this->getConsumerAssetNameWithReplacedExtension($asset, $consumerAsset);
         }
@@ -587,7 +594,7 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
      */
     protected function getAssetResponse(Asset $asset, $forceHeaders = [])
     {
-        $useRedirect = \Request::get('redirect', \Config::get('assets.s3.redirect'));
+        $useRedirect = \Request::input('redirect', \Config::get('assets.s3.redirect'));
 
         // Look for redirect header
         $redirectHeader = \Request::header('X-Asset-Redirect');

@@ -10,6 +10,11 @@ return [
 
     'disk' => env('ASSETS_DISK', 'local'),
 
+    // Intervention Image driver; set INTERVENTION_DRIVER=gd to use GD instead of Imagick.
+    'imageDriver' => env('INTERVENTION_DRIVER', 'imagick') === 'gd'
+        ? \Intervention\Image\Drivers\Gd\Driver::class
+        : \Intervention\Image\Drivers\Imagick\Driver::class,
+
     's3' => [
         'cloudfront' => env('AWS_CLOUDFRONT'),
         'redirect' => env('AWS_REDIRECT') == 'true' || env('AWS_REDIRECT') == 1,

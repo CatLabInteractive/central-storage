@@ -87,7 +87,7 @@ class Asset extends \CatLab\Assets\Laravel\Models\Asset
         ConsumerAsset $consumerAsset,
         \CatLab\Assets\Laravel\Models\Asset $variationAsset,
         $shareGlobally = false,
-        ProcessorJob $job = null
+        ?ProcessorJob $job = null
     ) {
         $existingVariation = $this->getVariation($variationName, $shareGlobally);
         if ($existingVariation) {
