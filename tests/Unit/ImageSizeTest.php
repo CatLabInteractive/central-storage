@@ -12,6 +12,7 @@ class ImageSizeTest extends TestCase
     private function imageSize(array $query, $width, $height)
     {
         $this->app->instance('request', Request::create('/assets/abc', 'GET', $query));
+        \Illuminate\Support\Facades\Request::clearResolvedInstance('request');
 
         $asset = new Asset();
         $asset->width = $width;
@@ -40,5 +41,13 @@ class ImageSizeTest extends TestCase
     {
         $this->assertEquals([ 200, 100 ], $this->imageSize([ 'size' => 'thumbnail' ], 800, 400));
         $this->assertEquals([ 64, 48 ], $this->imageSize([ 'size' => 'thumbnail' ], 64, 48));
+    }
+
+    public function testMaxWidthAndMaxHeightAreAlsoAcceptedInLowercase()
+    {
+        $this->assertEquals([ 800, 325 ], $this->imageSize([ 'maxWidth' => 800 ], 6408, 2604));
+        $this->assertEquals([ 800, 325 ], $this->imageSize([ 'maxwidth' => 800 ], 6408, 2604));
+        $this->assertEquals([ 1230, 500 ], $this->imageSize([ 'maxheight' => 500 ], 6408, 2604));
+        $this->assertEquals([ 600, 243 ], $this->imageSize([ 'maxwidth' => 600, 'maxheight' => 600 ], 6408, 2604));
     }
 }
