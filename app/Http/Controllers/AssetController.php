@@ -254,6 +254,12 @@ class AssetController extends \CatLab\Assets\Laravel\Controllers\AssetController
                         return [ null, null];
                     }
 
+                    // Never scale up, like maxWidth and maxHeight: it only
+                    // makes the file bigger.
+                    if ($asset->height <= $targetHeight) {
+                        return [ $asset->width, $asset->height ];
+                    }
+
                     $factor = $targetHeight / $asset->height;
 
                     $targetWidth = ceil($factor * $asset->width);
