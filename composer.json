@@ -11,7 +11,7 @@
         "aws/aws-sdk-php": "^3.359.8",
         "barryvdh/laravel-ide-helper": "^3.0",
         "catlabinteractive/central-storage-client": "~1.0",
-        "catlabinteractive/laravel-assets": "dev-laravel-12 as 4.0.0",
+        "catlabinteractive/laravel-assets": "^4.0",
         "laravel/framework": "^12.0",
         "laravel/ui": "^4.0",
         "league/flysystem-aws-s3-v3": "^3.0",
@@ -27,12 +27,6 @@
     "require-dev": {
         "phpunit/phpunit": "^11.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/CatLabInteractive/laravel-assets.git"
-        }
-    ],
     "autoload": {
         "classmap": [
             "database"

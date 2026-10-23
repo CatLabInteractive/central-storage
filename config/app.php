@@ -163,7 +163,6 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         CatLab\CentralStorage\Client\CentralStorageServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
 
         Madnest\Madzipper\MadzipperServiceProvider::class
 
@@ -217,7 +216,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'CentralStorage' => \CatLab\CentralStorage\Client\CentralStorageClientFacade::class,
-        'Image' => Intervention\Image\Facades\Image::class,
         'Madzipper' => Madnest\Madzipper\Madzipper::class
 
     ],
